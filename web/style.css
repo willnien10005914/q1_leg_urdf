@@ -16,3 +16,17 @@ aside>section{border-top:1px solid #2c3341;margin-top:24px;padding-top:22px}
 #reference-video{display:block;width:100%;max-height:65vh;object-fit:contain;aspect-ratio:16/9}
 .resize-hint{margin:8px 0}#expand-video{white-space:nowrap}
 @media(max-width:850px){main{grid-template-columns:minmax(0,1fr)}#pane-resizer{display:none}aside{padding:20px}#expand-video,.resize-hint{display:none}#reference-video{max-height:none}.viewer{min-width:0}}
+
+/* Live commands are enabled only by the matching, validated v4 controller. */
+button:disabled{opacity:.42;cursor:not-allowed}button:disabled:hover{border-color:#384255}
+#keyboard-panel h2{margin-bottom:10px}.keyboard-actions{display:flex;gap:8px}.keyboard-actions button{flex:1;font-size:12px}
+#keyboard-toggle[aria-pressed=true]{border-color:#9cbf9d;background:#253a30;color:#c9e8cd}
+.direction-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:14px 0}
+.direction-pad button{font-size:16px;font-weight:600;touch-action:none;user-select:none}
+.direction-pad span{display:block;font-size:10px;font-weight:400;color:#9ba9bd;margin-top:3px}
+.direction-pad button.held{border-color:#dfb078;background:#49382a;color:#f5ce9e}
+#sidestep-sequence{width:100%;font-size:12px;padding:12px 8px;border-color:#786045;background:#30271f}
+#sidestep-sequence:disabled{border-color:#384255;background:#1c2534}
+.command-readout{display:flex;flex-direction:column;gap:6px;margin-top:14px;font-size:11px;color:#c5d3e3;font-variant-numeric:tabular-nums}
+#velocity-command{font-size:10px;color:#96a8bf;overflow-wrap:anywhere}
+#canvas canvas:focus-visible{outline:2px solid #e5bc89;outline-offset:-3px}

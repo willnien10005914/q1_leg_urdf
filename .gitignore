@@ -36,3 +36,12 @@ checkpoints/isaac/sidestep/*
 
 # Exploratory failed recording metadata stays local.
 docs/results/*_failed.*
+
+# Selected v4 controller only; training runs remain local.
+!checkpoints/isaac/interactive_v4/
+checkpoints/isaac/interactive_v4/*
+!checkpoints/isaac/interactive_v4/latest.pt
+!checkpoints/isaac/interactive_v4/contract.json
+!checkpoints/isaac/interactive_v4/evaluation.json
+!docs/results/q1_leg_interactive_v4.mp4
+docs/results/*.candidate.*

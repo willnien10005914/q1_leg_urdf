@@ -4,7 +4,26 @@
 
 ![雙足模型與 YouTube 前七秒示範對照](docs/images/web-reference.png)
 
-## 目前成果
+<!-- V4_STATUS_START -->
+## V4：WASD 方向控制與左右閃身（大規模訓練中）
+
+本版新增 **W/S 前後、A/D 左右、Q/E 轉向、Space 停止**，以及「左閃身 → 右閃身 → 回站立」按鈕。採單一 command-conditioned PPO，所有轉換在同一物理狀態進行，不以 reset 假裝完成動作。
+
+新預算為 **10,240 個平行環境、最多 15,000 iterations**。每段自動評估；停滯時診斷與調整 reward，連續通過驗證後仍須獨立 128 回合確認，才開放新版鍵盤策略與發布影片。**下方 V3 結果不代表新版已通過。**
+
+```bash
+bash start_interactive_training.sh
+systemctl --user status q1-leg-training --no-pager
+tail -f outputs/interactive_training.log
+cat outputs/interactive_training_status.json
+```
+
+![新版鍵盤操作面板：未通過驗收時保持停用](docs/images/web-keyboard-v4.png)
+
+尚未通過驗收時，鍵盤面板保持停用。通過後自動錄製真實物理示範、轉 GIF、上傳 GoFile，再更新本區與 GitHub。見 [架構與監控](docs/V4_ARCHITECTURE.md)、[逐段影片觀察](docs/SIDESTEP_V4_MOTION_REVIEW.md)、[操作驗收](docs/V4_ACCEPTANCE.md)。
+<!-- V4_STATUS_END -->
+
+## V3 已保存成果
 
 | 項目 | 狀態 |
 |---|---|
@@ -158,7 +177,7 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
 .venv/bin/python tests/verify_live.py  # 另需 Isaac Sim live worker
 ```
 
-目前 8 項 Python 測試通過，涵蓋原生資產、關節契約、訓練排程、抬腳時序與拒絕單腳／滑動假成功。瀏覽器已檢查拖曳放大、鍵盤、寬度記憶、影片切換、WebGL 尺寸與手機版；新抬腳目標已以 32 回合原生模擬診斷。
+目前 31 項 Python 測試通過，涵蓋原生資產、關節契約、訓練排程、抬腳時序與拒絕單腳／滑動假成功。瀏覽器已檢查拖曳放大、鍵盤、寬度記憶、影片切換、WebGL 尺寸與手機版；新抬腳目標已以 32 回合原生模擬診斷。
 
 - [架構與控制設計](docs/ARCHITECTURE.md)
 - [大型訓練設定](docs/TRAINING_6144_8000.md)

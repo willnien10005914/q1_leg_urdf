@@ -41,7 +41,7 @@ def main():
                 lines.append(f"| {names[skill]} | {'通過原生 CAD 門檻' if report['passed'] else '尚未通過'} | {report['survival_rate']:.0%} | {report['duration']:.2f}s | {report['height_error']:.4f}m |")
             else:
                 lines.append(f"| {names[skill]} | {'訓練中' if state.get('skill')==skill and state.get('state')=='training' else '尚待前置階段通過'} | — | — | — |")
-        lines+=['',f"目前：`{state.get('skill')}` / `{state.get('state')}`，後端 Isaac Lab，GPU 環境數：{state.get('envs','依訓練設定')}。",'',
+        lines+=['',f"目前：`{state.get('skill')}` / `{state.get('state')}`，後端 Isaac Lab，GPU 環境數：{state.get('envs',state.get('num_envs','依訓練設定'))}。",'',
             '正式專案：`~/projects/q1_leg_urdf`。網頁服務：`q1-leg-web.service`；即時模擬：`q1-leg-live.service`；訓練服務：`q1-leg-training.service`。服務是本次工作階段的 systemd transient units，不是開機自動啟動。','',
             '```bash','systemctl --user status q1-leg-web q1-leg-live q1-leg-training','tail -f outputs/native_curriculum.log','systemctl --user stop q1-leg-training  # 停止整組訓練程序','```','',
             '每階段通過才會前進。未通過會保留權重與物理播放記錄；此時不會宣稱閃身步已訓練成功。原生 CAD 模擬不代表實機已驗證。','']
