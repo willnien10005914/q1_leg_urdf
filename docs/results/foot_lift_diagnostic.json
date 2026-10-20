@@ -1,0 +1,35 @@
+{
+  "purpose": "Old sidestep policy assessed against proposed foot-lift goals; no training and no published policy replacement",
+  "evaluation": {
+    "skill": "sidestep",
+    "backend": "isaaclab",
+    "proxy": false,
+    "episodes": 32,
+    "evaluation_seed": 60000,
+    "urdf_sha256": "2a9a5fce0cd4cf116ba22fcc5c2dfc90747e16c7c1c1ccd0914beec61ce7b3ac",
+    "survival_rate": 1.0,
+    "duration": 7.78,
+    "displacement": 0.16172203980386257,
+    "upright": 0.9954367280006409,
+    "height_error": 0.019484106451272964,
+    "pose_rmse": 0.15425187349319458,
+    "velocity_error": 0.1700933873653412,
+    "root_error": 0.08676322549581528,
+    "lateral_range": 0.35811180411837995,
+    "reference_lateral_range": 0.4867624593473715,
+    "foot_peak_clearance_m_per_foot": [
+      0.038164131343364716,
+      0.004084516316652298
+    ],
+    "foot_lift_success_rate_per_foot": [
+      0.04050925746560097,
+      0.0
+    ],
+    "stance_slip_m_s": 0.047674424946308136,
+    "planned_contact_match": 0.8719874620437622,
+    "passed": false,
+    "scope": "Native CAD simulation; real hardware unvalidated",
+    "checkpoint": "latest.pt",
+    "checkpoint_sha256": "e298ed5b62ea5cd3a5e567563d8f2cfd864c74cdb50c05055dd80d301142f08b"
+  }
+}

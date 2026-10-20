@@ -1,0 +1,40 @@
+{
+  "contract": "q1_leg_native_v3",
+  "backend": "isaaclab",
+  "stages": [
+    {
+      "skill": "stand",
+      "iterations": 200,
+      "purpose": "Learn balance, height and stationary foot support"
+    },
+    {
+      "skill": "walk",
+      "iterations": 400,
+      "purpose": "Warm-start standing weights; learn alternating foot support and forward motion"
+    },
+    {
+      "skill": "sidestep",
+      "iterations": 600,
+      "purpose": "Warm-start walking weights; track MediaPipe seven-second sidestep and recovery"
+    }
+  ],
+  "num_envs": 512,
+  "evaluation_episodes": 8,
+  "common_gates": {
+    "survival_rate_min": 0.875,
+    "upright_min": 0.94,
+    "height_error_m_max": 0.07
+  },
+  "walk_gates": {
+    "mean_velocity_error_m_s_max": 0.24,
+    "displacement_m_min": 0.5
+  },
+  "sidestep_gates": {
+    "joint_rmse_rad_max": 0.3,
+    "root_path_error_m_max": 0.18,
+    "lateral_excursion_ratio_min": 0.5,
+    "lateral_excursion_ratio_max": 1.5
+  },
+  "failure_behavior": "Retain checkpoint; repeat the same stage. Never mark an unpassed policy as ready.",
+  "native_cad_requirement": "Native geometry evaluation requires all source meshes. --allow-proxy explicitly selects approximate geometry."
+}

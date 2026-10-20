@@ -1,0 +1,38 @@
+# Local environments and generated files
+.venv
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.env
+.env.*
+!.env.example
+.DS_Store
+logs/
+outputs/*
+!outputs/.gitkeep
+*.log
+*.task
+*.zip
+*.gofile.json
+
+# Source videos are regenerated locally; keep only the native simulation demo.
+*.mp4
+!docs/results/q1_leg_sidestep_6144_8000.mp4
+
+# Publish only the two selected native policies and their exact metadata.
+checkpoints/*
+!checkpoints/isaac/
+checkpoints/isaac/*
+!checkpoints/isaac/stand/
+!checkpoints/isaac/sidestep/
+checkpoints/isaac/stand/*
+!checkpoints/isaac/stand/latest.pt
+!checkpoints/isaac/stand/contract.json
+!checkpoints/isaac/stand/evaluation.json
+checkpoints/isaac/sidestep/*
+!checkpoints/isaac/sidestep/latest.pt
+!checkpoints/isaac/sidestep/contract.json
+!checkpoints/isaac/sidestep/evaluation.json
+
+# Exploratory failed recording metadata stays local.
+docs/results/*_failed.*

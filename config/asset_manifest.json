@@ -1,0 +1,165 @@
+{
+  "schema": 1,
+  "archive": "BU10_robot_Assets-main.zip",
+  "archive_sha256": "67dd0ee5b4129ad60d8edc64a430956e9ffce94c1a5fc24eb0af1d11d1a63ef8",
+  "source_xacro": "assets/upstream/bu10_robot_assets/urdf/quanta_robot.xacro",
+  "source_urdf": "assets/upstream/bu10_robot_assets/urdf/quanta_robot_legged.urdf",
+  "source_urdf_sha256": "58d4e780f43484713afef4e6cac759eb992d792594c726dcbfc1179efda40441",
+  "integrated_urdf": "urdf/q1_inertia/quanta_robot_legged.urdf",
+  "integrated_urdf_sha256": "2a9a5fce0cd4cf116ba22fcc5c2dfc90747e16c7c1c1ccd0914beec61ce7b3ac",
+  "variant": "legged",
+  "physical_changes": "None. Mesh filenames relocated only; source axes, limits, masses, CoM, inertias and scales retained.",
+  "upstream_known_limits": "# Open with the ME team\n\n- `WAIST_SHOULD_HEAD` mass is wrong: `ROBOT_CHEST_ASM` at 4.1254508e+10 kg/m3 (waist_should_head.m_p.4 L50) gives 5.36e7 kg. We use a 5.36 kg box placeholder.\n- `ANKLE_ROLL_L` / `ANKLE_ROLL_R`: no .m_p ever delivered. We use a 0.2 kg box placeholder.\n- `FEET_PITCH_L` / `FEET_PITCH_R`: no .m_p ever delivered. We use a 0.5 kg box placeholder.\n- AK45-10 not measured: `arm_l_link_4` / `arm_r_link_4` still on the 0921 data.\n- AK45-36 not measured: neck, and no neck link exists in the URDF yet.\n- `THIGH_HIP_YAW_L/R` mass differs left vs right: 1.839 vs 1.935 kg for the same part.\n- `arm_l_link_4` vs `arm_r_link_4` CoM is not mirrored: y = -0.0195 vs +0.0296.\n- `ARM_L_LINK_6_JOINT` y = 0.0001 while the right side is 0 - intended or noise?\n- The 20260929 sheet reverted the arm values to the 0904 ones; we use the 0921 values.\n- `ARM_R_LINK_1` x is +0.0302 in the sheet, should be -0.0302 (confirmed typo, fixed on our side).\n- Rows 23-26 of the 0921 sheet are labelled ARM_L but belong to ARM_R.\n- Waist order in the sheet is pitch then roll; the CAD is yaw then roll then pitch.\n- `THIGH_HIP_YAW` is a roll joint and `THIGH_KNEE_PITCH` is a yaw joint - the row names state the wrong axis.\n- `arm_l_link_4.STL` and `arm_r_link_2/3/4.stl` are exported in mm, everything else in m.\n- `LOWER_LEG_*_LINK_1_2` lists an \"other joint\" at (0, +/-0.046, -0.09) that nothing attaches to.\n- No .m_p for the head; no mesh for the head either.\n\n# Open on our side\n\n- `generate_pdf.py` is slow (~800k triangles projected and sorted per view).\n- Joint limits other than the arms are ours, not the ME's - they have never confirmed them.\n- `check_inertia.py` only proves the CoM is inside the mesh, not that the STL origin is on the real rotation axis.\n",
+  "mesh_files": [
+    {
+      "path": "meshes/q1_inertia/COMMON/LOWER/HIP/MESH/center_hip_link.stl",
+      "sha256": "3a3e0abb80cbf95831cb4c9668207055e7cd53293ad013a9f2e249918b61d0c2",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/LOWER/HIP/MESH/center_waist_roll_link.stl",
+      "sha256": "0fa48cc99397869f9ffae20484880f10ce4539ab8c3d3dfecdabb0fe450d3feb",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/LOWER/HIP/MESH/center_waist_pitch_link.stl",
+      "sha256": "52d45a354f2b0532bab878d4fbee2edacea9b8747da5170a4baddb3b55169203",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/LOWER/HIP/MESH/left_hip_roll_link.stl",
+      "sha256": "33a1ee0f339eceb2037e04d686d3dc32a9efa33d18894a609ccd6fbd756b7d3b",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/LOWER/HIP/MESH/right_hip_roll_link.stl",
+      "sha256": "2c74bdc2b575371c489b41742fc03ac78a13a2ab20afe28fac54a7138112f426",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/TORSO/MESH/center_torso_link.stl",
+      "sha256": "ce851110fe92f5cd669ae307b01e6a1c2092b5fa3f3f56adb60c76b847598429",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_shoulder_roll_link.stl",
+      "sha256": "88562b7c001493192b82071bc2f41925e16da0cdfa55d7ebcf4b457b25ff532d",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_shoulder_yaw_link.stl",
+      "sha256": "09f697af19495a8902de9e8692172391630dffc0812c69e553eab05a569daad8",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_elbow_pitch_link.stl",
+      "sha256": "44eefcc112b6ed4da37140085cd7a0e5c029bf717d24b0538d33fc4e149a1834",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_wrist_yaw_link.stl",
+      "sha256": "781fd865446e2cfb5ee249a9ae36180434e2f028aa4f36c5c35205efbd3cff41",
+      "scale": "0.001 0.001 0.001"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_gripper_link.stl",
+      "sha256": "666df4ee1cbc6efa74baf1db6fd91101326aa36928a39f4e5b56ec80435d7f9d",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_finger_1_link.stl",
+      "sha256": "9134069232a9d4a68408c3ffb99b9a35ab6fa1f0ae72d34ef76159a721f22bbc",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_finger_2_link.stl",
+      "sha256": "fe3e3fb077389061a26dc09264019a92cb63a05e4172dc6055b987fb7c44b5cb",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_R_0921_UPDATE_STL/ARM_R_0921_UPDATE/right_shoulder_roll_link.stl",
+      "sha256": "b56a5fbd68bf2d76966bcf3f0dc14dd97f3d396ab4e3b16f862c3f4de7235b05",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_R_0921_UPDATE_STL/ARM_R_0921_UPDATE/right_shoulder_yaw_link.stl",
+      "sha256": "1dcc77575c06cc087982e8b83bf31110f69d50281935f347e5c24605dfce24b4",
+      "scale": "0.001 0.001 0.001"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_R_0921_UPDATE_STL/ARM_R_0921_UPDATE/right_elbow_pitch_link.stl",
+      "sha256": "4361190e4eb7c2d208ee9a30a91aac066e6fe6d88a86b5cab79f42bd17fa6c9e",
+      "scale": "0.001 0.001 0.001"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_R_0921_UPDATE_STL/ARM_R_0921_UPDATE/right_wrist_yaw_link.stl",
+      "sha256": "78c4f3e3f7c83ea7d8eccc4cee522c2d303a1bc574dc98324fa9bb9519c41f81",
+      "scale": "0.001 0.001 0.001"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_R_0921_UPDATE_STL/ARM_R_0921_UPDATE/right_gripper_link.stl",
+      "sha256": "9b7d4cc6380567ce6ed1093a9f358ccd0c00f9e975c0af96756ef52f53432fba",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_R_0921_UPDATE_STL/ARM_R_0921_UPDATE/right_finger_1_link.stl",
+      "sha256": "cddefcd21c0f415e784c066662e7d36cb5bde84a33416c5b8cc16a3151902267",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/COMMON/UPPER/ARMS/MESH/ARM_R_0921_UPDATE_STL/ARM_R_0921_UPDATE/right_finger_2_link.stl",
+      "sha256": "5529dd9e67d51081e2cb459618ac603fc4ba5791e1f636f28c203f9e940b3bf5",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/LOWERBODY_LEGGED/MESH/left_hip_yaw_link.stl",
+      "sha256": "bcfb62fc5183a6308c2fababada3c33140b2dbc2807b315c36237f153736b7a4",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/LOWERBODY_LEGGED/MESH/left_knee_pitch_link.stl",
+      "sha256": "3b6731889a5910ebc264d1f6627d1c3631cc2c45b579414f7a9496eca55b1ee1",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/LOWERBODY_LEGGED/MESH/left_ankle_pitch_link.stl",
+      "sha256": "1d900f2d6f0c571967548384dccbe968cb810ad11fd87cc84f968f415056157f",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/LOWERBODY_LEGGED/MESH/left_ankle_roll_link.stl",
+      "sha256": "2e58f0244397c7461b628f81398c780a186853197441bfe2ac25ad0b4de4c214",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/LOWERBODY_LEGGED/MESH/left_foot_link.stl",
+      "sha256": "6c65e650b27b277b247a8f46a5168ae4c1f6924d02b5cfa61de9ee328e3283c8",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/LOWERBODY_LEGGED/MESH/right_hip_yaw_link.stl",
+      "sha256": "9bb190849a25e128bf5e1ae58106420e37901fd7e27e10dc3bb9b0e17bacdaca",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/LOWERBODY_LEGGED/MESH/right_knee_pitch_link.stl",
+      "sha256": "39ff7df23696952d207a151067f14dadcf3f7bc30009cfab2da1e2ff8699b28b",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/LOWERBODY_LEGGED/MESH/right_ankle_pitch_link.stl",
+      "sha256": "2552479ed077b68fdacaff7d2caf386402b8ecc2d2925e80c3734b0a315caad4",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/LOWERBODY_LEGGED/MESH/right_ankle_roll_link.stl",
+      "sha256": "2e58f0244397c7461b628f81398c780a186853197441bfe2ac25ad0b4de4c214",
+      "scale": "1 1 1"
+    },
+    {
+      "path": "meshes/q1_inertia/LOWERBODY_LEGGED/MESH/right_foot_link.stl",
+      "sha256": "6c65e650b27b277b247a8f46a5168ae4c1f6924d02b5cfa61de9ee328e3283c8",
+      "scale": "1 1 1"
+    }
+  ]
+}

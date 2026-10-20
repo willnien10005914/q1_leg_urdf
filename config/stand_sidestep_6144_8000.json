@@ -1,0 +1,49 @@
+{
+  "contract": "q1_leg_native_v3",
+  "backend": "isaaclab",
+  "stages": [
+    {
+      "skill": "stand",
+      "iterations": 8000,
+      "purpose": "Continue the passed native standing policy for a full 8000 iterations with 6144 environments",
+      "learning_rate": 0.0001,
+      "schedule": "fixed",
+      "exploration_std": 0.1,
+      "entropy_coef": 0.0001
+    },
+    {
+      "skill": "sidestep",
+      "iterations": 8000,
+      "warm_start": "previous_stage",
+      "purpose": "Initialize from this run standing policy; track the MediaPipe seven-second sidestep for a full 8000 iterations",
+      "learning_rate": 0.0001,
+      "schedule": "fixed",
+      "exploration_std": 0.15,
+      "entropy_coef": 0.0001
+    }
+  ],
+  "num_envs": 6144,
+  "evaluation_episodes": 8,
+  "common_gates": {
+    "survival_rate_min": 0.875,
+    "upright_min": 0.94,
+    "height_error_m_max": 0.07
+  },
+  "walk_gates": {
+    "mean_velocity_error_m_s_max": 0.24,
+    "displacement_m_min": 0.5
+  },
+  "sidestep_gates": {
+    "joint_rmse_rad_max": 0.3,
+    "root_path_error_m_max": 0.18,
+    "lateral_excursion_ratio_min": 0.5,
+    "lateral_excursion_ratio_max": 1.5
+  },
+  "failure_behavior": "One full training attempt per stage; confirm on 32 fresh-seed episodes. If standing cannot be confirmed, retain snapshots and stop before sidestep.",
+  "native_cad_requirement": "Native geometry evaluation requires all source meshes. --allow-proxy explicitly selects approximate geometry.",
+  "route_reason": "User requested 6144 parallel environments and 8000 iterations per skill; always train both stages, starting sidestep from this run confirmed standing policy.",
+  "confirmation_seed": 50000,
+  "force_train": true,
+  "confirmation_episodes": 32,
+  "select_current_run_only": true
+}

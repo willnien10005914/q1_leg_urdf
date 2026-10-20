@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Q1 Leg · 動作實驗室</title><link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js"}}</script></head>
+<body>
+<header><span class="mark">Q1</span><div><h1>雙足動作實驗室</h1><p>LEG / MOTION LAB</p></div><span class="badge" id="geometry">讀取模型…</span></header>
+<main>
+<section class="viewer"><div id="canvas"></div><div class="viewer-label"><span class="dot"></span><span id="mode-label">MediaPipe 動作參考</span></div><div class="axis">X 前後 · Y 左右 · Z 向上</div></section>
+<div id="pane-resizer" role="separator" tabindex="0" aria-label="調整影片與控制面板寬度" aria-orientation="vertical" title="向左拖曳放大影片；雙擊還原"></div>
+<aside>
+<details open id="video-panel"><summary>YouTube 示範 · 前 7 秒</summary><div class="video-toolbar"><div class="video-sources"><button type="button" data-video-source="original" class="active" aria-pressed="true">原始影片</button><button type="button" data-video-source="overlay" aria-pressed="false">姿態骨架</button></div><button type="button" id="expand-video" aria-pressed="false">放大影片</button></div><video id="reference-video" src="/docs/reference/sidestep_0_7.mp4" controls muted playsinline preload="metadata"></video><p class="small resize-hint">拖曳左側分隔線可放大影片；雙擊分隔線還原。</p><p class="small">原片 0–7 秒 · MediaPipe Pose · 原生關節軸 IK<br>單鏡頭側移尺度為近似值。播放會停在結尾。</p><a href="https://youtu.be/KKhF516rSyo" target="_blank" rel="noreferrer">開啟 YouTube 原始示範 ↗</a></details>
+<section><span class="eyebrow">01 / 動作</span><h2>選擇雙足動作</h2><div id="skills" class="skills"><button data-skill="stand">站立<span>STAND</span></button><button data-skill="walk">行走<span>WALK</span></button><button data-skill="sidestep" class="active">閃身步<span>SIDESTEP</span></button></div></section>
+<section><span class="eyebrow">02 / 播放來源</span><label for="source">檢視模式</label><select id="source"><option value="reference">參考動作 / 關節映射</option><option value="live">即時 PPO / Isaac PhysX</option><option value="policy">PPO 物理評估記錄</option></select><p class="notice" id="status">讀取動作…</p><div class="transport"><button id="play">暫停</button><button id="reset">回到起點</button><label>速度<select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option></select></label></div><input aria-label="動作時間" id="timeline" type="range" min="0" max="6.95" step="0.01" value="0"><div class="time"><span id="time">0.00 s</span><span id="duration">6.95 s</span></div></section>
+<section><span class="eyebrow">03 / 訓練狀態</span><div id="metrics" class="metrics"></div><p id="training">尚未載入</p><p class="small">即時 PPO 由背景 Isaac Sim／PhysX 計算物理，網頁呈現模擬狀態。參考動作與評估記錄可單獨播放，網頁 URDF 不另外計算物理。</p></section>
+
+</aside>
+</main><script type="module" src="app.js"></script></body></html>

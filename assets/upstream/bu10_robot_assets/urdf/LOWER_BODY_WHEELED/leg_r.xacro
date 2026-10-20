@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <joint name="right_hip_Roll_joint" type="revolute">
+    <parent link="right_hip_roll_link"/>
+    <child link="right_knee_link"/>
+    <origin xyz="0.027 -0.068 -0.098" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.5708" upper="0.6000" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="right_knee_link" file="LOWER_BODY_WHEELED/MESH/right_knee_link.stl"
+                   m="3.0323919" cx="-0.025413094" cy="0.003205841" cz="-0.18321674"
+                   ixx="0.015465083" ixy="4.5091222e-05" ixz="-0.00029663998" iyy="0.018011357" iyz="0.00018190027" izz="0.0042994264"/>
+
+  <joint name="right_knee_1_Pitch_joint" type="revolute">
+    <parent link="right_knee_link"/>
+    <child link="right_wheel_pitch_link"/>
+    <origin xyz="-0.027 0.029 -0.222" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.0000" upper="2.5000" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="right_wheel_pitch_link" file="LOWER_BODY_WHEELED/MESH/right_wheel_pitch_link.stl"
+                   m="3.0636936" cx="-2.4952687e-05" cy="-0.020162443" cz="-0.25081732"
+                   ixx="0.052840888" ixy="-8.8633421e-07" ixz="6.926807e-06" iyy="0.049584387" iyz="-0.0018422119" izz="0.0064250308"/>
+
+  <joint name="right_knee_2_Pitch_joint" type="revolute">
+    <parent link="right_knee_link"/>
+    <child link="right_calf_2_link"/>
+    <origin xyz="-0.027 0.029 -0.222" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-3.14159" upper="3.14159" effort="100" velocity="10"/>
+    <mimic joint="right_knee_1_Pitch_joint" multiplier="0.444444" offset="0"/>
+  </joint>
+
+  <xacro:mesh_link name="right_calf_2_link" file="LOWER_BODY_WHEELED/MESH/right_calf_2_link.stl"
+                   m="0.4312683" cx="5.1903747e-05" cy="-0.045323672" cz="-0.044875313"
+                   ixx="0.0012259685" ixy="8.4344608e-07" ixz="4.4140654e-07" iyy="0.00089171412" iyz="-2.3123881e-06" izz="0.00051197747"/>
+
+  <joint name="right_wheel_Pitch_joint" type="continuous">
+    <parent link="right_wheel_pitch_link"/>
+    <child link="right_wheel_link"/>
+    <origin xyz="0 -0.026 -0.34" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <xacro:mesh_link name="right_wheel_link" file="LOWER_BODY_WHEELED/MESH/right_wheel_link.stl"
+                   m="1.6387714" cx="0" cy="-0.0019219735" cz="0"
+                   ixx="0.0050411273" ixy="0" ixz="0" iyy="0.0091313571" iyz="0" izz="0.0050411235"/>
+
+</robot>

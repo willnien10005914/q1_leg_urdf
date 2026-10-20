@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <joint name="right_hip_Roll_joint" type="revolute">
+    <parent link="right_hip_roll_link"/>
+    <child link="right_hip_yaw_link"/>
+    <origin xyz="0.027 -0.068 -0.098" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.5708" upper="1.3000" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="right_hip_yaw_link" file="LOWERBODY_LEGGED/MESH/right_hip_yaw_link.stl"
+                   m="1.934835" cx="-0.026526435" cy="6.1108059e-05" cz="-0.12294157"
+                   ixx="0.0062914526" ixy="1.3179611e-05" ixz="4.1467344e-05" iyy="0.0069124054" iyz="1.3523522e-05" izz="0.0026125599"/>
+
+  <joint name="right_hip_Yaw_joint" type="revolute">
+    <parent link="right_hip_yaw_link"/>
+    <child link="right_knee_pitch_link"/>
+    <origin xyz="-0.027 0 -0.1918" rpy="0 0 0"/>
+    <axis xyz="0 0 -1"/>
+    <limit lower="-3.1416" upper="3.1416" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="right_knee_pitch_link" file="LOWERBODY_LEGGED/MESH/right_knee_pitch_link.stl"
+                   m="2.6391073" cx="0.0012288379" cy="0.0037442365" cz="-0.099712107"
+                   ixx="0.0057425089" ixy="4.8510744e-05" ixz="-9.1770844e-05" iyy="0.007560706" iyz="4.3936746e-05" izz="0.0031934972"/>
+
+  <joint name="right_knee_Pitch_joint" type="revolute">
+    <parent link="right_knee_pitch_link"/>
+    <child link="right_ankle_pitch_link"/>
+    <origin xyz="0 0.029 -0.1145" rpy="0 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="-1.5708" upper="0.0000" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="right_ankle_pitch_link" file="LOWERBODY_LEGGED/MESH/right_ankle_pitch_link.stl"
+                   m="3.5145959" cx="0.0029623094" cy="-0.026873548" cz="-0.14110935"
+                   ixx="0.041444675" ixy="-8.4922159e-05" ixz="0.0010306279" iyy="0.040460859" iyz="-0.0009231865" izz="0.0066553194"/>
+
+  <joint name="right_ankle_Pitch_joint" type="revolute">
+    <parent link="right_ankle_pitch_link"/>
+    <child link="right_ankle_roll_link"/>
+    <origin xyz="0 -0.02685 -0.312" rpy="0 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="-0.5000" upper="0.5000" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="right_ankle_roll_link" file="LOWERBODY_LEGGED/MESH/right_ankle_roll_link.stl"
+                   m="0.2" cx="0" cy="0" cz="0"
+                   ixx="0.000133669993" ixy="0" ixz="0" iyy="0.000177929993" iyz="0" izz="0.000289070013"/>
+
+  <joint name="right_ankle_Roll_joint" type="revolute">
+    <parent link="right_ankle_roll_link"/>
+    <child link="right_foot_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.3000" upper="0.3000" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="right_foot_link" file="LOWERBODY_LEGGED/MESH/right_foot_link.stl"
+                   m="0.5" cx="0.0250000004" cy="0" cz="-0.0130000496"
+                   ixx="0.000804169977" ixy="0" ixz="0" iyy="0.0024083301" iyz="0" izz="0.0028041699"/>
+
+</robot>

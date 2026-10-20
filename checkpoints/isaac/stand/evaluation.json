@@ -1,0 +1,21 @@
+{
+  "skill": "stand",
+  "backend": "isaaclab",
+  "proxy": false,
+  "episodes": 32,
+  "evaluation_seed": 50000,
+  "urdf_sha256": "2a9a5fce0cd4cf116ba22fcc5c2dfc90747e16c7c1c1ccd0914beec61ce7b3ac",
+  "survival_rate": 1.0,
+  "duration": 9.98,
+  "displacement": 0.009310027395258658,
+  "upright": 0.9996683597564697,
+  "height_error": 0.0018829414620995522,
+  "pose_rmse": 0.03283119574189186,
+  "velocity_error": 0.008449861779808998,
+  "root_error": 0.009974607266485691,
+  "passed": true,
+  "scope": "Native CAD simulation; real hardware unvalidated",
+  "checkpoint": "latest.pt",
+  "checkpoint_sha256": "f58f1a949e1981c9cb0ae227381cdad998eb9406b02f019061a81b2a02e9df8c",
+  "selected_from": "model_900.pt"
+}

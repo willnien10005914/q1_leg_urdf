@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <joint name="left_shoulder_Pitch_joint" type="revolute">
+    <parent link="center_torso_link"/>
+    <child link="left_shoulder_roll_link"/>
+    <origin xyz="0 0.1405 0.256" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.1345" upper="2.1817" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="left_shoulder_roll_link" file="COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_shoulder_roll_link.stl"
+                   m="1.1398073" cx="-0.004530917" cy="0.067385363" cz="-0.00025455888"
+                   ixx="0.0017615625" ixy="-7.0834953e-05" ixz="-5.9297722e-06" iyy="0.00088103347" iyz="-1.9968591e-05" izz="0.0013387606"/>
+
+  <joint name="left_shoulder_Roll_joint" type="revolute">
+    <parent link="left_shoulder_roll_link"/>
+    <child link="left_shoulder_yaw_link"/>
+    <origin xyz="-0.0302 0.075 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.4189" upper="3.5605" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="left_shoulder_yaw_link" file="COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_shoulder_yaw_link.stl"
+                   m="1.1908387" cx="0.025921583" cy="-0.00011731701" cz="-0.10199985"
+                   ixx="0.001730226" ixy="7.9663903e-06" ixz="0.00032929789" iyy="0.0018066807" iyz="5.782998e-06" izz="0.001476077"/>
+
+  <joint name="left_shoulder_Yaw_joint" type="revolute">
+    <parent link="left_shoulder_yaw_link"/>
+    <child link="left_elbow_pitch_link"/>
+    <origin xyz="0.0302 0 -0.1417" rpy="0 0 0"/>
+    <axis xyz="0 0 -1"/>
+    <limit lower="-1.5708" upper="1.5708" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="left_elbow_pitch_link" file="COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_elbow_pitch_link.stl"
+                   m="1.2905092" cx="-3.1649613e-05" cy="-0.0040220733" cz="-0.10068606"
+                   ixx="0.0028416695" ixy="-1.2499025e-07" ixz="3.8361904e-06" iyy="0.0032571463" iyz="0.00031171521" izz="0.0010573573"/>
+
+  <joint name="left_elbow_Pitch_joint" type="revolute">
+    <parent link="left_elbow_pitch_link"/>
+    <child link="left_wrist_yaw_link"/>
+    <origin xyz="0 0.03 -0.1198" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-2.5307" upper="0.0873" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="left_wrist_yaw_link" file="COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_wrist_yaw_link.stl" scale="0.001 0.001 0.001"
+                   m="0.52811217" cx="-8.1564362e-07" cy="-0.01948431" cz="-0.11909902"
+                   ixx="0.0016939736" ixy="-8.7065126e-08" ixz="-6.4782857e-07" iyy="0.0015992299" iyz="-0.00037459578" izz="0.00025583831"/>
+
+  <joint name="left_wrist_Yaw_joint" type="revolute">
+    <parent link="left_wrist_yaw_link"/>
+    <child link="left_gripper_link"/>
+    <origin xyz="0 -0.03 -0.1824" rpy="0 0 0"/>
+    <axis xyz="0 0 -1"/>
+    <limit lower="-3.1416" upper="3.1416" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="left_gripper_link" file="COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_gripper_link.stl"
+                   m="0.40802995" cx="-0.0048817574" cy="0.0024516919" cz="-0.054871787"
+                   ixx="0.00035096252" ixy="2.7097398e-05" ixz="-5.092415e-05" iyy="0.00035244144" iyz="1.0791904e-05" izz="0.00022932027"/>
+
+  <joint name="left_finger_1_Roll_joint" type="revolute">
+    <parent link="left_gripper_link"/>
+    <child link="left_finger_1_link"/>
+    <origin xyz="-0.0292 0.0001 -0.065" rpy="0 0 0"/>
+    <axis xyz="-1 0 0"/>
+    <limit lower="0.0000" upper="1.5708" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="left_finger_1_link" file="COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_finger_1_link.stl"
+                   m="0.090893378" cx="-0.0057705745" cy="-0.0023642155" cz="-0.024152093"
+                   ixx="0.00010068009" ixy="-1.1228136e-06" ixz="1.9847365e-05" iyy="0.00010472363" iyz="-9.797141e-07" izz="1.9437079e-05"/>
+
+  <joint name="left_finger_2_Roll_joint" type="revolute">
+    <parent link="left_gripper_link"/>
+    <child link="left_finger_2_link"/>
+    <origin xyz="-0.0347 0.036 -0.065" rpy="0 0 0"/>
+    <axis xyz="-1 0 0"/>
+    <limit lower="-1.5708" upper="0.0000" effort="100" velocity="10"/>
+    <mimic joint="left_finger_1_Roll_joint" multiplier="-1" offset="0"/>
+  </joint>
+
+  <xacro:mesh_link name="left_finger_2_link" file="COMMON/UPPER/ARMS/MESH/ARM_L_0921_UPDATE_STL/ARM_L_0921_UPDATE/left_finger_2_link.stl"
+                   m="0.078228584" cx="-0.0054090457" cy="0.002951028" cz="-0.028257608"
+                   ixx="8.8540377e-05" ixy="9.5907533e-07" ixz="2.1980403e-05" iyy="9.4407059e-05" iyz="-5.2471552e-07" izz="1.8396727e-05"/>
+
+</robot>

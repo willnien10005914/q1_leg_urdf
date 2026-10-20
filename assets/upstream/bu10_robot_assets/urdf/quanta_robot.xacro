@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot name="quanta_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="mesh_prefix" default="../meshes/"/>
+  <xacro:arg name="lower_body" default="wheeled"/>
+  <xacro:macro name="mesh_link" params="name file m cx cy cz ixx ixy ixz iyy iyz izz scale:='1 1 1'">
+    <link name="${name}">
+      <visual>
+        <geometry><mesh filename="$(arg mesh_prefix)${file}" scale="${scale}"/></geometry>
+      </visual>
+      <collision>
+        <geometry><mesh filename="$(arg mesh_prefix)${file}" scale="${scale}"/></geometry>
+      </collision>
+      <inertial>
+        <origin xyz="${cx} ${cy} ${cz}" rpy="0 0 0"/>
+        <mass value="${m}"/>
+        <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyy="${iyy}" iyz="${iyz}" izz="${izz}"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+
+  <xacro:include filename="COMMON/LOWER/HIP/hip.xacro"/>
+  <xacro:include filename="COMMON/UPPER/TORSO/torso.xacro"/>
+  <xacro:include filename="COMMON/UPPER/ARMS/arm_l.xacro"/>
+  <xacro:include filename="COMMON/UPPER/ARMS/arm_r.xacro"/>
+  <xacro:if value="${'$(arg lower_body)' == 'wheeled'}">
+    <xacro:include filename="LOWER_BODY_WHEELED/leg_l.xacro"/>
+    <xacro:include filename="LOWER_BODY_WHEELED/leg_r.xacro"/>
+  </xacro:if>
+  <xacro:if value="${'$(arg lower_body)' == 'legged'}">
+    <xacro:include filename="LOWERBODY_LEGGED/leg_l.xacro"/>
+    <xacro:include filename="LOWERBODY_LEGGED/leg_r.xacro"/>
+  </xacro:if>
+
+</robot>

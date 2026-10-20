@@ -1,0 +1,11 @@
+# tool output: keep the PDFs, ignore the rest
+output/*
+!output/pdf/
+
+# generated from the xacro by tools/build_urdf.py
+urdf/quanta_robot_legged.urdf
+urdf/quanta_robot_wheeled.urdf
+
+__pycache__/
+*.pyc
+.~lock.*#

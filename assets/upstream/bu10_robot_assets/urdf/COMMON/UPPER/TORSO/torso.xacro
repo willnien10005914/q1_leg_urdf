@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <joint name="center_waist_Pitch_joint" type="revolute">
+    <parent link="center_waist_pitch_link"/>
+    <child link="center_torso_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0.0000" upper="1.2000" effort="100" velocity="10"/>
+  </joint>
+
+  <xacro:mesh_link name="center_torso_link" file="COMMON/UPPER/TORSO/MESH/center_torso_link.stl"
+                   m="5.36" cx="-0.0135000004" cy="0" cz="0.207749993"
+                   ixx="0.126323253" ixy="0" ixz="0" iyy="0.101373792" iyz="0" izz="0.0455890298"/>
+
+</robot>
