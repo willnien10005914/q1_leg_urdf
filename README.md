@@ -2,7 +2,58 @@
 
 以 BU10 原生雙足 CAD 建立的機器人動作專案，沿用 `q1_wheel_urdf` 的資產目錄與啟動方式。包含 URDF、MediaPipe 前七秒動作映射、Isaac Lab **DirectRLEnv + RSL-RL PPO**、MuJoCo 驗證，以及 Three.js 網頁。
 
-![雙足模型與 YouTube 前七秒示範對照](docs/images/web-reference.png)
+<!-- V5_STATUS_START -->
+## V5：已重拍實際抬腳，左閃前導腳仍待修正
+
+本次使用 **10,240 envs**，已累計保存 **1,805 次新 V5 PPO iterations**；原始上限為 15,000 次。以下是原生 Isaac Sim／PhysX 中執行 PPO 的新錄影，雙腳已有實際離地，沒有固定機身、根部外力或動作間重置。
+
+![V5 真實 PPO 左右閃身診斷，左閃前導腳仍不足，尚未合格](docs/images/v5-pair-1805-diagnostic.gif)
+
+[觀看左右閃身影片（GoFile）](https://gofile.io/d/ON3DzpRn) · [專案 MP4](docs/results/q1_leg_v5_pair_1805_diagnostic.mp4) · [完整評估與影片量測](docs/LIFT_V5_DIAGNOSTIC.md)。影片為 1,805-update checkpoint、seed 42、7.20 秒／50 FPS，先左閃、再右閃、回到站立；全程標示 **EXPERIMENTAL / NOT ACCEPTED**。
+
+**有限閃身尚未通過驗收。** 影片整段最高卸載離地為左 **6.61 cm**、右 **3.69 cm**，但這個最高值不能代表每一次跨步：左腳在左閃時的前導抬腳仍不足 **0.5 cm**，較高的左腳峰值發生於右閃時的後隨抬腳。32 回合評估皆存活 20 秒，仍有左右前導腳高度或卸載成功率未達門檻；檢查項目通過比例 **83.6%**，不是任務成功率。
+
+| 已保存候選 | PPO 更新數 | 20 秒第一回合評估 | 階段驗收 | 同候選錄影最高卸載離地 cm（左／右） |
+|---|---:|---|---|---:|
+| 原地交替抬腳 | 405 | 32／32 存活 | 通過 Stage 0；尚未驗收鍵盤控制 | 7.01／6.73 |
+| 有限左右閃身 | 1,805 | 32／32 存活 | 未通過 Stage 1 | 6.61／3.69 |
+
+![V5 原地交替抬腳課程，尚非完整鍵盤控制驗收](docs/images/v5-inplace-405-diagnostic.gif)
+
+[觀看原地抬腳影片（GoFile）](https://gofile.io/d/QKZdLPoK) · [專案 MP4](docs/results/q1_leg_v5_inplace_405_diagnostic.mp4) · [原地抬腳評估與量測](docs/LIFT_V5_INPLACE.md)。原地影片為 405-update checkpoint、seed 42、8.00 秒；與 1,805-update 閃身影片使用不同候選，不以其中一支影片替另一候選作驗收。
+
+V5 依序訓練「原地抬腳 → 有限左右閃身 → WASD／QE 與閃身整合」。前兩階段須各連續兩次通過驗收；Stage 0 已在 305、405 updates 通過。整合階段仍須連續三次全項通過，再以獨立 **128 回合**確認，才可替換正式策略。**正式 WASD／QE 策略目前保持停用**，新影片不表示完整互動控制已學會。
+
+### 正在驗證的修正
+
+兩支 V5 診斷影片的控制與訓練來源保存在 [111942c](https://github.com/willnien10005914/q1_leg_urdf/commit/111942c51846537676f816abe4bb7edf0874a7ee)，便於日後修正控制後仍能重現比較。
+
+原生 CAD／FK 與模擬量測一致；左閃前導腳的問題主要來自骨盆側傾約 8 度、下降約 2 cm，以及關節追蹤落差，把幾何參考的離地高度吃掉。縮小支撐腿殘差的原生測試反而更差，未採用；加入參考關節速度可改善右向抬腳，左向仍不足，亦未採為正式控制。依實際骨盆姿態與高度補償擺腿目標的原生 IK 方案正在驗證，尚未視為成功控制。
+
+現有候選使用 implicit PD **800／32**、**100 Nm** 力矩上限。抬腳命令是 **6 cm**，經原生限位與 CAD／FK 得到約 5–6 cm 參考峰值；此為幾何目標，實際結果以接觸感測和腳底量測為準。目前 **PPO worker 已暫停**，先完成新控制的原生驗證；沒有在背景盲目接續舊 run。
+
+```bash
+# 查詢保存的階段、更新數及驗收結果；不會啟動訓練。
+.venv/bin/python tools/run_lift_training.py --status
+systemctl --user status q1-leg-lift-training --no-pager
+tail -n 40 outputs/lift_training.log
+
+# 全新實驗的啟動方式；只在新控制已驗證、契約已更新後執行。
+# systemctl --user stop q1-leg-live
+# bash start_lift_training.sh
+
+# 只有來源、控制與資產契約完全一致的 run 才能 resume。
+# 修改控制後須建立新 run，不能直接續接本次 1,805-update 診斷 run。
+# bash start_lift_training.sh --resume-run /path/to/source-matching/run
+```
+
+可使用仍符合其來源契約的本機 checkpoint 重拍。原地與左右序列分開錄製；跌倒立即停止，不重置掩蓋失敗：
+
+```bash
+OUT=outputs/v5_inplace_diagnostic.mp4 bash record_interactive_diagnostic.sh --checkpoint /path/to/saved/checkpoint.pt --inplace-only --seed 42
+OUT=outputs/v5_pair_diagnostic.mp4 bash record_interactive_diagnostic.sh --checkpoint /path/to/saved/checkpoint.pt --sequence-only --seed 42
+```
+<!-- V5_STATUS_END -->
 
 <!-- V4_STATUS_START -->
 ## V4：限時訓練已結束，候選尚未合格
@@ -68,6 +119,8 @@ bash prepare_motion.sh --videos-only
 `scripts/isaac_env.sh` 自動尋找 `~/IsaacLab` 與 `~/isaacsim/python.sh`。也可設定 `ISAACLAB_PATH`、`ISAAC_PYTHON`、`ISAAC_SIM_PATH` 或 `ISAAC_VENV` 指向本機安裝。
 
 ## 網頁：模型與影片並排
+
+![雙足模型與 YouTube 前七秒示範對照](docs/images/web-reference.png)
 
 ```bash
 # 同時啟動網頁與背景 Isaac Sim 即時 PPO；使用 systemd user services。
@@ -181,6 +234,8 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
 
 Python 檢查涵蓋原生資產、關節契約、訓練預算與續訓、雙腳抬腳、中途變向、閃身後恢復行走，以及拒絕單腳／滑動／重置造成的假成功。瀏覽器已檢查拖曳放大、鍵盤、寬度記憶、影片切換、WebGL 尺寸與手機版；原生訓練另使用全尺寸場景與新種子動態驗證。
 
+- [V5 有限閃身診斷與新影片](docs/LIFT_V5_DIAGNOSTIC.md)
+- [V5 原地抬腳階段結果](docs/LIFT_V5_INPLACE.md)
 - [架構與控制設計](docs/ARCHITECTURE.md)
 - [大型訓練設定](docs/TRAINING_6144_8000.md)
 - [播放與錄製](docs/PLAYBACK.md)
