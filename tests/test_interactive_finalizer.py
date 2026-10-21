@@ -23,8 +23,12 @@ def recording(tmp_path):
         "actual_failed": False, "completed": True, "final_mode": "stand",
         "final_sequence_active": False, "no_reset_count": 0,
         "reset_count_after_start": 0, "auto_resets_suppressed": 0,
-        "frames": 760, "expected_frames": 760, "duration": 15.2,
-        "expected_duration": 15.2, "video_sha256": MODULE.digest(video),
+        "frames": 935, "expected_frames": 935, "duration": 18.7,
+        "expected_duration": 18.7, "video_sha256": MODULE.digest(video),
+        "post_sequence_resume": {"accepted": True, "full_period": True,
+            "sequence_completed_before_resume": True, "duration_s": 2.,
+            "walk_frames": 100, "frames": 100, "displacement_m": .08, "forward_displacement_m": .08},
+        "final_stand_speed_m_s": .01,
         "mode_changes": [{"mode": "sidestep_left"}, {"mode": "sidestep_right"}, {"mode": "stand"}],
     }
     return video, metadata
@@ -37,10 +41,21 @@ def test_video_reuse_requires_complete_same_policy_and_content(tmp_path):
     for key, bad in (("succeeded", False), ("survived", False), ("actual_failed", True),
                      ("completed", False), ("final_mode", "recover"),
                      ("final_sequence_active", True), ("auto_resets_suppressed", 1),
-                     ("frames", 759), ("confirmation_episodes", 127)):
+                     ("frames", 934), ("confirmation_episodes", 127),
+                     ("final_stand_speed_m_s", .08)):
         assert not MODULE.recording_valid(video, {**metadata, key: bad}, "selected-sha"), key
     video.write_bytes(b"different-video" * 200)
     assert not MODULE.recording_valid(video, metadata, "selected-sha")
+
+
+def test_video_rejects_missing_post_sequence_takeover(tmp_path):
+    video, metadata = recording(tmp_path)
+    for key, value in (("accepted", False), ("full_period", False),
+                       ("sequence_completed_before_resume", False),
+                       ("duration_s", .5), ("displacement_m", .01),
+                       ("forward_displacement_m", -.1), ("walk_frames", 0)):
+        bad = {**metadata, "post_sequence_resume": {**metadata["post_sequence_resume"], key: value}}
+        assert not MODULE.recording_valid(video, bad, "selected-sha"), key
 
 
 def test_upload_cache_requires_matching_file_not_filename(tmp_path):
@@ -57,7 +72,7 @@ def test_upload_cache_requires_matching_file_not_filename(tmp_path):
 def test_readme_only_changes_marked_block_and_uses_actual_iterations():
     before = f"# Existing README\n\nPrevious text\n{MODULE.START}\nOld status\n{MODULE.END}\n\nKeep this section\n"
     block = MODULE.readme_block({"episodes": 128}, {"num_envs": 10240, "max_iterations": 15000},
-                                {"seed": 43, "duration": 15.2}, "https://gofile.io/d/Example123", 4500)
+                                {"seed": 43, "duration": 18.7}, "https://gofile.io/d/Example123", 4500)
     after = MODULE.replace_readme(before, block)
     assert after.startswith("# Existing README\n\nPrevious text\n")
     assert after.endswith("\n\nKeep this section\n")
@@ -72,6 +87,18 @@ def test_actual_iteration_count_never_defaults_to_budget(tmp_path):
     with pytest.raises(ValueError):
         MODULE.completed_iterations({"episodes": 128}, tmp_path)
     assert MODULE.completed_iterations({"completed_iterations": 4250}, tmp_path) == 4250
+
+
+def test_published_training_profile_uses_actual_deadline_budget(tmp_path):
+    config=tmp_path / 'config/interactive_v4.json'
+    config.parent.mkdir()
+    config.write_text(json.dumps({'num_envs':10240,'max_iterations':15000}))
+    assert MODULE.training_profile({},tmp_path)['max_iterations']==15000
+    profile={'num_envs':10240,'max_iterations':801}
+    assert MODULE.training_profile({'training_profile':profile},tmp_path)==profile
+    for bad in ({'num_envs':10240,'max_iterations':0},[],{'num_envs':True,'max_iterations':801}):
+        with pytest.raises(ValueError):MODULE.training_profile({'training_profile':bad},tmp_path)
+    assert 'config/interactive_v4_deadline.json' in MODULE.PUBLISH_PATHS
 
 
 def test_existing_unrelated_staged_change_stays_untouched(tmp_path):

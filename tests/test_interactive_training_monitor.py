@@ -101,3 +101,14 @@ def test_old_result_cannot_mask_a_worker_failure(tmp_path):
     output.write_text("invalid JSON")
     with pytest.raises(RuntimeError,match="Invalid"):
         monitor.fresh_json(output,None,"worker result")
+
+
+def test_authorized_deadline_profile_retains_saved_iterations_and_shortens_cap():
+    plan=monitor.validate_profile(json.loads((ROOT/'config/interactive_v4_deadline.json').read_text()))
+    assert plan['num_envs']==10240 and plan['max_iterations']==801
+    assert monitor.next_chunk_size(501,plan)==100
+    assert monitor.next_chunk_size(799,plan)==2
+    assert monitor.next_chunk_size(801,plan)==0
+    changed=dict(plan);changed['training_deadline_utc']='2026-10-21T00:52:00'
+    with pytest.raises(ValueError,match='timezone'):
+        monitor.validate_profile(changed)

@@ -28,7 +28,9 @@ def recording_plan(sidestep_duration=1.6):
         {"name": "D_right", "start": 6.5, "end": 8., "command": [0., -.18, 0.]},
         {"name": "stop", "start": 8., "end": 9., "command": [0., 0., 0.]},
         {"name": "sidestep_sequence", "start": 9., "end": sequence_end, "command": None},
-        {"name": "final_stand", "start": sequence_end, "end": sequence_end + 1.5, "command": None},
+        {"name": "post_sequence_stand", "start": sequence_end, "end": sequence_end + 1.5, "command": None},
+        {"name": "W_resume", "start": sequence_end + 1.5, "end": sequence_end + 3.5, "command": [.22, 0., 0.]},
+        {"name": "final_stop", "start": sequence_end + 3.5, "end": sequence_end + 5., "command": [0., 0., 0.]},
     ]
 
 
@@ -90,6 +92,12 @@ def main():
         "no_reset_count": 0, "reset_count_after_start": 0,
         "no_resets_after_start": True, "auto_resets_suppressed": 0,
         "final_mode": None, "final_sequence_active": False,
+        "post_sequence_resume": {"accepted": False, "full_period": False,
+            "expected_duration_s": 2., "duration_s": 0., "frames": 0,
+            "accepted_frames": 0, "walk_frames": 0, "displacement_m": 0.,
+            "forward_displacement_m": 0., "sequence_completed_before_resume": False},
+        "final_stand_speed_m_s": None,
+        "source_sha256": gate.get("source_sha256", {}),
         "scope": "Native CAD simulation; real hardware unvalidated",
     }
     error = None
@@ -112,6 +120,10 @@ def main():
         policy = runner.get_inference_policy(device=env.device)
         if sha256(gate["checkpoint"]) != gate["checkpoint_sha256"]:
             raise RuntimeError("Checkpoint changed while loading; rerun recording against a stable evaluation")
+        current_gate = policy_gate(ROOT, args.checkpoint_dir)
+        if (not current_gate["ready"] or current_gate["contract"] != gate["contract"]
+                or current_gate.get("source_sha256") != gate.get("source_sha256")):
+            raise RuntimeError("Confirmed simulation sources changed while loading; restart recording")
         if not math.isclose(env.step_dt, .02, rel_tol=0., abs_tol=1e-7):
             raise RuntimeError("Recording requires 50 Hz control / .02 s step_dt")
         controller = KeyboardController(sidestep_duration=args.sidestep_duration)
@@ -125,6 +137,8 @@ def main():
         count = round(expected_duration / env.step_dt)
         metadata["expected_frames"] = count
         last_segment, last_mode, control = None, None, None
+        resume_start, resume_end, resume_forward = None, None, None
+        final_speeds = []
         command_clock = time.monotonic()
         with torch.inference_mode():
             for i in range(count):
@@ -135,20 +149,38 @@ def main():
                 now = command_clock + t
                 segment = next(item for item in plan if item["start"] <= t < item["end"])
                 if segment["name"] != last_segment:
-                    if segment["name"] == "stop":
+                    if segment["name"] in ("stop", "final_stop"):
                         controller.stop(now)
                     elif segment["name"] == "sidestep_sequence":
                         controller.sequence(now)
+                    elif segment["name"] == "W_resume":
+                        data = env.robot.data
+                        resume_start = (data.root_pos_w[0] - env.scene.env_origins[0]).cpu().tolist()
+                        w, x, y, z = data.root_quat_w[0].cpu().tolist()
+                        yaw = math.atan2(2*(w*z+x*y), 1-2*(y*y+z*z))
+                        resume_forward = (math.cos(yaw), math.sin(yaw))
+                        metadata["post_sequence_resume"]["sequence_completed_before_resume"] = bool(
+                            control and control["mode"] == "stand" and not control["sequence_active"])
                     last_segment = segment["name"]
-                if segment["name"] in ("W_forward", "S_backward", "A_left", "D_right"):
-                    controller.velocity(*segment["command"], now)
+                if segment["name"] in ("W_forward", "S_backward", "A_left", "D_right", "W_resume"):
+                    accepted = controller.velocity(*segment["command"], now)
+                    if segment["name"] == "W_resume":
+                        metadata["post_sequence_resume"]["accepted_frames"] += int(accepted is True)
                 control = controller.tick(env.step_dt, now)
                 env.set_manual_control(control["mode"], control["command"], control["phase"])
                 obs = wrapped.get_observations()
                 _obs, _reward, done, _info = wrapped.step(policy(obs))
                 root = (env.robot.data.root_pos_w[0] - env.scene.env_origins[0]).cpu().tolist()
                 quat = env.robot.data.root_quat_w[0].cpu().tolist()
-                finite = all(math.isfinite(value) for value in root + quat)
+                velocity = env.robot.data.root_lin_vel_b[0, :2].cpu().tolist()
+                finite = all(math.isfinite(value) for value in root + quat + velocity)
+                if segment["name"] == "W_resume":
+                    resume = metadata["post_sequence_resume"]
+                    resume["frames"] += 1
+                    resume["walk_frames"] += int(control["mode"] == "walk")
+                    resume_end = root if finite else None
+                if segment["name"] == "final_stop" and t >= segment["end"] - .5 and finite:
+                    final_speeds.append(math.hypot(*velocity))
                 if finite:
                     metadata["root_positions"].append({"time": (i + 1) * env.step_dt, "root": root, "quaternion": quat})
                 if control["mode"] != last_mode:
@@ -172,14 +204,27 @@ def main():
         metadata["final_sequence_active"] = bool(control and control["sequence_active"])
         metadata["auto_resets_suppressed"] = int(env.suppressed_resets)
         metadata["completed"] = metadata["frames"] == count
+        resume = metadata["post_sequence_resume"]
+        resume["duration_s"] = resume["frames"] * env.step_dt
+        resume["accepted"] = resume["accepted_frames"] == round(2. / env.step_dt)
+        resume["full_period"] = resume["frames"] == round(2. / env.step_dt)
+        if resume_start is not None and resume_end is not None:
+            delta = [resume_end[i] - resume_start[i] for i in (0, 1)]
+            resume["displacement_m"] = math.hypot(*delta)
+            resume["forward_displacement_m"] = sum(a*b for a, b in zip(delta, resume_forward))
+        metadata["final_stand_speed_m_s"] = float(np.mean(final_speeds)) if final_speeds else None
         modes = {item["mode"] for item in metadata["mode_changes"]}
         metadata["survived"] = not metadata["actual_failed"] and metadata["completed"]
         metadata["succeeded"] = bool(
             metadata["survived"] and error is None and env.suppressed_resets == 0
             and {"sidestep_left", "sidestep_right"}.issubset(modes)
+            and resume["sequence_completed_before_resume"] and resume["accepted"] and resume["full_period"]
+            and resume["walk_frames"] >= .9 * resume["frames"]
+            and resume["displacement_m"] > .05 and resume["forward_displacement_m"] > .05
+            and metadata["final_stand_speed_m_s"] is not None and metadata["final_stand_speed_m_s"] < .07
             and metadata["final_mode"] == "stand" and not metadata["final_sequence_active"])
         if not metadata["succeeded"] and error is None:
-            error = "Recording did not complete both sidesteps and return to stand without reset"
+            error = "Recording must finish both sidesteps, resume keyboard walking >.05m for 2s and stop without reset"
     except BaseException as exception:
         error = str(exception)
         metadata["succeeded"] = False

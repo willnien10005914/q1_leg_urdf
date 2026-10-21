@@ -1,18 +1,20 @@
 # Command-driven walking and finite sidestep: v4 design review
 
-此文件是程式與訓練設計審查。離線 IK 通過不代表 PPO 或物理模擬已通過。
+此文件記錄已實作的 v4 架構與訓練監控。10240 個原生環境的物理 smoke 和 PPO 更新已能執行；離線 IK、容量測試與數值檢查不代表新版動作已通過驗收。完整驗收門檻以 [V4_ACCEPTANCE.md](V4_ACCEPTANCE.md) 與 `interactive_evaluation.py` 為準。
 
 ## Existing behavior and chosen architecture
 
 v3 使用 `DirectRLEnv`、RSL-RL PPO、23 個原生關節動作與 110 維觀測。既有 `walk` 固定追蹤前進 0.2 m/s 的時間查表；速度命令無法由使用者更改，根部獎勵也綁定從世界原點開始的固定路徑。既有閃身步是有限的七秒動作，末尾持續維持最後姿態。直接在網頁接上 WASD 不會產生可靠的方向控制或動作切換。
 
-建議共用一個 command/phase-conditioned PPO，依序學習 locomotion，再加入左右斜前閃身及動作切換。保留同一個 actor、同一個機器人物理狀態和相同關節控制介面，容易把行走、站立、觸發手勢和恢復站立一起訓練。新參考動作和獎勵語意使用 `q1_leg_command_v4` 合約；v3 權重最多用於初始化，不能沿用 v3 的驗證結果。
+目前已實作單一 command/phase-conditioned PPO，同時學習站立、命令行走、左右斜前閃身及動作切換；整個 run 共用一個 15000 iterations 上限。控制環境 `InteractiveLegEnv` 繼承 `DirectRLEnv`，保留 23 個動作與 110 維觀測；以 mode、速度命令、相位與關節參考提供任務條件。物理為 200 Hz、控制為 50 Hz，動作是原生 IK 參考＋腳踝 IMU 回授＋0.35 rad PPO residual，最後受原生 joint limits 限制。
 
-分開訓練 locomotion/gesture PPO 有較少的獎勵干擾，也容易單獨修正模仿品質；代價是切換時兩個策略的動作分布、歷史 action 與隱含平衡狀態可能不一致。若採兩個策略，必須對切換狀態和 0.2–0.4 秒過渡進行訓練、測試。切換時重置模擬器只會掩蓋問題。整合策略必須保持足夠的 locomotion 樣本比例，並監控新增手勢後是否遺忘方向控制。
+機器人／策略合約為 `q1_leg_interactive_v4`，離線 gait library 合約為 `q1_leg_command_v4`。v3 站立權重只作 bootstrap，不能沿用 v3 的驗收結果。分段訓練使用同一個 actor／critic／optimizer 與累計 iteration，沒有另外為 locomotion 和 gesture 各跑一份 15000 次預算。
+
+分開訓練 locomotion／gesture PPO 能減少獎勵干擾，卻需要另外處理切換時的動作分布與平衡狀態。此次採單一 PPO，直接把行走→手勢→站立→再行走放進訓練；仍須以未 reset 的完整流程驗證，不能只因共用 actor 就宣稱交接成功。
 
 ## User control and finite behavior
 
-- WASD 產生機器人本體座標的前後、左右速度命令；轉向可另外使用 Q/E。速度透過約 0.3 秒的 ramp 改變，釋放按鍵後減速站立。失去視窗焦點、網路逾時或舊指令逾時時，命令應歸零。
+- WASD 產生機器人本體座標的前後、左右速度命令，Q/E 為 yaw；組合命令依三軸正規化幅度限幅。環境速度命令使用 0.18 秒時間常數，mode 切換另用 0.2 秒關節參考餘弦過渡。釋放按鍵、失去焦點、斷線或後端 0.5 秒逾時時，命令歸零；實際停止表現仍由物理評估判斷。
 - 按下閃身按鈕後，先減速站穩，再執行左前、右前各一次，最後回站姿。手勢執行期間暫存或忽略移動命令，完成後由新的有效按鍵命令恢復控制。
 - `sidestep_left` 是右手向左前跨身、左腳向左前微抬落地、右腳維持地面支撐推進，再微抬收回；`sidestep_right` 對稱。所有左右均依機器人自身視角。
 - 回站姿保留手勢造成的新位置。單側模板位移約前 8.5 cm、側 8.5 cm，因此左右一組的參考淨位移約向前 17 cm。過程不重置 root、heading、joint state 或 episode。
@@ -35,29 +37,37 @@ v3 使用 `DirectRLEnv`、RSL-RL PPO、23 個原生關節動作與 110 維觀測
 
 資料介面：`plans[name]` 具有 `phase[T]`、`q[T,23]`、`root_offset_body[T,3]`、`foot_position_body[T,2,3]`、`foot_height[T,2]`、`contact[T,2]`、`duration_s`。`foot_position_body` 是足部 link 原點相對 pelvis 的位置。`root_offset_body` 的 z 是相對 0.86 m 的高度變化，xy 是本體起始 heading 下的參考平移／重心擺動。模板名為 `stand`、`forward`、`backward`、`left`、`right`、`yaw_left`、`yaw_right`、`sidestep_left`、`sidestep_right`。`v4_reference.py` 提供無需 Isaac Sim 的 numpy lookup；GPU 環境可一次載入 CUDA 後自行批次內插。
 
+低速行走已使用 forward／backward 模板平均作為原地踏步基底，抵銷步幅平移並保留約 4 cm 的抬腳。未使用的步幅權重填入此基底，只有接近零命令的最後 12% 幅度才逐步混回站立；因此一般低速命令不再把整個抬腳高度縮成幾毫米。這是參考目標，實際 PPO 腳底離地仍需量測。
+
+訓練 episode 為 20 秒，走路窗口長度隨機為 3.5–5.5 秒，開始時間亦隨機。每個窗口中途更換命令，覆蓋轉向、反向與放鍵；第二個走路窗口使用相反方向。命令抽樣有 35% 取自 W／S／A／D／左 yaw／右 yaw 六個單軸全幅命令，其餘為平面方向與 yaw 組合；第二段另抽樣反向與歸零命令。混合 scenario 包含行走與手勢、純行走、純手勢及站立，避免只訓練單一固定流程。
+
 ## Reward and independent acceptance criteria
 
-獎勵應分開記錄速度、yaw、upright、height、雙腳位置、實際離地、接觸時序、支撐滑動、非足部碰撞、torque、action rate，以及手腳協調。原本整體姿態模仿與存活獎勵可能讓策略藉雙腳貼地滑動取得高分；新版必須讓兩腳各自的離地與時序成為必要條件。
+目前 reward 已包含平面速度與 yaw 追蹤、upright、高度、雙腳 body-frame 位置、原生 CAD 腳底淨空、接觸時序、負載滑動、擺盪擦地、torque、action rate、手臂姿態，以及後腳支撐且軀幹向斜前移動的推蹬代理項。高度追蹤使用 0.86 m 加上該相位 root offset 的 z。閃身步速度目標來自有限 root offset 的時間導數，沒有強制 root 位置或直接移動機器人。
 
-支撐期懲罰接觸點的世界水平速度，擺盪期追蹤 CAD 腳底最低高度並懲罰負載擦地；禁止用最高單一腳高度替代雙腳判準。heel-rise 會讓 foot-link origin 移動，而 toe 仍能固定，因此滑動最好使用接觸點速度 `v + omega × r`，或明確保留足部原點速度的近似限制。推蹬力必須朝任務移動方向，並與後腳接觸、前腳落地的時間一致。
+支撐滑動目前使用 foot body 原點的世界水平速度；heel-rise 時即使 toe 固定，該原點仍會移動，因此它是滑移代理量，沒有宣稱是完整鞋底接觸點速度。推蹬項同樣是接觸負載與軀幹前進代理，沒有量測切向地面力積分。原生 CAD 最低頂點高度與卸載條件用來判斷真正抬腳；前腳及後腳回收、左右方向分開統計。
 
-評估建議使用 deterministic actor 與新種子，逐方向／逐手勢列出結果。基本門檻至少包含：完整 episode 存活率 >= 95%、upright >= 0.94、高度誤差 <= 7 cm、每個命令方向確實移動且速度誤差 <= 0.10 m/s、停止後速度 <= 0.05 m/s；手勢的雙腳都在其指定 swing 峰值離地 >= 2.5 cm、成功率各 >= 80%、接觸時序一致率 >= 75%、負載支撐腳滑動 <= 0.08 m/s，且手勢後能保持站姿並恢復方向控制。命令幅度較小的內插步態需按實際目標高度訂門檻，避免把原地站立或半幅動作與全幅手勢混算。
+已實作的驗收包含每類存活率至少 0.875、upright 至少 0.97、最後站立速度低於 0.07 m/s、行走速度 RMSE 低於 0.12 m/s、指定方向位移至少 0.35 m、各腳淨空至少 2.5 cm 及指定峰值窗口卸載成功率至少 40%、支撐腳原點速度 RMS 低於 0.10 m/s；另有 yaw、途中改向、左右前踏落地、跨身手部、後腳回收、推蹬代理及動作後恢復行走等獨立門檻。沒有另外宣稱平均高度誤差或接觸吻合率具備合格門檻。完整數值、時序、平均方式與限制只以 [驗收文件](V4_ACCEPTANCE.md) 為準。
 
-完整驗證需包含連續流程：站立→前進→停止→左／右橫移→轉向→左右閃身一組→站立→再次 WASD；單獨重置後每個動作通過不能證明此流程可用。訓練用平均 reward 不作為完成標準。
+每份評估有八類各占相同數量的 20 秒回合，使用 deterministic actor 與一個新的批次 seed，保留每回合 env index。只統計第一個 episode，跌倒後的自動 reset 不算進原回合。行走測試包含途中垂直改向與放鍵；有限序列包含行走→預備→左右各一下→站立→再向前走。瀏覽器鍵盤／失焦／重複點擊另由 controller 與 web 測試驗證；不能將物理命令回放宣稱為瀏覽器測試。
+
+目前模板的 lateral root sway 振幅仍為 4.5 cm、週期 0.9 秒。完全重現這個幾何 root 擺動會造成約 0.22 m/s 的側向速度 RMS，與直接追蹤使用者平均方向速度、RMSE <0.12 m/s 的要求存在張力。環境沒有強制跟隨 walk 的 root xy；足位追蹤是 soft reward（位置平方誤差尺度 0.008 m²），姿態模仿權重較低，PPO 可透過 residual 減少擺動。此 run 保留模板 SHA，不在訓練中改動 reference；後續評估須同時檢查側向振盪、指定方向位移、速度誤差、雙腳淨空和支撐滑動，不能只看 reward 上升或抬腳外觀，也不因參考擺動而放寬速度門檻。
 
 ## Requested budget, monitoring and early stopping
 
-10240 envs × 24 rollout steps = 每個 PPO iteration 245760 transitions。15000 iterations 為每階段 **3,686,400,000 transitions**，相當於每 env 7200 秒、全部 env 合計 853.3 天模擬時間。若 locomotion 和整合手勢各使用此上限，總額為 7,372,800,000 transitions。實際 wall time 須由 full-size 基準測試估計。
+10240 envs × 24 rollout steps = 每個 PPO iteration 245760 transitions。**單一整合 PPO run 的總上限為 15000 iterations、3,686,400,000 transitions**，相當於每 env 7200 秒、全部 env 合計 853.3 天模擬時間。這是總預算，站立、走路與閃身步共享；不是每個階段各自 15000 次。接管同一 run 的先行 PPO 更新時，已完成次數會計入總額，最後一個 chunk 會截斷以避免超支。
 
-建議每 500 iterations 保存完整 optimizer、PPO iteration 與 source manifest，使用不同新種子做分項評估。連續三次通過所有門檻且無退步，再以另一組至少 128 episodes 做確認，才允許提早完成與發布。若至少 1500 iterations 的驗證分數提升 < 1%，先保存最佳與最新模型：已過門檻則做獨立確認；未過門檻則檢視 reward 分項、接觸力、clearance 和失敗影片，必要時用新 run/reward revision 繼續。plateau 本身不代表成功。
+`tools/run_interactive_training.py` 已實作每 500 iterations 分段訓練及新批次 seed 的 32 回合驗證，保留完整 optimizer、PPO iteration、checkpoint、source manifest 與逐回合結果。連續三次所有門檻通過後，再執行獨立 128 回合確認；只有完整確認通過才可提早完成、原子發布 `latest.pt`／contract／evaluation，並執行錄影、GIF、GoFile 與 GitHub finalizer。
 
-wheel 專案的 `tools/native_training_queue.py` 已有分段訓練、optimizer/iteration resume、source hash、單 GPU 順序驗證、600 秒無輸出的 watchdog、重試上限與 atomic status。沒有現成的 plateau 判斷；這部分需新增。v3 leg runner 的 checkpoint load 會清除 optimizer 與 iteration，不能直接拿來當分段續訓而不作修改。
+Plateau 使用同一 reward revision 的最近四份驗證：gate 合格比例最高分相對第一份改善低於 1%，且最後一份仍未通過，才觸發停滯診斷。這個 score 是 gate 合格比例，不是任務成功率。最多啟用兩個預先定義的 reward revision，提高抬腳、速度追蹤與支撐滑動的權重，降低姿態模仿比重，並保留失敗項目及調整原因；驗收門檻不變。Plateau 不視為成功；到 15000 次仍無完整確認則標記 `budget_exhausted`。
+
+新 worker `train_interactive.py` 與 supervisor 已使用完整 optimizer／iteration resume，避免沿用 v3 runner 會清除 optimizer／iteration 的行為。訓練與驗證依序使用同一張 GPU；檢查 child return code、結果檔更新時間、checkpoint ZIP、iteration 數量及 source hashes，避免 Isaac 啟動程式掩蓋錯誤後被誤報成功。訓練中修改固定來源會停止並保留檢查點。若模型合格但錄影／上傳／SSH 發布失敗，保留合格模型並標記 `artifact_error`。
 
 ## GPU capacity
 
-10240 份原生模型約有 307200 個 rigid bodies、296960 個原生關節，場景與 PhysX 接觸處理比小型 MLP 更可能先遇到容量限制。單份 float32 110 維 observation rollout 已約 103 MiB，另有 critic、action、return 和 minibatch activation。原有 6144 envs 約 5.4 GB 顯存的紀錄不能保證 10240 一定可行。
+10240 份原生模型約有 307200 個 rigid bodies、296960 個原生關節。完整規模 native PhysX smoke 已通過，量得約 6.4 GB GPU 使用量；實際 PPO 更新約 6.9 GB、初期約 2.4 秒／iteration。此結果確認目前 RTX 4090 Laptop 可載入並更新指定規模，沒有宣稱動作已合格。
 
-應先以完整 10240 場景執行少量物理步與 PPO updates，檢查顯存峰值、非有限狀態、PhysX contact/patch/aggregate overflow 和步速，再啟動全額訓練。訓練時關閉 live Isaac worker 和 RTX 錄影。contact stream 容量包含 pinned host memory，不能只看 VRAM；場景配置應保留 CPU RAM 餘裕。若 full-size 失敗，不應暗中降低 envs 後仍報稱使用 10240。
+以初期步速換算，15000 次純 PPO 更新約 10 小時；分段啟動 Isaac Sim、32／128 回合驗證及成果錄製另計，長時間溫度與系統負載也可能改變速度。單份 float32 110 維 observation rollout 約 103 MiB，另有 critic、action、return、activation 與 pinned host contact buffers；長跑仍監控 GPU／CPU RAM、非有限值和 PhysX buffer 警告。訓練時由外層流程停止 live Isaac viewer，錄製與完整驗證不和大型訓練重疊。失敗時不會暗中降低 envs 後仍宣稱使用 10240。
 
 ## Rebuild
 

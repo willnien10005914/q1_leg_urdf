@@ -83,7 +83,15 @@ class V4Reference:
     def sample_walk(self, command, phase: float):
         weights, effective_command = self.walk_weights(command)
         samples = [self.sample_plan(name, phase) for name in WALK_BASES]
-        result = {field:sum(weight*sample[field] for weight,sample in zip(weights,samples)) for field in ARRAY_FIELDS}
+        # Keep swing clearance at low speed by filling the unused stride budget
+        # with an in-place step, not standing. Ramp the final 12% near zero.
+        stand = self.sample_plan("stand", 0.)
+        activation = min(1.,float(weights[1:].sum())/.12)
+        result = {}
+        for field in ARRAY_FIELDS:
+            inplace = (samples[1][field]+samples[2][field])*.5
+            stepping = weights[0]*inplace+sum(weight*sample[field] for weight,sample in zip(weights[1:],samples[1:]))
+            result[field] = stand[field]+activation*(stepping-stand[field])
         result["effective_command"] = effective_command
         return result
 

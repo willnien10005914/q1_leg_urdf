@@ -46,3 +46,20 @@ def test_v4_convex_direction_mix_is_bounded_and_zero_command_is_stand():
         basis = np.asarray([reference.data["basis_command"][name] for name in WALK_BASES])
         assert np.allclose(effective,weights@basis)
     assert np.allclose(reference.sample_walk([0,0,0],.3)["q"],reference.default)
+
+
+def test_slow_walk_keeps_true_cad_swing_clearance_and_native_speed_limits():
+    reference = V4Reference()
+    for command in ([.055,0,0],[0,-.045,0],[0,0,.15],[.0275,.0225,0]):
+        peaks=np.zeros(2);positions=[]
+        for phase in np.linspace(0,1,121):
+            sample=reference.sample_walk(command,phase)
+            q=sample['q'];positions.append(q)
+            assert np.all(q>=LOWER-1e-7) and np.all(q<=UPPER+1e-7)
+            transforms=fk(q)
+            for index,foot in enumerate(('left','right')):
+                transform=transforms[foot+'_foot_link']
+                clearance=np.min(FOOT_VERTICES[foot]@transform[2,:3]+transform[2,3])+reference.root_height+sample['root_offset_body'][2]
+                peaks[index]=max(peaks[index],clearance)
+        assert min(peaks)>.035, (command,peaks)
+        assert np.max(np.abs(np.diff(positions,axis=0)))/(reference.walk_cycle_s/120)<10.

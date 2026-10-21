@@ -3,7 +3,8 @@ import torch
 from types import SimpleNamespace
 
 from leg_humanoid_lab.interactive_evaluation import (
-    CASE_NAMES, _quat_inverse, check_interactive_gates, evaluate_interactive,
+    CASE_COMMANDS, CASE_NAMES, REDIRECT_COMMANDS, _quat_inverse,
+    check_interactive_gates, evaluate_interactive,
 )
 
 
@@ -17,8 +18,11 @@ def complete_report():
             "yaw_rmse_rad_s": .04, "foot_peak_clearance_m_per_foot": [.035, .035],
             "foot_lift_success_rate_per_foot": [.8, .8],
             "stance_slip_m_s": .04,
+            "redirection": {"directional_displacement_m": .1, "velocity_rmse_m_s": .04},
         }
-    cases["sequence"].update({"finite_sequence_completed": True, "directions": {
+    cases["sequence"].update({"finite_sequence_completed": True,
+                              "resumed_displacement_x_m": .2, "resume_velocity_rmse_m_s": .04,
+                              "directions": {
         side: {"lead_forward_m": .06, "lead_signed_lateral_m": .08,
                "lead_peak_clearance_m": .04, "lead_lift_success_rate": .8,
                "trailing_peak_clearance_m": .035, "trailing_lift_success_rate": .8,
@@ -71,6 +75,21 @@ def test_handoff_cross_arm_stop_and_nonfinite_are_required():
     assert not all(check_interactive_gates(report).values())
 
 
+def test_missing_redirection_or_resume_cannot_pass_a_complete_report():
+    no_redirect = complete_report()
+    no_redirect["cases"]["w"]["redirection"]["directional_displacement_m"] = 0.
+    assert not all(check_interactive_gates(no_redirect).values())
+    wrong_velocity = complete_report()
+    wrong_velocity["cases"]["a"]["redirection"]["velocity_rmse_m_s"] = .2
+    assert not all(check_interactive_gates(wrong_velocity).values())
+    no_resume = complete_report()
+    no_resume["cases"]["sequence"]["resumed_displacement_x_m"] = 0.
+    assert not all(check_interactive_gates(no_resume).values())
+    late_resume = complete_report()
+    late_resume["cases"]["sequence"]["resume_velocity_rmse_m_s"] = .16
+    assert not all(check_interactive_gates(late_resume).values())
+
+
 def test_wxyz_body_frame_rotation_preserves_robot_relative_directions():
     angle = torch.tensor(torch.pi / 2)
     quaternion = torch.tensor([[torch.cos(angle / 2), 0., 0., torch.sin(angle / 2)]])
@@ -81,8 +100,8 @@ def test_wxyz_body_frame_rotation_preserves_robot_relative_directions():
     torch.testing.assert_close(left, torch.tensor([[0., 1., 0.]]), atol=1e-6, rtol=0)
 
 
-def test_finite_evaluator_rejects_static_policy_and_excludes_auto_reset_history():
-    """Exercise the full collection loop without Isaac imports or fake success."""
+def tensor_fixture(track_commands=False, ignore_redirection=False, ignore_resume=False):
+    """Synthetic data transport; it is not a physics or policy success model."""
     count = 8
     root_pos = torch.zeros(count, 3)
     root_pos[:, 2] = .86
@@ -96,9 +115,13 @@ def test_finite_evaluator_rejects_static_policy_and_excludes_auto_reset_history(
         projected_gravity_b=gravity, body_pos_w=torch.zeros(count, 4, 3),
     )
     mode_history = []
+    command_history = []
+    requested = torch.zeros(count, 3)
 
     def set_manual(mode, command, phase):
         mode_history.append(mode.clone())
+        command_history.append(command.clone())
+        requested[:] = command
 
     env = SimpleNamespace(
         num_envs=count, device="cpu", step_dt=.02, max_episode_length=1010,
@@ -122,9 +145,18 @@ def test_finite_evaluator_rejects_static_policy_and_excludes_auto_reset_history(
             return torch.zeros(count, 1), {}
 
         def get_observations(self):
+            if track_commands:
+                data.root_lin_vel_b[:, :2] = requested[:, :2]
+                data.root_ang_vel_b[:, 2] = requested[:, 2]
+                if ignore_redirection and 4. <= self.steps * .02 < 5.:
+                    data.root_lin_vel_b[1:5, :2] = torch.tensor(CASE_COMMANDS)[1:5, :2]
+                if ignore_resume and 6.5 <= self.steps * .02 < 8.:
+                    data.root_lin_vel_b[7, :2] = 0.
             return torch.zeros(count, 1)
 
         def step(self, action):
+            if track_commands:
+                data.root_pos_w[:, :2] += data.root_lin_vel_b[:, :2] * .02
             self.steps += 1
             done = torch.zeros(count, dtype=torch.bool)
             env.reset_terminated.zero_()
@@ -136,7 +168,13 @@ def test_finite_evaluator_rejects_static_policy_and_excludes_auto_reset_history(
 
     wrapped = Wrapped()
     runner = SimpleNamespace(get_inference_policy=lambda device: lambda obs: torch.zeros(count, 23))
-    report = evaluate_interactive(runner, wrapped, env, episodes=count)
+    return env, wrapped, runner, mode_history, command_history
+
+
+def test_finite_evaluator_rejects_static_policy_and_excludes_auto_reset_history():
+    """Exercise the full collection loop without Isaac imports or fake success."""
+    env, wrapped, runner, mode_history, command_history = tensor_fixture()
+    report = evaluate_interactive(runner, wrapped, env, episodes=8)
     assert wrapped.resets == 1 and wrapped.steps == 1000
     assert not report["passed"]
     assert report["cases"]["stand"]["survival_rate"] == 0.
@@ -148,5 +186,40 @@ def test_finite_evaluator_rejects_static_policy_and_excludes_auto_reset_history(
         value = int(mode[7])
         if not changes or changes[-1] != value:
             changes.append(value)
-    assert changes == [0, 2, 3, 4, 0]
+    assert changes == [0, 1, 4, 2, 3, 4, 0, 1, 0]
+    # The first entry precedes reset, then each entry is the requested control
+    # for that physics step; a final entry clears control in the finally block.
+    torch.testing.assert_close(command_history[201][1:5], torch.tensor(REDIRECT_COMMANDS)[1:5])
+    torch.testing.assert_close(command_history[251][1:5], torch.tensor(CASE_COMMANDS)[1:5])
+    assert float(command_history[326][7, 0]) > .159
     assert env.cfg.training_mode is True
+
+
+def test_collector_tracks_current_request_and_isolates_resume_from_gesture():
+    env, wrapped, runner, _, _ = tensor_fixture(track_commands=True)
+    report = evaluate_interactive(runner, wrapped, env, episodes=8)
+    for name in ("w", "s", "a", "d"):
+        case = report["cases"][name]
+        assert case["velocity_rmse_m_s"] < 1e-6
+        assert case["redirection"]["velocity_rmse_m_s"] < 1e-6
+        assert case["redirection"]["directional_displacement_m"] > .17
+    sequence = report["cases"]["sequence"]
+    assert sequence["resumed_displacement_x_m"] > .23
+    assert sequence["resume_velocity_rmse_m_s"] < 1e-6
+    # Prefix and suffix translation must not count as left/right gesture travel.
+    for side in ("left", "right"):
+        assert sequence["directions"][side]["root_forward_m"] == 0.
+    assert not report["passed"]  # Synthetic zero feet do not satisfy physics gates.
+
+
+def test_collector_rejects_ignoring_turn_or_post_gesture_keyboard():
+    env, wrapped, runner, _, _ = tensor_fixture(track_commands=True, ignore_redirection=True)
+    turning = evaluate_interactive(runner, wrapped, env, episodes=8)
+    assert turning["cases"]["w"]["redirection"]["directional_displacement_m"] == 0.
+    assert not turning["checks"]["w.redirection_progress"]
+    assert not turning["checks"]["w.redirection_velocity"]
+    env, wrapped, runner, _, _ = tensor_fixture(track_commands=True, ignore_resume=True)
+    stopped = evaluate_interactive(runner, wrapped, env, episodes=8)
+    assert stopped["cases"]["sequence"]["resumed_displacement_x_m"] == 0.
+    assert not stopped["checks"]["sequence.resume_progress"]
+    assert not stopped["checks"]["sequence.resume_velocity"]

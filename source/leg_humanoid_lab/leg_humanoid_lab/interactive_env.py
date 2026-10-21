@@ -23,7 +23,10 @@ class InteractiveEnvCfg(LegEnvCfg):
 
 def interactive_contract():
     base=contract()
-    return {**base,'robot':'q1_leg_interactive_v4','schema':4,'gait_sha256':hashlib.sha256((ROOT/'config/v4_gaits.json').read_bytes()).hexdigest(),
+    gait_bytes=(ROOT/'config/v4_gaits.json').read_bytes()
+    gait=json.loads(gait_bytes)
+    return {**base,'robot':'q1_leg_interactive_v4','schema':4,'gait_sha256':hashlib.sha256(gait_bytes).hexdigest(),
+            'default':gait['default'],'root_height':gait['root_height'],
             'skills':['stand','command_walk','sidestep_left','sidestep_right','recover'],
             'commands':{'vx':[-.22,.22],'vy':[-.18,.18],'wz':[-.6,.6]},
             'observation_note':'110-D layout retained; skill channels stand/walk/gesture, phase and reference are v4 commands, not v3 fixed world paths',
@@ -66,6 +69,8 @@ class InteractiveLegEnv(IsaacLegEnv):
         self.reference_root_offset=self.rtable[0,0].repeat(self.num_envs,1)
         self.scenario=torch.zeros(self.num_envs,device=self.device,dtype=torch.long)
         self.walk_command=torch.zeros_like(self.commands)
+        self.walk_command2=torch.zeros_like(self.commands)
+        self.walk_duration=torch.full_like(self.gait_phase,5.)
         self.schedule_start=torch.ones_like(self.gait_phase)
         self._manual_mode=torch.zeros_like(self.mode)
         self._manual_commands=torch.zeros_like(self.commands)
@@ -81,8 +86,8 @@ class InteractiveLegEnv(IsaacLegEnv):
 
     def _training_schedule(self):
         t=self.episode_length_buf*self.step_dt-self.schedule_start
-        walk1=(t>=0)&(t<5)&(self.scenario!=2)&(self.scenario!=3)
-        walk2=(t>=12)&(t<17)&(self.scenario!=2)&(self.scenario!=3)
+        walk1=(t>=0)&(t<self.walk_duration)&(self.scenario!=2)&(self.scenario!=3)
+        walk2=(t>=12)&(t<12+self.walk_duration)&(self.scenario!=2)&(self.scenario!=3)
         duration=float(self.library['sidestep_duration_s'])
         left=(t>=6)&(t<6+duration)&(self.scenario!=1)&(self.scenario!=3)
         right=(t>=6+duration)&(t<6+2*duration)&(self.scenario!=1)&(self.scenario!=3)
@@ -91,8 +96,12 @@ class InteractiveLegEnv(IsaacLegEnv):
         recover=(t>=6+2*duration)&(t<7+2*duration)&(self.scenario!=1)&(self.scenario!=3)
         self.mode[recover]=4
         progress=max(.20,min(1.,float(self.cfg.curriculum_progress)))
-        self.command_targets[:]=self.walk_command*(walk1|walk2)[:,None]*progress
-        self.command_targets[walk2]*=-1
+        # Mid-stride redirects, reversals and key release are part of training,
+        # rather than evaluating only a single constant command per episode.
+        first=torch.where((t<self.walk_duration/2)[:,None],self.walk_command,self.walk_command2)
+        second=torch.where((t-12<self.walk_duration/2)[:,None],-self.walk_command2,-self.walk_command)
+        self.command_targets[:]=torch.where(walk1[:,None],first,torch.where(walk2[:,None],second,0.))*progress
+        self.mode[(walk1|walk2)&(self.command_targets.abs().sum(-1)<1e-6)]=0
         self.gesture_phase[:]=0
         self.gesture_phase[left]=(t[left]-6)/duration
         self.gesture_phase[right]=(t[right]-6-duration)/duration
@@ -105,25 +114,27 @@ class InteractiveLegEnv(IsaacLegEnv):
 
     def _update_reference(self):
         phase=self.gait_phase.remainder(1.)
-        idx=torch.zeros(self.num_envs,device=self.device,dtype=torch.long)
-        # Command amplitude provides a smooth stand-to-gait transition. Different
-        # signed basis plans share stance phases, enabling diagonal interpolation.
+        # Signed plans share stance phases. Their forward/backward mean cancels
+        # stride translation while preserving knee flexion: slow commands must
+        # still lift the feet rather than blend them down toward standing.
         limits=torch.tensor([.22,.18,.6],device=self.device)
         scaled=self.commands/limits
         magnitudes=scaled.abs()
         total=magnitudes.sum(-1).clamp(min=1.)
         weights=magnitudes/total[:,None]
-        amplitude=magnitudes.sum(-1).clamp(max=1.)
+        activation=(magnitudes.sum(-1)/.12).clamp(max=1.)
         for table,name in ((self.qtable,'refq'),(self.htable,'reference_height'),(self.ctable,'_reference_contact_float'),(self.ptable,'reference_foot_position'),(self.rtable,'reference_root_offset')):
             base=table[0,0].expand((self.num_envs,)+table.shape[2:]).clone()
-            value=base.clone()
+            inplace=(self._sample(table,torch.ones_like(self.mode),phase)+self._sample(table,torch.full_like(self.mode,2),phase))*.5
+            value=inplace.clone()
             for axis,(positive,negative) in enumerate(((1,2),(3,4),(5,6))):
                 selected=torch.where(scaled[:,axis]>=0,positive,negative)
                 sample=self._sample(table,selected,phase)
                 shape=(self.num_envs,)+(1,)*(sample.ndim-1)
-                value+=(sample-base)*weights[:,axis].reshape(shape)
+                value+=(sample-inplace)*weights[:,axis].reshape(shape)
             walking=self.mode==1
             shape=(self.num_envs,)+(1,)*(value.ndim-1)
+            value=base+(value-base)*activation.reshape(shape)
             value=torch.where(walking.reshape(shape),value,base)
             gesture=(self.mode==2)|(self.mode==3)
             selected=torch.where(self.mode==2,7,8)
@@ -246,10 +257,19 @@ class InteractiveLegEnv(IsaacLegEnv):
         self.commands[env_ids]=0;self.command_targets[env_ids]=0
         self.gait_phase[env_ids]=0;self.gesture_phase[env_ids]=0;self.mode[env_ids]=0
         self.scenario[env_ids]=torch.multinomial(torch.tensor([.35,.35,.20,.10],device=self.device),len(env_ids),replacement=True)
-        angle=torch.rand(len(env_ids),device=self.device)*2*torch.pi
-        self.walk_command[env_ids,0]=.22*torch.cos(angle)
-        self.walk_command[env_ids,1]=.18*torch.sin(angle)
-        self.walk_command[env_ids,2]=(torch.rand(len(env_ids),device=self.device)-.5)*.8
+        def draw_commands():
+            angle=torch.rand(len(env_ids),device=self.device)*2*torch.pi
+            commands=torch.stack((.22*torch.cos(angle),.18*torch.sin(angle),(torch.rand(len(env_ids),device=self.device)-.5)*.8),dim=1)
+            cardinal=torch.tensor([[.22,0,0],[-.22,0,0],[0,.18,0],[0,-.18,0],[0,0,.6],[0,0,-.6]],device=self.device)
+            selected=torch.randint(6,(len(env_ids),),device=self.device)
+            return torch.where((torch.rand(len(env_ids),device=self.device)<.35)[:,None],cardinal[selected],commands)
+        first=draw_commands();second=draw_commands()
+        reverse=torch.rand(len(env_ids),device=self.device)<.4
+        second[reverse]=-first[reverse]
+        second[torch.rand(len(env_ids),device=self.device)<.15]=0
+        self.walk_command[env_ids]=first;self.walk_command2[env_ids]=second
+        # Stop at many gait phases, not only the same end of a five-second walk.
+        self.walk_duration[env_ids]=3.5+2*torch.rand(len(env_ids),device=self.device)
         self.schedule_start[env_ids]=torch.rand(len(env_ids),device=self.device)+.5
         self.refq[env_ids]=self.stand_q;self.reference_height[env_ids]=self.htable[0,0]
         self.transition_q[env_ids]=self.stand_q;self.transition_time[env_ids]=.2

@@ -23,7 +23,7 @@ class KeyboardController:
         return True
 
     def sequence(self,now):
-        if self.sequence_active:return False
+        if self.sequence_active or self.stage=='recover':return False
         self.wanted=[0.,0.,0.];self.last_input=now
         self.sequence_active=True;self.stage='prepare';self.clock=0.
         return True
@@ -44,9 +44,9 @@ class KeyboardController:
         elif self.stage=='sidestep_left' and self.clock>=self.duration:
             self.stage='sidestep_right';self.clock=0.
         elif self.stage=='sidestep_right' and self.clock>=self.duration:
-            self.stage='recover';self.clock=0.;self.sequence_active=False
+            self.stage='recover';self.clock=0.
         elif self.stage=='recover' and self.clock>=1.:
-            self.stage='stand';self.clock=0.
+            self.stage='stand';self.clock=0.;self.sequence_active=False
         if self.stage in ('sidestep_left','sidestep_right'):
             mode=self.stage;phase=min(1.,self.clock/self.duration)
         elif self.stage in ('prepare','recover'):

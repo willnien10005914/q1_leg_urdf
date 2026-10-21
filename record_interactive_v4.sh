@@ -25,6 +25,15 @@ if not all(checks):raise SystemExit('Incomplete or failed v4 recording. Inspect 
 modes={item['mode'] for item in report['mode_changes']}
 if not {'sidestep_left','sidestep_right'}.issubset(modes):
     raise SystemExit('Both finite sidesteps must appear in the recording.')
+resume=report.get('post_sequence_resume',{})
+if not (resume.get('accepted') is True and resume.get('full_period') is True
+        and resume.get('sequence_completed_before_resume') is True
+        and abs(resume.get('duration_s',0)-2.)<.03
+        and resume.get('walk_frames',0)>=.9*resume.get('frames',1)
+        and resume.get('displacement_m',0)>.05 and resume.get('forward_displacement_m',0)>.05
+        and isinstance(report.get('final_stand_speed_m_s'),(int,float))
+        and report['final_stand_speed_m_s']<.07):
+    raise SystemExit('Recording must accept 2 seconds of post-sequence keyboard walking, move >5cm, and stop.')
 def frame(time):
     result=subprocess.run(['ffmpeg','-v','error','-ss',str(time),'-i',str(video),
         '-frames:v','1','-f','rawvideo','-pix_fmt','rgb24','-'],check=True,capture_output=True)

@@ -9,10 +9,14 @@
 
 本版新增 **W/S 前後、A/D 左右、Q/E 轉向、Space 停止**，以及「左閃身 → 右閃身 → 回站立」按鈕。採單一 command-conditioned PPO，所有轉換在同一物理狀態進行，不以 reset 假裝完成動作。
 
-新預算為 **10,240 個平行環境、最多 15,000 iterations**。每段自動評估；停滯時診斷與調整 reward，連續通過驗證後仍須獨立 128 回合確認，才開放新版鍵盤策略與發布影片。**下方 V3 結果不代表新版已通過。**
+原始預算為 **10,240 個平行環境、最多 15,000 iterations**。依最新的 **2026-10-21 台北時間 09:00 前完成**要求，本次改用 [限時設定](config/interactive_v4_deadline.json)：維持 **10,240 envs**、沿用已保存 **501 iterations**、總上限縮為 **801 iterations**，並在 **08:52** 停止新增更新，預留驗收與整理時間。實際完成次數可能因截止時間更少，以狀態檔為準。
+
+每段自動評估；停滯時診斷與調整 reward，連續通過驗證後仍須獨立 128 回合確認，才開放正式新版鍵盤策略。**期限與迭代完成不代表學會；下方 V3 結果不代表新版已通過。**
+
+訓練包含走路中改方向、反向、放鍵停止，以及閃身回站姿後再接鍵盤行走。低速保留約 4 cm 的抬腳參考，避免只縮小關節角而再次學成拖腳；最終仍以原生 PhysX 的實際足底高度與滑動驗收。
 
 ```bash
-bash start_interactive_training.sh
+bash start_interactive_training.sh --config config/interactive_v4_deadline.json --resume-run /path/to/saved/run
 systemctl --user status q1-leg-training --no-pager
 tail -f outputs/interactive_training.log
 cat outputs/interactive_training_status.json
@@ -20,7 +24,7 @@ cat outputs/interactive_training_status.json
 
 ![新版鍵盤操作面板：未通過驗收時保持停用](docs/images/web-keyboard-v4.png)
 
-尚未通過驗收時，鍵盤面板保持停用。通過後自動錄製真實物理示範、轉 GIF、上傳 GoFile，再更新本區與 GitHub。見 [架構與監控](docs/V4_ARCHITECTURE.md)、[逐段影片觀察](docs/SIDESTEP_V4_MOTION_REVIEW.md)、[操作驗收](docs/V4_ACCEPTANCE.md)。
+尚未通過驗收時，正式鍵盤面板保持停用。通過後自動錄製真實物理示範、轉 GIF、上傳 GoFile，再更新本區與 GitHub；未通過則保留候選與失敗診斷，若公開診斷錄影會明確標示尚未合格。見 [架構與監控](docs/V4_ARCHITECTURE.md)、[逐段影片觀察](docs/SIDESTEP_V4_MOTION_REVIEW.md)、[操作驗收](docs/V4_ACCEPTANCE.md)。
 <!-- V4_STATUS_END -->
 
 ## V3 已保存成果
@@ -32,11 +36,11 @@ cat outputs/interactive_training_status.json
 | 站立 PPO | 6,144 envs × 8,000 iterations；新種子評估存活 32／32 |
 | 閃身步 PPO | 6,144 envs × 8,000 iterations；新種子評估存活 31／32，平均側移幅度 36.6 cm |
 | 行走 PPO | 已有實驗，但前進距離未達標；即時入口尚未放行 |
-| 抬腳改善 | 已新增目標、獎勵與檢查，**尚未重新訓練** |
+| 抬腳改善 | V3 的獨立微調未執行；本次改以 V4 統一策略重新訓練 |
 
 站立與閃身步皆跑滿 8,000 iterations，再從該次訓練保存的候選中選擇權重。選定站立為 `model_900.pt`，閃身步為 `model_7800.pt`，分別存為 `checkpoints/isaac/<skill>/latest.pt`。這些是原生 CAD 模擬結果，尚未經實機驗證。
 
-目前閃身步通過的是原有存活、姿態與側移門檻。新增的 32 回合診斷發現，右腳平均每回合最高離地僅約 **0.4 cm**，未通過新的雙腳抬腳門檻。已準備交替抬腳 4 cm、接觸時序及貼地滑動懲罰，依使用者要求暫不啟動長時間微調。詳見 [抬腳檢查報告](docs/FOOT_LIFT_REVIEW.md)。
+V3 閃身步通過的是原有存活、姿態與側移門檻。後續 32 回合診斷發現，右腳平均每回合最高離地僅約 **0.4 cm**，未通過新的雙腳抬腳門檻。這是本次 V4 重新設計抬腳、接觸時序與貼地滑動獎勵的依據。詳見 [抬腳檢查報告](docs/FOOT_LIFT_REVIEW.md)。
 
 [觀看實際 Isaac Sim 閃身步錄影（GoFile）](https://gofile.io/d/020wrR2f) · [專案內 MP4](docs/results/q1_leg_sidestep_6144_8000.mp4)
 
@@ -177,7 +181,7 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
 .venv/bin/python tests/verify_live.py  # 另需 Isaac Sim live worker
 ```
 
-目前 31 項 Python 測試通過，涵蓋原生資產、關節契約、訓練排程、抬腳時序與拒絕單腳／滑動假成功。瀏覽器已檢查拖曳放大、鍵盤、寬度記憶、影片切換、WebGL 尺寸與手機版；新抬腳目標已以 32 回合原生模擬診斷。
+Python 檢查涵蓋原生資產、關節契約、訓練預算與續訓、雙腳抬腳、中途變向、閃身後恢復行走，以及拒絕單腳／滑動／重置造成的假成功。瀏覽器已檢查拖曳放大、鍵盤、寬度記憶、影片切換、WebGL 尺寸與手機版；原生訓練另使用全尺寸場景與新種子動態驗證。
 
 - [架構與控制設計](docs/ARCHITECTURE.md)
 - [大型訓練設定](docs/TRAINING_6144_8000.md)

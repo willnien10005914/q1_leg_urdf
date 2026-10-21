@@ -18,9 +18,14 @@ from .robot import ROOT, URDF
 
 
 CASE_NAMES = ("stand", "w", "s", "a", "d", "yaw_left", "yaw_right", "sequence")
-CASE_COMMANDS = ((0., 0., 0.), (.18, 0., 0.), (-.15, 0., 0.),
-                 (0., .14, 0.), (0., -.14, 0.), (0., 0., .4),
-                 (0., 0., -.4), (0., 0., 0.))
+CASE_COMMANDS = ((0., 0., 0.), (.22, 0., 0.), (-.22, 0., 0.),
+                 (0., .18, 0.), (0., -.18, 0.), (0., 0., .6),
+                 (0., 0., -.6), (0., 0., 0.))
+# Temporarily change translation direction without resetting or turning yaw:
+# W→A, S→D, A→S, D→W. Return to the primary command after one second.
+REDIRECT_COMMANDS = ((0., 0., 0.), (0., .18, 0.), (0., -.18, 0.),
+                     (-.22, 0., 0.), (.22, 0., 0.), (0., 0., .6),
+                     (0., 0., -.6), (0., 0., 0.))
 GATES = {
     "survival_rate_min": .875,
     "upright_min": .97,
@@ -38,6 +43,10 @@ GATES = {
     "root_lateral_m_min": .015,
     "push_proxy_success_min": .25,
     "stance_slip_m_s_max": .10,
+    "redirection_displacement_m_min": .025,
+    "redirection_velocity_rmse_m_s_max": .16,
+    "resume_displacement_x_m_min": .05,
+    "resume_velocity_rmse_m_s_max": .12,
 }
 
 
@@ -68,6 +77,11 @@ def check_interactive_gates(report: dict) -> dict:
                         GATES["walk_directional_displacement_m_min"])
                 maximum(f"{name}.velocity", case.get("velocity_rmse_m_s"),
                         GATES["walk_velocity_rmse_m_s_max"])
+                redirection = case.get("redirection", {})
+                minimum(f"{name}.redirection_progress", redirection.get("directional_displacement_m"),
+                        GATES["redirection_displacement_m_min"])
+                maximum(f"{name}.redirection_velocity", redirection.get("velocity_rmse_m_s"),
+                        GATES["redirection_velocity_rmse_m_s_max"])
             else:
                 minimum(f"{name}.yaw_direction", case.get("signed_yaw_displacement_rad"),
                         GATES["yaw_displacement_rad_min"])
@@ -81,6 +95,10 @@ def check_interactive_gates(report: dict) -> dict:
                 minimum(f"{name}.foot_{foot}.lift", rate[foot] if len(rate) > foot else None,
                         GATES["foot_lift_success_min"])
         if name == "sequence":
+            minimum("sequence.resume_progress", case.get("resumed_displacement_x_m"),
+                    GATES["resume_displacement_x_m_min"])
+            maximum("sequence.resume_velocity", case.get("resume_velocity_rmse_m_s"),
+                    GATES["resume_velocity_rmse_m_s_max"])
             for side in ("left", "right"):
                 event = case.get("directions", {}).get(side, {})
                 for field, threshold in (
@@ -143,6 +161,8 @@ def evaluate_interactive(runner, wrapped, env, episodes: int = 32, seed: int = 7
     recover_end = recover_start + 1.
     if recover_end >= duration - 2:
         raise ValueError("Finite sequence must leave at least two seconds for standing")
+    if recover_end > 6.5:
+        raise ValueError("Finite sequence must finish recovery before the 6.5-second keyboard-resume test")
 
     torch.manual_seed(seed)
     random.seed(seed)
@@ -156,7 +176,9 @@ def evaluate_interactive(runner, wrapped, env, episodes: int = 32, seed: int = 7
     task = ids % len(CASE_NAMES)
     sequence = task == 7
     moving = (task >= 1) & (task <= 6)
+    translating = (task >= 1) & (task <= 4)
     commands = torch.tensor(CASE_COMMANDS, device=device)[task]
+    redirected_commands = torch.tensor(REDIRECT_COMMANDS, device=device)[task]
     full_mode = torch.zeros(total, device=device, dtype=torch.long)
     full_commands = torch.zeros((total, 3), device=device)
     full_phase = torch.zeros(total, device=device)
@@ -172,6 +194,12 @@ def evaluate_interactive(runner, wrapped, env, episodes: int = 32, seed: int = 7
     yaw_error_sum = torch.zeros_like(samples)
     moving_samples = torch.zeros_like(samples)
     directional_displacement = torch.zeros_like(samples)
+    redirection_displacement = torch.zeros_like(samples)
+    redirection_error_sum = torch.zeros_like(samples)
+    redirection_samples = torch.zeros_like(samples)
+    resumed_displacement_x = torch.zeros_like(samples)
+    resume_error_sum = torch.zeros_like(samples)
+    resume_samples = torch.zeros_like(samples)
     signed_yaw = torch.zeros_like(samples)
     stop_speed_sum = torch.zeros_like(samples)
     stop_samples = torch.zeros_like(samples)
@@ -212,6 +240,14 @@ def evaluate_interactive(runner, wrapped, env, episodes: int = 32, seed: int = 7
         move_anchor_pos = data.root_pos_w[:count].clone()
         move_anchor_quat = data.root_quat_w[:count].clone()
         move_anchor_set = torch.zeros(count, device=device, dtype=torch.bool)
+        redirection_anchor_pos = move_anchor_pos.clone()
+        redirection_anchor_quat = move_anchor_quat.clone()
+        redirection_anchor_set = torch.zeros_like(move_anchor_set)
+        redirection_finalized = torch.zeros_like(move_anchor_set)
+        resume_anchor_pos = move_anchor_pos.clone()
+        resume_anchor_quat = move_anchor_quat.clone()
+        resume_anchor_set = torch.zeros_like(move_anchor_set)
+        resume_finalized = torch.zeros_like(move_anchor_set)
         stop_anchor = data.root_pos_w[:count, :2].clone()
         stop_anchor_set = torch.zeros_like(move_anchor_set)
         previous_yaw = _yaw(data.root_quat_w[:count]).clone()
@@ -227,10 +263,22 @@ def evaluate_interactive(runner, wrapped, env, episodes: int = 32, seed: int = 7
             full_commands.zero_()
             full_phase.zero_()
             command_window = 1. <= time < 8.
+            redirection_window = 4. <= time < 5.
+            resume_window = 6.5 <= time < 8.
+            requested_commands = redirected_commands if redirection_window else commands
             if command_window:
                 full_mode[:count][moving] = 1
-                full_commands[:count][moving] = commands[moving]
+                full_commands[:count][moving] = requested_commands[moving]
                 full_phase[:count][moving] = ((time - 1.) / float(env.library.get("walk_cycle_s", .9))) % 1.
+            if time < .5:
+                full_mode[:count][sequence] = 1
+                full_commands[:count][sequence, 0] = .12
+            elif .5 <= time < 1.:
+                full_mode[:count][sequence] = 4
+                full_phase[:count][sequence] = (time - .5) / .5
+            elif resume_window:
+                full_mode[:count][sequence] = 1
+                full_commands[:count][sequence, 0] = .16
             side = 0 if 1. <= time < right_start else 1 if right_start <= time < recover_start else None
             phase = 0.
             if side is not None:
@@ -262,8 +310,8 @@ def evaluate_interactive(runner, wrapped, env, episodes: int = 32, seed: int = 7
                 move_anchor_pos[new_anchor] = current_pos[new_anchor]
                 move_anchor_quat[new_anchor] = current_quat[new_anchor]
                 move_anchor_set |= new_anchor
-                vel_error_sum += (velocity[:, :2] - commands[:, :2]).square().sum(-1).nan_to_num() * move_mask
-                yaw_error_sum += (data.root_ang_vel_b[:count, 2] - commands[:, 2]).square().nan_to_num() * move_mask
+                vel_error_sum += (velocity[:, :2] - requested_commands[:, :2]).square().sum(-1).nan_to_num() * move_mask
+                yaw_error_sum += (data.root_ang_vel_b[:count, 2] - requested_commands[:, 2]).square().nan_to_num() * move_mask
                 moving_samples += move_mask
                 delta = _quat_inverse(move_anchor_quat, current_pos - move_anchor_pos)
                 direction = commands[:, :2] / commands[:, :2].norm(dim=-1, keepdim=True).clamp(min=1e-8)
@@ -272,6 +320,37 @@ def evaluate_interactive(runner, wrapped, env, episodes: int = 32, seed: int = 7
                 yaw_delta = torch.atan2(torch.sin(yaw_now - previous_yaw), torch.cos(yaw_now - previous_yaw))
                 signed_yaw += yaw_delta.nan_to_num() * commands[:, 2].sign() * move_mask
             previous_yaw = _yaw(current_quat).clone()
+
+            if redirection_window:
+                redirect_mask = active & translating
+                new_anchor = redirect_mask & ~redirection_anchor_set
+                redirection_anchor_pos[new_anchor] = current_pos[new_anchor]
+                redirection_anchor_quat[new_anchor] = current_quat[new_anchor]
+                redirection_anchor_set |= new_anchor
+                redirection_error_sum += (velocity[:, :2] - redirected_commands[:, :2]).square().sum(-1).nan_to_num() * redirect_mask
+                redirection_samples += redirect_mask
+            if time >= 5.:
+                finish_redirect = active & redirection_anchor_set & ~redirection_finalized
+                delta = _quat_inverse(redirection_anchor_quat, current_pos - redirection_anchor_pos)
+                direction = redirected_commands[:, :2] / redirected_commands[:, :2].norm(dim=-1, keepdim=True).clamp(min=1e-8)
+                redirection_displacement[finish_redirect] = (delta[:, :2] * direction).sum(-1)[finish_redirect]
+                redirection_finalized |= finish_redirect
+
+            if resume_window:
+                resume_mask = active & sequence
+                new_anchor = resume_mask & ~resume_anchor_set
+                resume_anchor_pos[new_anchor] = current_pos[new_anchor]
+                resume_anchor_quat[new_anchor] = current_quat[new_anchor]
+                resume_anchor_set |= new_anchor
+                resume_goal = torch.zeros_like(velocity[:, :2])
+                resume_goal[:, 0] = .16
+                resume_error_sum += (velocity[:, :2] - resume_goal).square().sum(-1).nan_to_num() * resume_mask
+                resume_samples += resume_mask
+            if time >= 8.:
+                finish_resume = active & resume_anchor_set & ~resume_finalized
+                delta = _quat_inverse(resume_anchor_quat, current_pos - resume_anchor_pos)
+                resumed_displacement_x[finish_resume] = delta[finish_resume, 0]
+                resume_finalized |= finish_resume
 
             if time >= 18.:
                 first_stop = active & ~stop_anchor_set
@@ -374,7 +453,20 @@ def evaluate_interactive(runner, wrapped, env, episodes: int = 32, seed: int = 7
                 "loaded_foot_speed_m_s": mean(slip_sum / slip_trials.clamp(min=1)),
                 "stance_slip_m_s": mean((slip_square_sum / slip_trials.clamp(min=1)).sqrt()),
             }
+            if name in ("w", "s", "a", "d"):
+                case["redirection"] = {
+                    "command": list(REDIRECT_COMMANDS[task_id]),
+                    "window_s": [4., 5.],
+                    "directional_displacement_m": mean(redirection_displacement),
+                    "velocity_rmse_m_s": mean(torch.where(redirection_samples > 0,
+                        (redirection_error_sum / redirection_samples.clamp(min=1)).sqrt(),
+                        torch.full_like(redirection_samples, 1e6))),
+                }
             if name == "sequence":
+                case["resumed_displacement_x_m"] = mean(resumed_displacement_x)
+                case["resume_velocity_rmse_m_s"] = mean(torch.where(resume_samples > 0,
+                    (resume_error_sum / resume_samples.clamp(min=1)).sqrt(),
+                    torch.full_like(resume_samples, 1e6)))
                 case["finite_sequence_completed"] = bool(
                     (survived[mask] & anchor_set[mask].all(-1)).float().mean() >= GATES["survival_rate_min"])
                 case["directions"] = {}
@@ -414,6 +506,10 @@ def evaluate_interactive(runner, wrapped, env, episodes: int = 32, seed: int = 7
             "push_sensor_available": push_sensor_available,
             "hand_measurement": "Native right/left_gripper_link body origin in the current robot body frame",
             "reset_between_transitions": False,
+            "timeline": {
+                "wasd": "stand 0–1; main command 1–4; perpendicular command 4–5; main command 5–8; stand 8–20 seconds",
+                "sequence": f"walk vx=.12 0–.5; prepare .5–1; left 1–{right_start}; right {right_start}–{recover_start}; recover {recover_start}–{recover_end}; stand to6.5; walk vx=.16 6.5–8; stand 8–20 seconds",
+            },
             "gates": GATES.copy(), "cases": cases,
             "survival_rate": float(survived.float().mean()),
         }
@@ -437,12 +533,19 @@ def evaluate_interactive(runner, wrapped, env, episodes: int = 32, seed: int = 7
                     if bool(stop_samples[index] > 0) else 1e6,
             }
             if bool(sequence[index]):
+                item["resumed_displacement_x_m"] = float(resumed_displacement_x[index])
+                item["resume_velocity_rmse_m_s"] = float((resume_error_sum[index] / resume_samples[index].clamp(min=1)).sqrt()) if bool(resume_samples[index] > 0) else 1e6
                 item["lead_landing_body_delta_m"] = _tensor_json(lead_displacement[index])
                 item["lead_landed"] = _tensor_json(landed[index])
                 item["root_body_delta_m"] = _tensor_json(root_displacement[index])
                 item["hand_cross_success_rate"] = _tensor_json(hand_hits[index] / hand_trials[index].clamp(min=1))
                 item["trailing_peak_clearance_m"] = _tensor_json(trailing_peak[index])
                 item["trailing_lift_success_rate"] = _tensor_json(trailing_hits[index] / trailing_trials[index].clamp(min=1))
+            if bool(translating[index]):
+                item["redirection"] = {
+                    "directional_displacement_m": float(redirection_displacement[index]),
+                    "velocity_rmse_m_s": float((redirection_error_sum[index] / redirection_samples[index].clamp(min=1)).sqrt()) if bool(redirection_samples[index] > 0) else 1e6,
+                }
             report["per_episode"].append(item)
         checks = check_interactive_gates(report)
         report["checks"] = checks

@@ -59,13 +59,28 @@ def policy_gate(root=ROOT, folder=None):
         for key in ("urdf_sha256", "gait_sha256"):
             if key in report and report[key] != expected[key]:
                 raise ValueError(f"v4 評估來源不符：{key}")
+        for key, name in (("environment_sha256", "interactive_env.py"),
+                          ("evaluator_sha256", "interactive_evaluation.py")):
+            if key in report and report[key] != sha256(root / "source/leg_humanoid_lab/leg_humanoid_lab" / name):
+                raise ValueError(f"v4 評估程式來源不符：{key}")
+        manifest = report.get("source_sha256", {})
+        if not isinstance(manifest, dict):
+            raise ValueError("v4 source_sha256 必須是來源檔案雜湊對照表")
+        for relative, expected_hash in manifest.items():
+            if not isinstance(relative, str) or not isinstance(expected_hash, str):
+                raise ValueError("v4 source manifest 格式不符")
+            path = root / relative
+            if Path(relative).is_absolute() or ".." in Path(relative).parts or not path.resolve().is_relative_to(root.resolve()):
+                raise ValueError("v4 source manifest 必須使用專案內相對路徑")
+            if sha256(path) != expected_hash:
+                raise ValueError(f"v4 訓練來源已變更：{relative}")
         checkpoint = folder / "latest.pt"
         digest = sha256(checkpoint)
         if report.get("checkpoint_sha256") != digest:
             raise ValueError("v4 評估與 checkpoint SHA256 不符")
         return {"ready": True, "error": None, "checkpoint": str(checkpoint),
                 "checkpoint_sha256": digest, "confirmation_episodes": int(count),
-                "contract": expected}
+                "contract": expected, "source_sha256": manifest}
     except (OSError, ValueError, KeyError, TypeError) as error:
         return {"ready": False, "error": f"v4 控制器尚未就緒：{error}"}
 
@@ -77,8 +92,19 @@ def normalized_velocity(payload):
         if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
             raise ValueError("velocity must contain finite numeric vx, vy, wz")
         values.append(float(value))
-    norm = math.sqrt(sum((value / limit) ** 2 for value, limit in zip(values, SPEED_LIMITS)))
+    values = [max(-limit, min(limit, value)) for value, limit in zip(values, SPEED_LIMITS)]
+    norm = sum(abs(value) / limit for value, limit in zip(values, SPEED_LIMITS))
     return [value / max(1., norm) for value in values]
+
+
+def runtime_sources(root):
+    """Pin sources used to construct this process; hot file edits need a restart."""
+    paths = ["config/v4_gaits.json", "urdf/q1_inertia/quanta_robot_legged.urdf",
+             "scripts/reinforcement_learning/rsl_rl/runtime_compat.py"]
+    paths += ["source/leg_humanoid_lab/leg_humanoid_lab/" + name for name in (
+        "interactive_env.py", "interactive_control.py", "interactive_evaluation.py",
+        "isaac_env.py", "robot.py", "agent_cfg.py")]
+    return {name: sha256(root / name) for name in paths}
 
 
 def handler_type(commands, state, lock):
@@ -150,8 +176,9 @@ def main():
     parser.add_argument("--validate-only", action="store_true", help="Print the gate without starting Isaac Sim")
     if "--validate-only" in sys.argv:
         args = parser.parse_args()
-        print(json.dumps(policy_gate(ROOT, args.checkpoint_dir), indent=2, ensure_ascii=False))
-        return
+        gate = policy_gate(ROOT, args.checkpoint_dir)
+        print(json.dumps(gate, indent=2, ensure_ascii=False))
+        raise SystemExit(0 if gate["ready"] else 1)
 
     from isaaclab.app import AppLauncher
     AppLauncher.add_app_launcher_args(parser)
@@ -174,6 +201,7 @@ def main():
 
     app, env = None, None
     try:
+        startup_sources = runtime_sources(ROOT)
         launcher = AppLauncher(args)
         app = launcher.app
         import torch
@@ -229,6 +257,8 @@ def main():
                 if now - last_gate_time >= 1.:
                     last_gate_time = now
                     gate = policy_gate(ROOT, args.checkpoint_dir)
+                    if gate["ready"] and runtime_sources(ROOT) != startup_sources:
+                        gate = {"ready": False, "error": "v4 模擬程式或模型素材已變更，請重新啟動即時服務。"}
                     if gate["ready"] and gate["checkpoint_sha256"] != loaded_hash and now >= retry_at:
                         try:
                             if runner is None:

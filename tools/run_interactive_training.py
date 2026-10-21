@@ -50,9 +50,15 @@ def sha256(path):
 
 def validate_profile(profile):
     """Keep the user's requested budget and acceptance procedure explicit."""
-    required = {"num_envs": 10240, "max_iterations": 15000,
+    required = {"num_envs": 10240,
                 "num_steps_per_env": 24, "validation_episodes": 32,
                 "confirmation_episodes": 128}
+    if "training_deadline_utc" in profile:
+        deadline=datetime.fromisoformat(profile["training_deadline_utc"])
+        if deadline.tzinfo is None or type(profile.get("max_iterations")) is not int or not 1<=profile["max_iterations"]<=15000:
+            raise ValueError("Deadline profile requires a timezone and a positive iteration cap no greater than 15000")
+    else:
+        required["max_iterations"]=15000
     for key, expected in required.items():
         if type(profile.get(key)) is not int or profile[key] != expected:
             raise ValueError(f"{key} must remain {expected} for this authorized training plan")
@@ -124,11 +130,13 @@ def confirmation_passed(report, expected_episodes=128):
 
 def source_manifest(config_path):
     sources = [config_path, ROOT/"config/v4_gaits.json", ROOT/"train_interactive_native.sh",
+               ROOT/"tools/run_interactive_training.py", ROOT/"scripts/isaac_env.sh",
                ROOT/"scripts/reinforcement_learning/rsl_rl/train_interactive.py",
                ROOT/"scripts/reinforcement_learning/rsl_rl/runtime_compat.py",
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/interactive_env.py",
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/interactive_evaluation.py",
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/interactive_control.py",
+               ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/v4_reference.py",
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/agent_cfg.py",
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/isaac_env.py",
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/robot.py",
@@ -273,9 +281,16 @@ class Supervisor:
         self.assert_sources_unchanged()
         completed = self.state["completed_iterations"]
         count = next_chunk_size(completed, self.profile)
+        if self.profile.get("training_deadline_utc"):
+            remaining=(datetime.fromisoformat(self.profile["training_deadline_utc"])-datetime.now(timezone.utc)).total_seconds()
+            # Leave startup/shutdown room; adapt to measured full-size chunks.
+            seconds_per_iteration=max(2.4,self.state.get("seconds_per_iteration",2.8))
+            count=min(count,max(0,int((remaining-60)/seconds_per_iteration)))
+        if count<=0:return False
         result_path = self.run/"training_result.json"
         before, previous_checkpoint = timestamp(result_path), timestamp(self.run/"resume.pt")
         command = ["bash", ROOT/"train_interactive_native.sh", "--output-dir", self.run,
+                   "--training-profile",self.config_path,
                    "--num_envs", self.profile["num_envs"], "--iterations", count,
                    "--completed", completed, "--reward-revision", self.state["reward_revision"], "--headless"]
         if completed:
@@ -286,6 +301,7 @@ class Supervisor:
                 raise RuntimeError(f"Missing or invalid native v3 initialization checkpoint: {bootstrap}")
             command += ["--checkpoint", bootstrap, "--bootstrap-v3"]
         self.save(chunk_iterations=count, chunk_target_iterations=completed+count)
+        started=time.monotonic()
         self.child(command, "training")
         self.assert_sources_unchanged()
         result = fresh_json(result_path, before, "training_result.json")
@@ -296,7 +312,9 @@ class Supervisor:
                 or timestamp(self.run/"resume.pt") == previous_checkpoint
                 or not checkpoint_valid(self.run/"resume.pt")):
             raise RuntimeError("Training result or resumable checkpoint does not match the requested chunk")
-        self.save(completed_iterations=completed+count, live_iteration_estimate=completed+count)
+        self.save(completed_iterations=completed+count, live_iteration_estimate=completed+count,
+                  seconds_per_iteration=(time.monotonic()-started)/count)
+        return True
 
     def evaluate(self, episodes, seed, kind):
         self.assert_sources_unchanged()
@@ -305,6 +323,7 @@ class Supervisor:
         before = timestamp(output)
         checkpoint = self.run/"resume.pt"
         command = ["bash", ROOT/"train_interactive_native.sh", "--evaluate", "--episodes", episodes,
+                   "--training-profile",self.config_path,
                    "--num_envs", episodes, "--seed", seed, "--completed", completed,
                    "--checkpoint", checkpoint, "--output-dir", self.run,
                    "--reward-revision", self.state["reward_revision"], "--headless"]
@@ -354,6 +373,8 @@ class Supervisor:
         published = {**report, "checkpoint":"latest.pt", "checkpoint_sha256":sha256(destination/"latest.pt"),
                      "confirmation_episodes":self.profile["confirmation_episodes"], "ready":True,
                      "published_from":str(source), "published_at":utcnow(),
+                     "source_sha256":self.state["source_sha256"],
+                     "training_profile":self.profile,
                      "reward_revision":self.state["reward_revision"]}
         # Evaluation is the final publication marker, after weights and contract.
         atomic_json(destination/"evaluation.json", published)
@@ -417,11 +438,13 @@ class Supervisor:
         while self.state["completed_iterations"] < self.profile["max_iterations"]:
             if STOP:
                 raise KeyboardInterrupt
-            self.train_chunk()
+            if not self.train_chunk():
+                self.save(state="deadline_reached",ready=False,error="Reached the user-requested training cutoff; retained checkpoint and independent evaluation without relaxing gates")
+                return 2
             if self.process_validation():
                 return 0
         self.save(state="budget_exhausted", ready=False,
-                  error="Requested 15000-iteration budget completed without an independent full-gate confirmation")
+                  error=f"Requested {self.profile['max_iterations']}-iteration budget completed without an independent full-gate confirmation")
         return 2
 
 

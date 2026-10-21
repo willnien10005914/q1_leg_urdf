@@ -32,7 +32,7 @@ COMMIT_MESSAGE = "Train command-conditioned locomotion and mirrored sidestep PPO
 # Deliberately enumerate individual project files. Never stage a whole directory,
 # git add '.', GoFile JSON, failed candidates, logs or training intermediates.
 PUBLISH_PATHS = frozenset((
-    ".gitignore", "README.md", "config/interactive_v4.json", "config/v4_gaits.json",
+    ".gitignore", "README.md", "config/interactive_v4.json", "config/interactive_v4_deadline.json", "config/v4_gaits.json",
     "docs/SIDESTEP_V4_MOTION_REVIEW.md", "docs/reference/sidestep_v4_contact_sheet.jpg",
     "docs/V4_ARCHITECTURE.md", "docs/TRAINING_V4_REVIEW.md", "docs/V4_ACCEPTANCE.md",
     GIF, VIDEO, "docs/results/q1_leg_interactive_v4.json", EVALUATION,
@@ -40,6 +40,7 @@ PUBLISH_PATHS = frozenset((
     "start_interactive_training.sh", "train_interactive_native.sh", "scripts/run_interactive_training.sh",
     "tools/finalize_interactive_v4.py", "tools/interactive_curriculum.py",
     "tools/run_interactive_training.py",
+    "tools/publish_interactive_status.py", "tools/watch_interactive_training.py",
     "tools/build_v4_gaits.py", "tools/video_to_gif.py", "tools/status.py",
     "scripts/reinforcement_learning/rsl_rl/play_interactive_web.py",
     "scripts/reinforcement_learning/rsl_rl/record_interactive_v4.py",
@@ -51,6 +52,14 @@ PUBLISH_PATHS = frozenset((
     "web/app.js", "web/index.html", "web/style.css", "web/serve.py",
     "tests/verify_keyboard_web.py", "tests/test_interactive_control.py",
     "tests/test_interactive_gates.py", "tests/test_interactive_finalizer.py",
+    "tests/test_interactive_recording.py", "tests/test_interactive_supervisor.py",
+    "tests/test_interactive_player.py", "tests/test_interactive_status.py",
+    "tests/test_interactive_training_monitor.py", "tests/test_v4_reference.py",
+    "docs/images/web-keyboard-v4.png", "scripts/isaac_env.sh",
+    "scripts/reinforcement_learning/rsl_rl/runtime_compat.py",
+    "source/leg_humanoid_lab/leg_humanoid_lab/isaac_env.py",
+    "source/leg_humanoid_lab/leg_humanoid_lab/agent_cfg.py",
+    "source/leg_humanoid_lab/leg_humanoid_lab/robot.py",
     f"{CHECKPOINT_FOLDER}/latest.pt", f"{CHECKPOINT_FOLDER}/contract.json",
     f"{CHECKPOINT_FOLDER}/evaluation.json",
 ))
@@ -114,6 +123,7 @@ def recording_valid(video, metadata, checkpoint_sha):
     try:
         modes = {event["mode"] for event in metadata["mode_changes"]}
         expected = metadata["expected_duration"]
+        resume = metadata["post_sequence_resume"]
         return bool(
             Path(video).is_file() and Path(video).stat().st_size > 1024
             and metadata.get("controller_version") == "q1_leg_v4"
@@ -131,6 +141,14 @@ def recording_valid(video, metadata, checkpoint_sha):
             and isinstance(expected, (int, float)) and math.isfinite(expected)
             and abs(metadata["duration"] - expected) < .03
             and {"sidestep_left", "sidestep_right"}.issubset(modes)
+            and resume.get("accepted") is True and resume.get("full_period") is True
+            and resume.get("sequence_completed_before_resume") is True
+            and abs(resume.get("duration_s", 0) - 2.) < .03
+            and resume.get("walk_frames", 0) >= .9 * resume.get("frames", 1)
+            and resume.get("displacement_m", 0) > .05
+            and resume.get("forward_displacement_m", 0) > .05
+            and isinstance(metadata.get("final_stand_speed_m_s"), (int, float))
+            and metadata["final_stand_speed_m_s"] < .07
             and metadata.get("video_sha256") == digest(video))
     except (OSError, ValueError, KeyError, TypeError):
         return False
@@ -151,6 +169,20 @@ def completed_iterations(report, root):
     raise ValueError("Confirmed evaluation must identify the actual completed_iterations")
 
 
+def training_profile(report, root):
+    """Use the budget actually attached to these weights, including deadline runs."""
+    profile = report.get("training_profile")
+    if profile is None:
+        profile = read_json(Path(root) / "config/interactive_v4.json")
+    if not isinstance(profile, dict):
+        raise ValueError("Confirmed evaluation training_profile must be an object")
+    for key in ("num_envs", "max_iterations"):
+        value = profile.get(key)
+        if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+            raise ValueError(f"Invalid confirmed training profile: {key}")
+    return profile
+
+
 def replace_readme(text, block):
     if text.count(START) != 1 or text.count(END) != 1:
         raise ValueError("README must contain exactly one V4_STATUS_START / END marker pair")
@@ -169,7 +201,7 @@ def readme_block(report, config, recording, url, iterations):
 
 ![訓練完成的 WASD 移動與左右閃身]({GIF})
 
-示範影片由原生 Isaac Sim／PhysX 執行，seed **{recording['seed']}**，完整 **{recording['duration']:.2f} 秒**，完成前後左右移動、左右各一次閃身並回站立，全程沒有重置機器人。[GoFile 完整影片]({url})。
+示範影片由原生 Isaac Sim／PhysX 執行，seed **{recording['seed']}**，完整 **{recording['duration']:.2f} 秒**，完成前後左右移動、左右各一次閃身、回站立後再次接受 W 前進 2 秒並停止，全程沒有重置機器人。[GoFile 完整影片]({url})。
 
 ```bash
 cd ~/projects/q1_leg_urdf
@@ -326,7 +358,7 @@ class Finalizer:
         self.progress("validating", checkpoint_sha256=sha)
         self.preflight()
         report = read_json(self.root / CHECKPOINT_FOLDER / "evaluation.json")
-        config = read_json(self.root / "config/interactive_v4.json")
+        config = training_profile(report, self.root)
         iterations = completed_iterations(report, self.root)
         metadata = self.record(sha)
         video_sha = digest(self.root / VIDEO)

@@ -27,3 +27,12 @@ def test_stop_interrupts_pair_and_new_velocity_only_after_recovery():
     c.stop(.6)
     assert c.tick(.02,.62)['mode']=='recover'
     assert not c.sequence_active
+
+def test_pair_remains_locked_until_recovery_finishes():
+    c=KeyboardController(sidestep_duration=.2);c.sequence(0)
+    for i in range(60):state=c.tick(.02,i*.02)
+    assert state['mode']=='recover' and state['sequence_active']
+    assert not c.velocity(.2,0,0,1.2) and not c.sequence(1.2)
+    for i in range(60,110):state=c.tick(.02,i*.02)
+    assert state['mode']=='stand' and not state['sequence_active']
+    assert c.velocity(.2,0,0,2.2)
