@@ -1,0 +1,476 @@
+{
+  "schema": 1,
+  "source_v4_gaits_sha256": "e72f720f536453065710e08ef05a1b8883dc6a20cff921069df77e7d1cac34f1",
+  "v5_builder_sha256": "43d04581ac5db81aa29408b18de53843406fdceb48271484cb9d11665f2ee723",
+  "scope": "Kinematic FK plus approximate planar inverted-pendulum analysis; neither reference has passed dynamic validation.",
+  "method": "Mass-weighted URDF inertial COM; periodic central difference acceleration; zmp_xy=com_xy-com_z*com_acc_xy/9.81; support hull is the projected source CAD of planned loaded feet.",
+  "limitations": [
+    "The base has identity orientation and follows reference translation; constant command translation has zero acceleration.",
+    "No angular momentum, yaw rotation, vertical acceleration, contact compliance or actual force/COP measurement is included.",
+    "The projected CAD support hull is an approximation to actual contact pressure patches.",
+    "Lower sway reduces reference speed but can make lateral support transfer worse. Native PhysX ablation is required."
+  ],
+  "v4_sway_amplitude_m": 0.045,
+  "v5_sway_amplitude_m": 0.045,
+  "v5_lift_amplitude_m": 0.06,
+  "v4": {
+    "forward": {
+      "total_mass_kg": 42.205915473000005,
+      "com_lateral_range_m": [
+        -0.03472987196048235,
+        0.034297659806123725
+      ],
+      "com_height_range_m": [
+        0.6516674521998564,
+        0.658257101737943
+      ],
+      "approximate_zmp_lateral_range_m": [
+        -0.1460783882466887,
+        0.14563379013473673
+      ],
+      "single_support_samples": 44,
+      "single_support_planar_inside_fraction": 0.5454545454545454,
+      "single_support_lateral_inside_fraction": 0.7272727272727273,
+      "single_support_planar_margin_min_m": -0.12341004871746042,
+      "single_support_lateral_margin_min_m": -0.07508799318391694,
+      "single_support_lateral_outside_phases": [
+        0.4,
+        0.4166666666666667,
+        0.43333333333333335,
+        0.45,
+        0.4666666666666667,
+        0.48333333333333334,
+        0.9,
+        0.9166666666666666,
+        0.9333333333333333,
+        0.95,
+        0.9666666666666667,
+        0.9833333333333333
+      ],
+      "root_sway_velocity_peak_m_s": 0.31358538980296163,
+      "root_sway_velocity_rms_m_s": 0.22173835561070013,
+      "mean_v4_velocity_reward_fraction_for_exact_sway": 0.38227511619413773
+    },
+    "backward": {
+      "total_mass_kg": 42.205915473000005,
+      "com_lateral_range_m": [
+        -0.03482833304164893,
+        0.03439738574036571
+      ],
+      "com_height_range_m": [
+        0.6508260389213291,
+        0.6586564846362913
+      ],
+      "approximate_zmp_lateral_range_m": [
+        -0.1488418453826011,
+        0.14842382499617943
+      ],
+      "single_support_samples": 44,
+      "single_support_planar_inside_fraction": 0.7272727272727273,
+      "single_support_lateral_inside_fraction": 0.7272727272727273,
+      "single_support_planar_margin_min_m": -0.14076673483481097,
+      "single_support_lateral_margin_min_m": -0.07421039261397033,
+      "single_support_lateral_outside_phases": [
+        0.4,
+        0.4166666666666667,
+        0.43333333333333335,
+        0.45,
+        0.4666666666666667,
+        0.48333333333333334,
+        0.9,
+        0.9166666666666666,
+        0.9333333333333333,
+        0.95,
+        0.9666666666666667,
+        0.9833333333333333
+      ],
+      "root_sway_velocity_peak_m_s": 0.31358538980296163,
+      "root_sway_velocity_rms_m_s": 0.22173835561070013,
+      "mean_v4_velocity_reward_fraction_for_exact_sway": 0.38227511619413773
+    },
+    "left": {
+      "total_mass_kg": 42.205915473000005,
+      "com_lateral_range_m": [
+        -0.03709351906142938,
+        0.0326095267836246
+      ],
+      "com_height_range_m": [
+        0.6513023109074176,
+        0.6581077149331899
+      ],
+      "approximate_zmp_lateral_range_m": [
+        -0.1807932022302785,
+        0.13650993254534435
+      ],
+      "single_support_samples": 44,
+      "single_support_planar_inside_fraction": 0.6818181818181818,
+      "single_support_lateral_inside_fraction": 0.7045454545454546,
+      "single_support_planar_margin_min_m": -0.16286917016194574,
+      "single_support_lateral_margin_min_m": -0.1626756081214157,
+      "single_support_lateral_outside_phases": [
+        0.13333333333333333,
+        0.15,
+        0.16666666666666666,
+        0.18333333333333332,
+        0.2,
+        0.8666666666666667,
+        0.8833333333333333,
+        0.9,
+        0.9166666666666666,
+        0.9333333333333333,
+        0.95,
+        0.9666666666666667,
+        0.9833333333333333
+      ],
+      "root_sway_velocity_peak_m_s": 0.31358538980296163,
+      "root_sway_velocity_rms_m_s": 0.22173835561070013,
+      "mean_v4_velocity_reward_fraction_for_exact_sway": 0.38227511619413773
+    },
+    "right": {
+      "total_mass_kg": 42.205915473000005,
+      "com_lateral_range_m": [
+        -0.03305228697606495,
+        0.03668516626970794
+      ],
+      "com_height_range_m": [
+        0.6513020839151388,
+        0.658110837619233
+      ],
+      "approximate_zmp_lateral_range_m": [
+        -0.13693097408775687,
+        0.1805579184295157
+      ],
+      "single_support_samples": 44,
+      "single_support_planar_inside_fraction": 0.6818181818181818,
+      "single_support_lateral_inside_fraction": 0.7045454545454546,
+      "single_support_planar_margin_min_m": -0.16375756435414957,
+      "single_support_lateral_margin_min_m": -0.1633928064365845,
+      "single_support_lateral_outside_phases": [
+        0.36666666666666664,
+        0.3833333333333333,
+        0.4,
+        0.4166666666666667,
+        0.43333333333333335,
+        0.45,
+        0.4666666666666667,
+        0.48333333333333334,
+        0.6333333333333333,
+        0.65,
+        0.6666666666666666,
+        0.6833333333333333,
+        0.7
+      ],
+      "root_sway_velocity_peak_m_s": 0.31358538980296163,
+      "root_sway_velocity_rms_m_s": 0.22173835561070013,
+      "mean_v4_velocity_reward_fraction_for_exact_sway": 0.38227511619413773
+    }
+  },
+  "v5": {
+    "forward": {
+      "total_mass_kg": 42.205915473000005,
+      "com_lateral_range_m": [
+        -0.03468775493382012,
+        0.03425529299726568
+      ],
+      "com_height_range_m": [
+        0.6516674521998564,
+        0.6604046412765618
+      ],
+      "approximate_zmp_lateral_range_m": [
+        -0.14501774787564195,
+        0.1445680895785149
+      ],
+      "single_support_samples": 44,
+      "single_support_planar_inside_fraction": 0.4090909090909091,
+      "single_support_lateral_inside_fraction": 0.7272727272727273,
+      "single_support_planar_margin_min_m": -0.16883493863956484,
+      "single_support_lateral_margin_min_m": -0.07512130503343172,
+      "single_support_lateral_outside_phases": [
+        0.4,
+        0.4166666666666667,
+        0.43333333333333335,
+        0.45,
+        0.4666666666666667,
+        0.48333333333333334,
+        0.9,
+        0.9166666666666666,
+        0.9333333333333333,
+        0.95,
+        0.9666666666666667,
+        0.9833333333333333
+      ],
+      "root_sway_velocity_peak_m_s": 0.31358538980296163,
+      "root_sway_velocity_rms_m_s": 0.22173835561070013,
+      "mean_v4_velocity_reward_fraction_for_exact_sway": 0.38227511619413773
+    },
+    "backward": {
+      "total_mass_kg": 42.205915473000005,
+      "com_lateral_range_m": [
+        -0.03482132220496088,
+        0.034390317685326584
+      ],
+      "com_height_range_m": [
+        0.6508431665144693,
+        0.6608789760433715
+      ],
+      "approximate_zmp_lateral_range_m": [
+        -0.1495048818503205,
+        0.1490867630004783
+      ],
+      "single_support_samples": 44,
+      "single_support_planar_inside_fraction": 0.6818181818181818,
+      "single_support_lateral_inside_fraction": 0.7272727272727273,
+      "single_support_planar_margin_min_m": -0.17654428432714442,
+      "single_support_lateral_margin_min_m": -0.0740477467680803,
+      "single_support_lateral_outside_phases": [
+        0.4,
+        0.4166666666666667,
+        0.43333333333333335,
+        0.45,
+        0.4666666666666667,
+        0.48333333333333334,
+        0.9,
+        0.9166666666666666,
+        0.9333333333333333,
+        0.95,
+        0.9666666666666667,
+        0.9833333333333333
+      ],
+      "root_sway_velocity_peak_m_s": 0.31358538980296163,
+      "root_sway_velocity_rms_m_s": 0.22173835561070013,
+      "mean_v4_velocity_reward_fraction_for_exact_sway": 0.38227511619413773
+    },
+    "left": {
+      "total_mass_kg": 42.205915473000005,
+      "com_lateral_range_m": [
+        -0.037090027411921335,
+        0.03256750638323984
+      ],
+      "com_height_range_m": [
+        0.6513023109074176,
+        0.6602129718214405
+      ],
+      "approximate_zmp_lateral_range_m": [
+        -0.18125119584160942,
+        0.13649921688067834
+      ],
+      "single_support_samples": 44,
+      "single_support_planar_inside_fraction": 0.6363636363636364,
+      "single_support_lateral_inside_fraction": 0.7045454545454546,
+      "single_support_planar_margin_min_m": -0.17123828182757864,
+      "single_support_lateral_margin_min_m": -0.16237740501117728,
+      "single_support_lateral_outside_phases": [
+        0.13333333333333333,
+        0.15,
+        0.16666666666666666,
+        0.18333333333333332,
+        0.2,
+        0.8666666666666667,
+        0.8833333333333333,
+        0.9,
+        0.9166666666666666,
+        0.9333333333333333,
+        0.95,
+        0.9666666666666667,
+        0.9833333333333333
+      ],
+      "root_sway_velocity_peak_m_s": 0.31358538980296163,
+      "root_sway_velocity_rms_m_s": 0.22173835561070013,
+      "mean_v4_velocity_reward_fraction_for_exact_sway": 0.38227511619413773
+    },
+    "right": {
+      "total_mass_kg": 42.205915473000005,
+      "com_lateral_range_m": [
+        -0.03301302726429881,
+        0.036681646147316394
+      ],
+      "com_height_range_m": [
+        0.6513020839151412,
+        0.660206160514216
+      ],
+      "approximate_zmp_lateral_range_m": [
+        -0.13688471484787076,
+        0.18101922746285462
+      ],
+      "single_support_samples": 44,
+      "single_support_planar_inside_fraction": 0.6363636363636364,
+      "single_support_lateral_inside_fraction": 0.7045454545454546,
+      "single_support_planar_margin_min_m": -0.17220052942207753,
+      "single_support_lateral_margin_min_m": -0.1630921813424905,
+      "single_support_lateral_outside_phases": [
+        0.36666666666666664,
+        0.3833333333333333,
+        0.4,
+        0.4166666666666667,
+        0.43333333333333335,
+        0.45,
+        0.4666666666666667,
+        0.48333333333333334,
+        0.6333333333333333,
+        0.65,
+        0.6666666666666666,
+        0.6833333333333333,
+        0.7
+      ],
+      "root_sway_velocity_peak_m_s": 0.31358538980296163,
+      "root_sway_velocity_rms_m_s": 0.22173835561070013,
+      "mean_v4_velocity_reward_fraction_for_exact_sway": 0.38227511619413773
+    }
+  },
+  "v5_true_cad_fk": {
+    "stand": {
+      "max_foot_position_error_m": 1.8895846766206807e-12,
+      "max_foot_rotation_error_rad": 1.2828041607955958e-11,
+      "max_joint_speed_rad_s": 0.0,
+      "joint_max_speed_name": "center_waist_Yaw_joint",
+      "minimum_fk_clearance_m": [
+        0.002999999996347036,
+        0.0029999999963357116
+      ],
+      "maximum_fk_clearance_m": [
+        0.002999999996347036,
+        0.0029999999963357116
+      ],
+      "max_clearance_error_m": 3.664288490690115e-12,
+      "endpoint_joint_difference_rad": 0.0,
+      "within_native_joint_limits": true
+    },
+    "forward": {
+      "max_foot_position_error_m": 0.0031439233879622885,
+      "max_foot_rotation_error_rad": 0.06260347638168802,
+      "max_joint_speed_rad_s": 4.045533229935919,
+      "joint_max_speed_name": "left_knee_Pitch_joint",
+      "minimum_fk_clearance_m": [
+        0.0029999682032724184,
+        0.002999968203231229
+      ],
+      "maximum_fk_clearance_m": [
+        0.05615460502806868,
+        0.05615460503093361
+      ],
+      "max_clearance_error_m": 0.011500193105174444,
+      "endpoint_joint_difference_rad": 9.040768134127575e-12,
+      "within_native_joint_limits": true
+    },
+    "backward": {
+      "max_foot_position_error_m": 0.003358749313590462,
+      "max_foot_rotation_error_rad": 0.06626898206341567,
+      "max_joint_speed_rad_s": 4.215196588057971,
+      "joint_max_speed_name": "right_knee_Pitch_joint",
+      "minimum_fk_clearance_m": [
+        0.002999962771216169,
+        0.002999962773436615
+      ],
+      "maximum_fk_clearance_m": [
+        0.056534173389379716,
+        0.05653417344754119
+      ],
+      "max_clearance_error_m": 0.012230121988792295,
+      "endpoint_joint_difference_rad": 2.0673796008452427e-11,
+      "within_native_joint_limits": true
+    },
+    "left": {
+      "max_foot_position_error_m": 0.0025618723175259346,
+      "max_foot_rotation_error_rad": 0.05178136362995873,
+      "max_joint_speed_rad_s": 4.283765046385094,
+      "joint_max_speed_name": "right_knee_Pitch_joint",
+      "minimum_fk_clearance_m": [
+        0.002999991363788257,
+        0.0029999916050861275
+      ],
+      "maximum_fk_clearance_m": [
+        0.05360050395368032,
+        0.05373958466537154
+      ],
+      "max_clearance_error_m": 0.009461785185085572,
+      "endpoint_joint_difference_rad": 8.42270697631875e-12,
+      "within_native_joint_limits": true
+    },
+    "right": {
+      "max_foot_position_error_m": 0.0025618723216838525,
+      "max_foot_rotation_error_rad": 0.05178136361420468,
+      "max_joint_speed_rad_s": 4.283765044439872,
+      "joint_max_speed_name": "left_knee_Pitch_joint",
+      "minimum_fk_clearance_m": [
+        0.0029999916050924558,
+        0.0029999913637911435
+      ],
+      "maximum_fk_clearance_m": [
+        0.05373958465503825,
+        0.05360050398355609
+      ],
+      "max_clearance_error_m": 0.00946178517213249,
+      "endpoint_joint_difference_rad": 1.856970133218283e-11,
+      "within_native_joint_limits": true
+    },
+    "yaw_left": {
+      "max_foot_position_error_m": 0.0026092624653974374,
+      "max_foot_rotation_error_rad": 0.05268928408522099,
+      "max_joint_speed_rad_s": 3.901069017959339,
+      "joint_max_speed_name": "left_knee_Pitch_joint",
+      "minimum_fk_clearance_m": [
+        0.0029999772594719865,
+        0.0029999825105552214
+      ],
+      "maximum_fk_clearance_m": [
+        0.053959622766933,
+        0.05375984060261019
+      ],
+      "max_clearance_error_m": 0.009627078932713543,
+      "endpoint_joint_difference_rad": 2.5229818234606682e-12,
+      "within_native_joint_limits": true
+    },
+    "yaw_right": {
+      "max_foot_position_error_m": 0.002609262333075329,
+      "max_foot_rotation_error_rad": 0.052689284586886716,
+      "max_joint_speed_rad_s": 3.901069017959983,
+      "joint_max_speed_name": "right_knee_Pitch_joint",
+      "minimum_fk_clearance_m": [
+        0.0029999825105556654,
+        0.002999977259478981
+      ],
+      "maximum_fk_clearance_m": [
+        0.053759840703794914,
+        0.05395962284667133
+      ],
+      "max_clearance_error_m": 0.009627078822805904,
+      "endpoint_joint_difference_rad": 1.5187850976872141e-13,
+      "within_native_joint_limits": true
+    },
+    "sidestep_left": {
+      "max_foot_position_error_m": 0.003713023645420083,
+      "max_foot_rotation_error_rad": 0.0791299341770069,
+      "max_joint_speed_rad_s": 5.586710327217407,
+      "joint_max_speed_name": "right_shoulder_Yaw_joint",
+      "minimum_fk_clearance_m": [
+        0.0029997027312999025,
+        0.002999702731271925
+      ],
+      "maximum_fk_clearance_m": [
+        0.06137584808935548,
+        0.050263122119519554
+      ],
+      "max_clearance_error_m": 0.013710639595757662,
+      "endpoint_joint_difference_rad": 0.0,
+      "within_native_joint_limits": true
+    },
+    "sidestep_right": {
+      "max_foot_position_error_m": 0.003713023699191727,
+      "max_foot_rotation_error_rad": 0.07912993398383544,
+      "max_joint_speed_rad_s": 5.586696835845958,
+      "joint_max_speed_name": "left_shoulder_Yaw_joint",
+      "minimum_fk_clearance_m": [
+        0.0029997027312999025,
+        0.002999702731271925
+      ],
+      "maximum_fk_clearance_m": [
+        0.05026312209713102,
+        0.06137584808475571
+      ],
+      "max_clearance_error_m": 0.013710639602037417,
+      "endpoint_joint_difference_rad": 0.0,
+      "within_native_joint_limits": true
+    }
+  },
+  "support_conclusion": "Support coverage changed; native dynamics and contact forces must decide feasibility."
+}

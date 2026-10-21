@@ -7,6 +7,7 @@ the acceptance gate, teleports the robot, or restarts a failed episode.
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import math
 from pathlib import Path
@@ -15,7 +16,16 @@ import time
 from play_interactive_web import ROOT, sha256
 
 
-def diagnostic_plan(sidestep_duration=1.6,sequence_only=False):
+def diagnostic_plan(sidestep_duration=1.6,sequence_only=False,inplace_only=False):
+    if sequence_only and inplace_only:
+        raise ValueError('In-place and finite-sequence diagnostic modes are mutually exclusive')
+    if inplace_only:
+        return [
+            {'name':'stand','start':0.,'end':1.,'command':None},
+            {'name':'inplace_lift','start':1.,'end':5.5,'command':[0.,0.,0.]},
+            {'name':'recover','start':5.5,'end':6.5,'command':[0.,0.,0.]},
+            {'name':'final_stand','start':6.5,'end':8.,'command':None},
+        ]
     if sequence_only:
         end=1.+.5+2*sidestep_duration+1.
         return [
@@ -31,6 +41,78 @@ def diagnostic_plan(sidestep_duration=1.6,sequence_only=False):
         {"name": "sidestep_sequence", "start": 3.5, "end": sequence_end, "command": None},
         {"name": "final_stand", "start": sequence_end, "end": sequence_end + 1.5, "command": None},
     ]
+
+
+def diagnostic_contract(saved,root=ROOT):
+    """Check identity before Kit starts, without importing simulator modules."""
+    root=Path(root)
+    base=json.loads((root/'config/robot_contract.json').read_text())
+    robot=saved.get('robot')
+    if robot not in ('q1_leg_interactive_v4','q1_leg_lift_v5'):
+        raise ValueError('Diagnostic requires a native v4 or lift-v5 robot contract')
+    expected={'robot':robot,'observation_size':110,'joint_names':base['joint_names'],
+              'urdf_sha256':sha256(root/'urdf/q1_inertia/quanta_robot_legged.urdf')}
+    if robot=='q1_leg_lift_v5':
+        control_path=root/'config/lift_control_v5.json'
+        control=json.loads(control_path.read_text())
+        gait=Path(control['gait_file'])
+        if gait.is_absolute() or '..' in gait.parts:
+            raise ValueError('Lift-v5 gait must identify a project-relative file')
+        # CONTROL_PROFILE is a literal source constant. Inspect it without
+        # executing the torch/simulator package during preflight validation.
+        objective=root/'source/leg_humanoid_lab/leg_humanoid_lab/lift_objective.py'
+        tree=ast.parse(objective.read_text())
+        values=[ast.literal_eval(node.value) for node in tree.body if isinstance(node,ast.Assign)
+                and any(isinstance(target,ast.Name) and target.id=='CONTROL_PROFILE' for target in node.targets)]
+        if len(values)!=1 or not isinstance(values[0],str) or not values[0]:
+            raise ValueError('Lift-v5 control source does not expose its unique profile')
+        expected.update(gait_sha256=sha256(root/gait),control_sha256=sha256(control_path),control_profile=values[0])
+    else:
+        expected['gait_sha256']=sha256(root/'config/v4_gaits.json')
+    if saved.get('proxy') is not False or any(saved.get(key)!=value for key,value in expected.items()):
+        raise ValueError('Diagnostic robot, gait, URDF or native control contract does not match its source')
+    return expected
+
+
+class FootDiagnosticMetrics:
+    """Accumulate actual native foot measurements; reference motion earns nothing."""
+    def __init__(self):
+        self.frames=0
+        self.unloaded_peak=[0.,0.];self.unloaded_samples=[0,0]
+        self.planned_samples=[0,0];self.planned_success=[0,0]
+        self.first=None;self.last=None;self.peak_displacement=[0.,0.];self.path_length=[0.,0.]
+
+    def update(self,clearance,loaded,reference_height,reference_contact,world_positions):
+        if not all(math.isfinite(float(value)) for value in list(clearance)+list(reference_height)
+                   +[v for position in world_positions for v in position]):
+            raise ValueError('Native foot diagnostic contains nonfinite measurements')
+        positions=[[float(v) for v in point] for point in world_positions]
+        if self.first is None:self.first=[point[:] for point in positions]
+        for foot in (0,1):
+            if not loaded[foot]:
+                self.unloaded_samples[foot]+=1
+                self.unloaded_peak[foot]=max(self.unloaded_peak[foot],float(clearance[foot]))
+            if not reference_contact[foot] and reference_height[foot]>.022:
+                self.planned_samples[foot]+=1
+                self.planned_success[foot]+=int(not loaded[foot] and clearance[foot]>=.025)
+            displacement=math.dist(positions[foot],self.first[foot])
+            self.peak_displacement[foot]=max(self.peak_displacement[foot],displacement)
+            if self.last is not None:self.path_length[foot]+=math.dist(positions[foot],self.last[foot])
+        self.last=positions;self.frames+=1
+
+    def summary(self):
+        displacement=[[self.last[foot][axis]-self.first[foot][axis] for axis in range(3)] for foot in (0,1)] if self.first is not None else None
+        return {'foot_order':['left','right'],'valid_first_episode_frames':self.frames,
+                'unloaded_peak_clearance_m_per_foot':self.unloaded_peak,
+                'unloaded_samples_per_foot':self.unloaded_samples,
+                'planned_high_swing_samples_per_foot':self.planned_samples,
+                'planned_high_swing_success_rate_per_foot':[success/count if count else None for success,count in zip(self.planned_success,self.planned_samples)],
+                'foot_world_peak_displacement_m_per_foot':self.peak_displacement,
+                'foot_world_path_length_m_per_foot':self.path_length,
+                'foot_world_displacement_xyz_m_per_foot':displacement,
+                'measurement':'minimum native CAD sole height; physical loaded contact; native foot link origin world displacement',
+                'planned_high_swing':'reference_contact=false and reference_height>0.022m; success requires clearance>=0.025m and unloaded contact',
+                'scope':'Single diagnostic episode only; does not replace balanced acceptance gates'}
 
 
 def validate_metadata(report):
@@ -52,7 +134,39 @@ def validate_metadata(report):
         and isinstance(report.get("failure"), bool)
         and (not report["failure"] or bool(report.get("failure_reason")))
         and report.get("technical_error") is None
+        and validate_task_metadata(report)
     )
+
+
+def validate_task_metadata(report):
+    """Retain compatibility with already-published v4 diagnostic metadata."""
+    if 'robot' not in report:
+        return True
+    robot=report.get('robot');task=report.get('task')
+    if robot not in ('q1_leg_interactive_v4','q1_leg_lift_v5') or task not in ('inplace_curriculum','finite_sidestep_sequence','interactive_diagnostic'):
+        return False
+    if not isinstance(report.get('control_profile'),str) or not report['control_profile']:
+        return False
+    if task=='inplace_curriculum' and (robot!='q1_leg_lift_v5' or report.get('task_label')!='In-place curriculum'):
+        return False
+    metrics=report.get('foot_metrics',{})
+    frames=metrics.get('valid_first_episode_frames',-1)
+    if type(frames) is not int or not 0<=frames<=report.get('frames',-1):
+        return False
+    for field in ('unloaded_peak_clearance_m_per_foot','foot_world_peak_displacement_m_per_foot','foot_world_path_length_m_per_foot'):
+        values=metrics.get(field)
+        if not isinstance(values,list) or len(values)!=2 or not all(isinstance(value,(int,float)) and math.isfinite(value) and value>=0 for value in values):
+            return False
+    samples=metrics.get('planned_high_swing_samples_per_foot')
+    rates=metrics.get('planned_high_swing_success_rate_per_foot')
+    if not isinstance(samples,list) or not isinstance(rates,list) or len(samples)!=2 or len(rates)!=2:
+        return False
+    for count,rate in zip(samples,rates):
+        if type(count) is not int or count<0 or (count==0 and rate is not None):
+            return False
+        if count and (not isinstance(rate,(int,float)) or not math.isfinite(rate) or not 0<=rate<=1):
+            return False
+    return True
 
 
 def main():
@@ -61,7 +175,9 @@ def main():
     parser.add_argument("--contract", type=Path)
     parser.add_argument("--video", type=Path, default=ROOT / "outputs/interactive_diagnostic.mp4")
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--sequence-only",action="store_true",help="Diagnose the finite sidestep without an earlier walking segment")
+    task_options=parser.add_mutually_exclusive_group()
+    task_options.add_argument("--sequence-only",action="store_true",help="Diagnose the finite sidestep without an earlier walking segment")
+    task_options.add_argument("--inplace-only",action="store_true",help="Diagnose native PPO in-place lifting; this is a curriculum task, not keyboard locomotion")
     parser.add_argument("--sidestep-duration", type=float, default=1.6)
     from isaaclab.app import AppLauncher
     AppLauncher.add_app_launcher_args(parser)
@@ -71,20 +187,17 @@ def main():
     checkpoint, target = args.checkpoint.resolve(), args.video.resolve()
     if not checkpoint.is_file():
         parser.error("--checkpoint must identify an existing native PPO checkpoint")
-    if (target.name == "q1_leg_interactive_v4.mp4"
+    if (target.name in ("q1_leg_interactive_v4.mp4","q1_leg_lift_v5.mp4","q1_leg_interactive_v5.mp4")
             or target.is_relative_to((ROOT / "checkpoints").resolve())):
         parser.error("Diagnostic media must use a separate output name outside checkpoints")
     if target.exists() or target.with_suffix(".json").exists():
         parser.error("Diagnostic output already exists; choose another filename to preserve it")
-    base = json.loads((ROOT / "config/robot_contract.json").read_text())
     contract_path = args.contract or checkpoint.parent / "contract.json"
     contract = json.loads(contract_path.read_text())
-    expected = {"robot": "q1_leg_interactive_v4", "observation_size": 110,
-                "joint_names": base["joint_names"],
-                "urdf_sha256": sha256(ROOT / "urdf/q1_inertia/quanta_robot_legged.urdf"),
-                "gait_sha256": sha256(ROOT / "config/v4_gaits.json")}
-    if any(contract.get(key) != value for key, value in expected.items()):
-        raise ValueError("Diagnostic requires a matching native v4 robot contract; legacy/proxy weights refused")
+    expected=diagnostic_contract(contract)
+    is_lift=expected['robot']=='q1_leg_lift_v5'
+    if args.inplace_only and not is_lift:
+        parser.error('--inplace-only requires the independent lift-v5 contract')
     checkpoint_sha = sha256(checkpoint)
     args.enable_cameras = True
     launcher = AppLauncher(args)
@@ -98,10 +211,17 @@ def main():
     from rsl_rl.runners import OnPolicyRunner
     from leg_humanoid_lab.agent_cfg import PPOCfg
     from leg_humanoid_lab.interactive_control import KeyboardController
-    from leg_humanoid_lab.interactive_env import InteractiveEnvCfg, InteractiveLegEnv
+    if is_lift:
+        from leg_humanoid_lab.lift_env import LiftEnvCfg as EnvCfg,LiftLegEnv as NativeEnv,lift_contract
+        runtime_contract=lift_contract()
+        if any(runtime_contract.get(key)!=value for key,value in expected.items()):
+            app.close()
+            raise ValueError('Runtime lift control identity does not match the saved candidate')
+    else:
+        from leg_humanoid_lab.interactive_env import InteractiveEnvCfg as EnvCfg,InteractiveLegEnv as NativeEnv
     from runtime_compat import load_checkpoint, runner_cfg
 
-    class DiagnosticEnv(InteractiveLegEnv):
+    class DiagnosticEnv(NativeEnv):
         _manual_reset_allowed = True
         suppressed_resets = 0
 
@@ -111,14 +231,17 @@ def main():
             else:
                 self.suppressed_resets += len(env_ids) if env_ids is not None else self.num_envs
 
-    plan = diagnostic_plan(args.sidestep_duration,args.sequence_only)
+    plan = diagnostic_plan(args.sidestep_duration,args.sequence_only,args.inplace_only)
+    task='inplace_curriculum' if args.inplace_only else 'finite_sidestep_sequence' if args.sequence_only else 'interactive_diagnostic'
     report = {"diagnostic": True, "gate_passed": False, "accepted": False,
         "source": "native Isaac Sim PhysX PPO", "proxy": False,
         "overlay": "EXPERIMENTAL / NOT ACCEPTED", "checkpoint": str(checkpoint),
         "checkpoint_sha256": checkpoint_sha, "contract": expected,
+        "robot":expected['robot'],"control_profile":expected.get('control_profile','interactive_v4_native_residual'),
+        "task":task,"task_label":"In-place curriculum" if args.inplace_only else "Finite sidestep sequence" if args.sequence_only else "Interactive diagnostic",
         "seed": args.seed, "fps": 50, "resolution": [1280, 720], "frames": 0,
         "actual_duration_s": 0., "expected_duration_s": plan[-1]["end"],
-        "plan": plan, "mode_changes": [], "root_positions": [],
+        "plan": plan, "mode_changes": [], "root_positions": [],"foot_observations":[],
         "failure": False, "failure_reason": None, "technical_error": None,
         "completed_plan": False, "reset_count_after_start": 0,
         "auto_resets_suppressed": 0,
@@ -127,15 +250,21 @@ def main():
             "source/leg_humanoid_lab/leg_humanoid_lab/interactive_control.py",
             "scripts/reinforcement_learning/rsl_rl/record_interactive_diagnostic.py")},
         "scope": "Unaccepted training candidate; actual failure remains visible; not evidence of learned skill."}
+    if is_lift:
+        for name in ('source/leg_humanoid_lab/leg_humanoid_lab/lift_env.py',
+                     'source/leg_humanoid_lab/leg_humanoid_lab/lift_objective.py','config/lift_control_v5.json'):
+            report['source_sha256'][name]=sha256(ROOT/name)
+    foot_metrics=FootDiagnosticMetrics()
     env, writer = None, None
     try:
-        cfg = InteractiveEnvCfg()
+        cfg = EnvCfg()
         cfg.scene.num_envs = 1
         cfg.training_mode = False
+        if is_lift:cfg.curriculum_stage=0 if args.inplace_only else 1
         cfg.episode_length_s = 30.
         cfg.sim.device = args.device
         cfg.seed = args.seed
-        cfg.viewer.eye, cfg.viewer.lookat = (3., -3., 1.8), (.1, 0., .8)
+        cfg.viewer.eye, cfg.viewer.lookat = ((2.35, -2.55, 1.5), (.05, 0., .7)) if is_lift else ((3., -3., 1.8), (.1, 0., .8))
         cfg.viewer.resolution = (1280, 720)
         env = DiagnosticEnv(cfg, render_mode="rgb_array")
         env.set_manual_control("stand", [0., 0., 0.], 0.)
@@ -154,8 +283,10 @@ def main():
                                    macro_block_size=16, ffmpeg_params=["-movflags", "+faststart"])
         try:
             font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 27)
+            metric_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
         except OSError:
             font = ImageFont.load_default()
+            metric_font = font
         for _ in range(12):
             env.sim.render()
             env.render(recompute=True)
@@ -177,7 +308,11 @@ def main():
                     last_segment = segment["name"]
                 if segment["name"] == "W_forward":
                     controller.velocity(*segment["command"], now)
-                control = controller.tick(env.step_dt, now)
+                if args.inplace_only:
+                    mode={'inplace_lift':'walk','recover':'recover'}.get(segment['name'],'stand')
+                    control={'mode':mode,'command':[0.,0.,0.],'phase':0.}
+                else:
+                    control = controller.tick(env.step_dt, now)
                 env.set_manual_control(control["mode"], control["command"], control["phase"])
                 obs = wrapped.get_observations()
                 _obs, _reward, done, _info = wrapped.step(policy(obs))
@@ -194,6 +329,15 @@ def main():
                 failed = bool(done[0]) or not finite
                 if failed:
                     report.update(failure=True, failure_reason="Native PhysX episode terminated; recording stops without resetting")
+                if not failed:
+                    clearance,_speed,loaded,_target=env.foot_step_metrics()
+                    foot_world=data.body_link_pos_w[0,env.foot_body_ids].cpu().tolist()
+                    clearance=clearance[0].cpu().tolist();loaded=loaded[0].cpu().tolist()
+                    ref_height=env.reference_height[0].cpu().tolist()
+                    ref_contact=env.reference_contact[0].cpu().tolist()
+                    foot_metrics.update(clearance,loaded,ref_height,ref_contact,foot_world)
+                    report['foot_observations'].append({'time':(i+1)*env.step_dt,'clearance_m':clearance,'loaded':loaded,
+                        'reference_height_m':ref_height,'reference_contact':ref_contact,'foot_link_positions_world_m':foot_world})
                 env.sim.render()
                 pixels = np.asarray(env.render(recompute=True))
                 if pixels.shape != (720, 1280, 3):
@@ -202,10 +346,18 @@ def main():
                 draw = ImageDraw.Draw(picture)
                 draw.rectangle((0, 0, 1280, 86), fill=(18, 18, 18))
                 draw.text((16, 7), report["overlay"], fill=(255, 195, 40), font=font)
+                if args.inplace_only:
+                    draw.text((745,7),'In-place curriculum',fill=(255,195,40),font=font)
                 label = f"Native PhysX | seed {args.seed} | {t + env.step_dt:.2f}s | {control['mode']}"
                 if failed:
                     label += " | FAILED - NO RESET"
                 draw.text((16, 46), label, fill=(255, 95, 95) if failed else (245, 245, 245), font=font)
+                if is_lift and not failed:
+                    draw.rectangle((0, 660, 1280, 720), fill=(18, 18, 18))
+                    measured = ' | '.join(f"{side} sole {max(0.,100*clearance[j]):.1f} cm ({'LOADED' if loaded[j] else 'AIR'})" for j, side in enumerate(('L', 'R')))
+                    peaks = foot_metrics.unloaded_peak
+                    draw.text((16, 666), measured, fill=(245, 245, 245), font=metric_font)
+                    draw.text((16, 692), f"Measured unloaded peak L/R: {100*peaks[0]:.1f}/{100*peaks[1]:.1f} cm | native CAD + contact", fill=(255, 195, 40), font=metric_font)
                 writer.append_data(np.asarray(picture))
                 report["frames"] += 1
                 if failed:
@@ -220,6 +372,7 @@ def main():
             writer.close()
         report["actual_duration_s"] = report["frames"] / 50.
         report["auto_resets_suppressed"] = int(env.suppressed_resets) if env else 0
+        report['foot_metrics']=foot_metrics.summary()
         if target.exists():
             report["video_sha256"] = sha256(target)
         target.parent.mkdir(parents=True, exist_ok=True)

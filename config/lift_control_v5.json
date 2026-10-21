@@ -1,0 +1,16 @@
+{
+  "schema": 5,
+  "robot": "q1_leg_lift_v5",
+  "gait_file": "config/v5_gaits_lift6.json",
+  "motor_type": "implicit_pd",
+  "leg_stiffness": 800.0,
+  "leg_damping": 32.0,
+  "motor_effort_limit_nm": 100.0,
+  "motor_velocity_limit_rad_s": 10.0,
+  "gravity_feedforward": false,
+  "reference_velocity_feedforward": false,
+  "height_sigma_m": 0.02,
+  "reference_height": "Actual source-CAD sole FK at every phase, not the nominal 6 cm command",
+  "root_constraints": false,
+  "scope": "Native contact-driven residual PPO; initial curriculum is in-place unloaded foot lift"
+}
