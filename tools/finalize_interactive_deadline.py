@@ -106,10 +106,10 @@ def main():
 
 上圖是此候選的真實原生 PhysX／PPO 錄影，seed 42、{metadata['actual_duration_s']:.2f} 秒，畫面標有 **EXPERIMENTAL / NOT ACCEPTED**；本回合{'發生終止，立即停止且未重置' if metadata['failure'] else '完成有限序列，仍不能替代整批驗收'}。[GoFile 診斷影片]({url}) · [專案 MP4]({video})。
 
-[未合格候選權重](checkpoints/isaac/interactive_v4/candidates/deadline_20261021/model.pt) 僅供重現診斷，並未取代正式權重。重新錄製可執行：
+候選權重僅保留本機，並未取代正式權重。重新錄製時請指定本機保存的 checkpoint：
 
 ```bash
-OUT=outputs/my_diagnostic.mp4 bash record_interactive_diagnostic.sh --checkpoint checkpoints/isaac/interactive_v4/candidates/deadline_20261021/model.pt --sequence-only --seed 42
+OUT=outputs/my_diagnostic.mp4 bash record_interactive_diagnostic.sh --checkpoint /path/to/saved/run/resume.pt --sequence-only --seed 42
 bash start_native_web.sh
 ```
 
@@ -122,7 +122,6 @@ bash start_native_web.sh
            'scripts/reinforcement_learning/rsl_rl/record_interactive_diagnostic.py',
            'docs/DEADLINE_20261021.md','docs/results/interactive_v4_deadline_20261021.json',
            'docs/images/interactive_deadline_metrics.svg',video,str(Path(video).with_suffix('.json')),gif]
-    paths += [str((candidate/name).relative_to(ROOT)) for name in ('model.pt','contract.json','evaluation.json')]
     if subprocess.check_output(['git','diff','--cached','--name-only'],cwd=ROOT).strip():
         raise RuntimeError('Unrelated staged changes exist; media retained without changing the index')
     remote=subprocess.check_output(['git','remote','get-url','origin'],cwd=ROOT,text=True).strip()
