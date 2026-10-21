@@ -1,0 +1,188 @@
+{
+  "diagnostic": true,
+  "accepted": false,
+  "source": "native_physx_checkpoint_first_failure_pre_reset",
+  "checkpoint": "/home/will/projects/q1_leg_urdf/checkpoints/isaac/lift_v5/runs/20261021_1503_ff_mirror/chunks/0002010_s0_r1/resume.pt",
+  "checkpoint_sha256": "053abc84251e9a50ac37fd55d5575f82e888bf8515f2bd1ab2da400f2dd81824",
+  "stage": 0,
+  "num_envs": 8,
+  "seed": 271100,
+  "first_episode_only": true,
+  "done_or_collision_rules_modified": false,
+  "captures_before_native_auto_reset": true,
+  "environment_sha256": "4b21309a10e71debbaa8411668780127e7f5f6c0d83a7960519bb2f7830802d3",
+  "diagnostic_script_sha256": "8ff5d2a32aa2422cf8126415778b3e6a1abb9c781784dd240ab77e179b10f522",
+  "urdf_sha256": "2a9a5fce0cd4cf116ba22fcc5c2dfc90747e16c7c1c1ccd0914beec61ce7b3ac",
+  "source_diagnostic_path": "/home/will/projects/q1_leg_urdf/outputs/lift2010_recovery_failure.json",
+  "source_diagnostic_sha256": "62001886d53b9ab3828d4780c8b6a3dc1db92364904bfc9a66594e5c98ac2222",
+  "evaluation_cases": {
+    "stand": {
+      "episodes": 4,
+      "completed_episodes": 4,
+      "survival_rate": 1.0,
+      "duration_s": 20.0,
+      "upright": 0.9997875690460205,
+      "stop_observed_rate": 1.0,
+      "stop_observed_episodes": 4,
+      "final_stand_speed_m_s": 0.0034050580579787493,
+      "stance_slip_m_s": 0.028034184128046036,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    "inplace": {
+      "episodes": 4,
+      "completed_episodes": 1,
+      "survival_rate": 0.25,
+      "duration_s": 15.345000267028809,
+      "upright": 0.9972390532493591,
+      "stop_observed_rate": 0.25,
+      "stop_observed_episodes": 1,
+      "final_stand_speed_m_s": 0.0068854377605021,
+      "stance_slip_m_s": 0.06941767036914825,
+      "foot_peak_clearance_m_per_foot": [
+        0.07355166971683502,
+        0.06282741576433182
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9087837934494019,
+        0.7471590638160706
+      ],
+      "high_swing_samples_per_foot": [
+        296.0,
+        352.0
+      ]
+    }
+  },
+  "first_terminations": [
+    {
+      "env_index": 5,
+      "time_s": 13.48,
+      "terminated": true,
+      "time_out": false
+    },
+    {
+      "env_index": 7,
+      "time_s": 13.56,
+      "terminated": true,
+      "time_out": false
+    },
+    {
+      "env_index": 3,
+      "time_s": 14.34,
+      "terminated": true,
+      "time_out": false
+    }
+  ],
+  "first_failures": [
+    {
+      "env_index": 5,
+      "case": "inplace",
+      "time_s": 13.48,
+      "mode": 0,
+      "gait_phase": 0.7777547836303711,
+      "upright": 0.9895943403244019,
+      "root_height_m": 0.8407565355300903,
+      "reference_root_height_m": 0.8600000143051147,
+      "failure_predicates": {
+        "root_below_052m": false,
+        "upright_below_065": false,
+        "nonfoot_contact_over_25n": true,
+        "nonfinite_root_state": false
+      },
+      "nonfoot_contacts_over_25n": [
+        {
+          "body": "right_ankle_pitch_link",
+          "force_world_n": [
+            8.352119948540349e-06,
+            0.0,
+            62.16278839111328
+          ],
+          "norm_n": 62.16278839111328
+        }
+      ],
+      "ankle_source_cad_min_height_m": {
+        "left_ankle_pitch_link": 0.02830246090888977,
+        "left_ankle_roll_link": 0.03512582927942276,
+        "right_ankle_pitch_link": 1.049041748046875e-05,
+        "right_ankle_roll_link": 0.02397245354950428
+      }
+    },
+    {
+      "env_index": 7,
+      "case": "inplace",
+      "time_s": 13.56,
+      "mode": 0,
+      "gait_phase": 0.7777547836303711,
+      "upright": 0.9896929860115051,
+      "root_height_m": 0.8406357765197754,
+      "reference_root_height_m": 0.8600000143051147,
+      "failure_predicates": {
+        "root_below_052m": false,
+        "upright_below_065": false,
+        "nonfoot_contact_over_25n": true,
+        "nonfinite_root_state": false
+      },
+      "nonfoot_contacts_over_25n": [
+        {
+          "body": "right_ankle_pitch_link",
+          "force_world_n": [
+            1.114025781134842e-05,
+            0.0,
+            82.91421508789062
+          ],
+          "norm_n": 82.91421508789062
+        }
+      ],
+      "ankle_source_cad_min_height_m": {
+        "left_ankle_pitch_link": 0.027966052293777466,
+        "left_ankle_roll_link": 0.03489340469241142,
+        "right_ankle_pitch_link": 1.0669231414794922e-05,
+        "right_ankle_roll_link": 0.023960955440998077
+      }
+    },
+    {
+      "env_index": 3,
+      "case": "inplace",
+      "time_s": 14.34,
+      "mode": 0,
+      "gait_phase": 0.7777547836303711,
+      "upright": 0.9896634817123413,
+      "root_height_m": 0.8406735062599182,
+      "reference_root_height_m": 0.8600000143051147,
+      "failure_predicates": {
+        "root_below_052m": false,
+        "upright_below_065": false,
+        "nonfoot_contact_over_25n": true,
+        "nonfinite_root_state": false
+      },
+      "nonfoot_contacts_over_25n": [
+        {
+          "body": "right_ankle_pitch_link",
+          "force_world_n": [
+            1.167805112345377e-05,
+            0.0,
+            86.91688537597656
+          ],
+          "norm_n": 86.91688537597656
+        }
+      ],
+      "ankle_source_cad_min_height_m": {
+        "left_ankle_pitch_link": 0.028242498636245728,
+        "left_ankle_roll_link": 0.03498077392578125,
+        "right_ankle_pitch_link": 9.119510650634766e-06,
+        "right_ankle_roll_link": 0.023969560861587524
+      }
+    }
+  ],
+  "interpretation": "Three of four inplace episodes terminate on native right_ankle_pitch_link contact over25N during post-lift stand; height/upright/nonfinite predicates false. Fourth inplace episode survives. This proves these terminal predicates, not the causal role of stop-phase conditioning."
+}

@@ -1,0 +1,277 @@
+{
+  "diagnostic": "cpu_counterfactual_stand_phase_sensitivity",
+  "physical_failure_cause_proven": false,
+  "scope": "Deterministic actor mean on a synthetic neutral 110-D standing observation; only phase sin/cos change. This is not a native rollout or proof of the terminal contact predicate.",
+  "checkpoint": "/home/will/projects/q1_leg_urdf/checkpoints/isaac/lift_v5/runs/20261021_1503_ff_mirror/chunks/0001910_s0_r1/resume.pt",
+  "checkpoint_sha256": "61be1ba7dc879dd87b60ae51cfaabfad5a2d347bb4efa2c05ea2bed3aa2f3f10",
+  "completed_iterations": 1910,
+  "frozen_environment_sha256": "4b21309a10e71debbaa8411668780127e7f5f6c0d83a7960519bb2f7830802d3",
+  "joint_names": [
+    "center_waist_Yaw_joint",
+    "center_waist_Roll_joint",
+    "center_waist_Pitch_joint",
+    "left_hip_Pitch_joint",
+    "left_hip_Roll_joint",
+    "left_hip_Yaw_joint",
+    "left_knee_Pitch_joint",
+    "left_ankle_Pitch_joint",
+    "left_ankle_Roll_joint",
+    "left_shoulder_Pitch_joint",
+    "left_shoulder_Roll_joint",
+    "left_shoulder_Yaw_joint",
+    "left_elbow_Pitch_joint",
+    "right_hip_Pitch_joint",
+    "right_hip_Roll_joint",
+    "right_hip_Yaw_joint",
+    "right_knee_Pitch_joint",
+    "right_ankle_Pitch_joint",
+    "right_ankle_Roll_joint",
+    "right_shoulder_Pitch_joint",
+    "right_shoulder_Roll_joint",
+    "right_shoulder_Yaw_joint",
+    "right_elbow_Pitch_joint"
+  ],
+  "neutral_observation": {
+    "linear_angular_joint_velocity": 0,
+    "projected_gravity": [
+      0,
+      0,
+      -1
+    ],
+    "q_minus_stand": 0,
+    "previous_action": 0,
+    "command": [
+      0,
+      0,
+      0
+    ],
+    "skill": [
+      1,
+      0,
+      0
+    ],
+    "height": 0.86,
+    "reference_minus_stand": 0
+  },
+  "rows": [
+    {
+      "condition": "initial_stand",
+      "phase": 0.0,
+      "phase_sin_cos": [
+        0.0,
+        1.0
+      ],
+      "clipped_actor_action": [
+        -0.2625998258590698,
+        -0.014913306571543217,
+        0.0999857634305954,
+        0.02618129923939705,
+        0.053193122148513794,
+        0.004293529316782951,
+        -0.1406533122062683,
+        0.337812215089798,
+        -0.24876105785369873,
+        0.17361663281917572,
+        0.1835942268371582,
+        0.10360735654830933,
+        0.07964350283145905,
+        -0.009065709076821804,
+        -0.042669627815485,
+        0.10146109014749527,
+        0.17489594221115112,
+        -0.466610312461853,
+        0.11361534893512726,
+        -0.40533506870269775,
+        0.03033735603094101,
+        -0.21161974966526031,
+        -0.01425651740282774
+      ],
+      "stance_residual_rad": [
+        -0.09190993756055832,
+        -0.005219657439738512,
+        0.03499501571059227,
+        0.009163454174995422,
+        0.018617592751979828,
+        0.0015027351910248399,
+        -0.04922865703701973,
+        0.11823427677154541,
+        -0.08706636726856232,
+        0.0607658214867115,
+        0.06425797939300537,
+        0.036262575536966324,
+        0.027875225991010666,
+        -0.003172998083755374,
+        -0.01493436936289072,
+        0.035511381924152374,
+        0.06121357902884483,
+        -0.1633136123418808,
+        0.0397653728723526,
+        -0.1418672651052475,
+        0.010618074797093868,
+        -0.07406691461801529,
+        -0.004989780951291323
+      ]
+    },
+    {
+      "condition": "fixed_5_5_s_training_bout_stop",
+      "phase": 0.1111111119389534,
+      "phase_sin_cos": [
+        0.6427876353263855,
+        0.7660444378852844
+      ],
+      "clipped_actor_action": [
+        -0.2446351945400238,
+        0.12523253262043,
+        0.12010258436203003,
+        -0.01029052585363388,
+        0.10612256824970245,
+        0.03182828053832054,
+        -0.1873772144317627,
+        0.37411007285118103,
+        -0.21273337304592133,
+        0.12580803036689758,
+        0.11491996794939041,
+        0.11312365531921387,
+        0.030437029898166656,
+        -0.010432298295199871,
+        0.03381548449397087,
+        0.16107474267482758,
+        0.09638486802577972,
+        -0.32330894470214844,
+        0.2875130772590637,
+        -0.34267300367355347,
+        0.058209773153066635,
+        -0.10585705935955048,
+        0.0249776691198349
+      ],
+      "stance_residual_rad": [
+        -0.08562231808900833,
+        0.04383138567209244,
+        0.04203590378165245,
+        -0.0036016840022057295,
+        0.03714289888739586,
+        0.011139897629618645,
+        -0.0655820220708847,
+        0.13093852996826172,
+        -0.07445667684078217,
+        0.044032808393239975,
+        0.040221989154815674,
+        0.039593279361724854,
+        0.010652960278093815,
+        -0.003651304403319955,
+        0.011835419572889805,
+        0.05637615919113159,
+        0.033734701573848724,
+        -0.11315812915563583,
+        0.10062957555055618,
+        -0.1199355497956276,
+        0.020373420789837837,
+        -0.037049971520900726,
+        0.00874218437820673
+      ]
+    },
+    {
+      "condition": "seven_second_evaluation_bout_stop",
+      "phase": 0.7777777910232544,
+      "phase_sin_cos": [
+        -0.9848076701164246,
+        0.1736486256122589
+      ],
+      "clipped_actor_action": [
+        -0.22505587339401245,
+        -0.12800610065460205,
+        0.17085859179496765,
+        0.03784358501434326,
+        0.05821207910776138,
+        0.027711492031812668,
+        -0.25827792286872864,
+        0.1643255203962326,
+        -0.45177581906318665,
+        0.11628809571266174,
+        0.17220760881900787,
+        0.12780940532684326,
+        0.020283974707126617,
+        -0.014119216240942478,
+        0.013947568833827972,
+        0.08576719462871552,
+        0.09166119247674942,
+        -0.5179741978645325,
+        -0.34363850951194763,
+        -0.38568300008773804,
+        -0.0787617564201355,
+        -0.31722086668014526,
+        -0.0874512568116188
+      ],
+      "stance_residual_rad": [
+        -0.07876955717802048,
+        -0.04480213299393654,
+        0.05980050563812256,
+        0.013245254755020142,
+        0.020374227315187454,
+        0.009699022397398949,
+        -0.09039726853370667,
+        0.05751392990350723,
+        -0.15812154114246368,
+        0.04070083424448967,
+        0.060272663831710815,
+        0.04473328962922096,
+        0.007099390961229801,
+        -0.004941725637763739,
+        0.004881648812443018,
+        0.0300185177475214,
+        0.03208141773939133,
+        -0.18129096925258636,
+        -0.12027347832918167,
+        -0.13498905301094055,
+        -0.027566613629460335,
+        -0.1110273003578186,
+        -0.030607938766479492
+      ]
+    }
+  ],
+  "eval_minus_training_action_mean_abs": 0.10731680691242218,
+  "eval_minus_training_action_max_abs": 0.631151556968689,
+  "maximum_stance_residual_difference_rad": 0.22090303897857666,
+  "largest_differences": [
+    {
+      "joint": "right_ankle_Roll_joint",
+      "action_difference": -0.631151556968689,
+      "stance_target_difference_rad": -0.22090303897857666
+    },
+    {
+      "joint": "center_waist_Roll_joint",
+      "action_difference": -0.25323861837387085,
+      "stance_target_difference_rad": -0.08863351494073868
+    },
+    {
+      "joint": "left_ankle_Roll_joint",
+      "action_difference": -0.23904244601726532,
+      "stance_target_difference_rad": -0.08366485685110092
+    },
+    {
+      "joint": "right_shoulder_Yaw_joint",
+      "action_difference": -0.2113638073205948,
+      "stance_target_difference_rad": -0.07397732883691788
+    },
+    {
+      "joint": "left_ankle_Pitch_joint",
+      "action_difference": -0.20978455245494843,
+      "stance_target_difference_rad": -0.07342459261417389
+    },
+    {
+      "joint": "right_ankle_Pitch_joint",
+      "action_difference": -0.19466525316238403,
+      "stance_target_difference_rad": -0.06813284009695053
+    },
+    {
+      "joint": "right_shoulder_Roll_joint",
+      "action_difference": -0.13697153329849243,
+      "stance_target_difference_rad": -0.04794003441929817
+    },
+    {
+      "joint": "right_elbow_Pitch_joint",
+      "action_difference": -0.1124289259314537,
+      "stance_target_difference_rad": -0.03935012221336365
+    }
+  ]
+}

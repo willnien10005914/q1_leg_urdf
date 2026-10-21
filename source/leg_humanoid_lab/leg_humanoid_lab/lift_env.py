@@ -77,7 +77,10 @@ class LiftLegEnv(InteractiveLegEnv):
         t=self.episode_length_buf*self.step_dt-self.schedule_start
         self.mode[:]=0;self.command_targets[:]=0;self.gesture_phase[:]=0
         if stage==0:
-            moving=(t>=0)&(t<5.5)&(self.scenario!=3)
+            # Reuse the base reset's independent 3.5--5.5 s draws, covering
+            # multiple stop phases without changing reset or inference state.
+            lift_duration=3.5+(self.walk_duration-3.5)*2.5
+            moving=(t>=0)&(t<lift_duration)&(self.scenario!=3)
             self.mode[moving]=1
         elif stage==1:
             # 0=pair, 1=left, 2=right, 3=stand; every sequence remains finite.

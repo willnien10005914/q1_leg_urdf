@@ -1,0 +1,63 @@
+{
+  "robot": "q1_leg_lift_v5",
+  "num_envs": 10240,
+  "max_iterations": 15000,
+  "chunk_iterations": 500,
+  "early_chunk_iterations": 100,
+  "early_chunk_until": 2000,
+  "num_steps_per_env": 24,
+  "learning_rate": 0.0002,
+  "exploration_std": 0.06,
+  "entropy_coef": 0.0015,
+  "num_mini_batches": 8,
+  "validation_episodes": 32,
+  "confirmation_episodes": 128,
+  "validation_seed_base": 171000,
+  "confirmation_seed": 191000,
+  "stage_passes_to_advance": 2,
+  "consecutive_passes_to_confirm": 3,
+  "plateau_window_evaluations": 4,
+  "plateau_relative_improvement": 0.01,
+  "max_reward_revisions": 2,
+  "reward_revision_learning_rate_factor": 0.7,
+  "gait_file": "config/v5_gaits_lift6.json",
+  "bootstrap": "checkpoints/isaac/interactive_v4/candidates/deadline_20261021/model.pt",
+  "bootstrap_policy": "Load compatible actor hidden layers only, zero actor output, fresh critic, optimizer and exploration. This is initialization, not resume.",
+  "stages": [
+    "inplace",
+    "gesture",
+    "interactive"
+  ],
+  "training_episode_lengths_s": [
+    20,
+    8,
+    20
+  ],
+  "early_stop": "Only stage 2 three consecutive full validations plus independent 128-episode confirmation can publish. Plateau is never success.",
+  "log": "outputs/lift_training.log",
+  "experiment": "v5.1b_recovery20_phase_diversity",
+  "inherited_budget_note": "Explicit curriculum fork inherits the source checkpoint actual completed counter (planned 2010); max_iterations=15000 remains the cumulative total. A 2010 to 2015 startup adds only five updates.",
+  "symmetry": {
+    "use_data_augmentation": false,
+    "use_mirror_loss": true,
+    "mirror_loss_coeff": 0.02,
+    "data_augmentation_func": "leg_humanoid_lab.lift_symmetry:augment_policy",
+    "scope": "Weak consistency on mirror-feasible samples; native mass/inertia asymmetry means no exact MDP symmetry claim."
+  },
+  "curriculum_correction": {
+    "revision": "stage0_recovery20_phase_diversity_v1",
+    "scope": "Training schedule only; inference observations, gait, motor PD, rewards, done predicates and acceptance gates unchanged",
+    "stage0_training_episode_s": 20,
+    "inplace_bout_range_s": [
+      3.5,
+      8.5
+    ],
+    "inplace_schedule_start_range_s": [
+      0.3,
+      0.7
+    ],
+    "minimum_standing_recovery_tail_s": 10.8,
+    "source_reason": "Fixed 5.5-s bouts froze stand-phase observations near .111; evaluation seven-second bouts freeze near .778 and require twelve seconds of post-bout standing.",
+    "fork_mode": "--fork-policy: preserve full actor and inherited counter; fresh critic, Adam and std; no acceptance inherited"
+  }
+}

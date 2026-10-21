@@ -22,7 +22,7 @@
 
 [觀看原地抬腳影片（GoFile）](https://gofile.io/d/QKZdLPoK) · [專案 MP4](docs/results/q1_leg_v5_inplace_405_diagnostic.mp4) · [原地抬腳評估與量測](docs/LIFT_V5_INPLACE.md)。原地影片為 405-update checkpoint、seed 42、8.00 秒；與 1,805-update 閃身影片使用不同候選，不以其中一支影片替另一候選作驗收。
 
-V5 依序訓練「原地抬腳 → 有限左右閃身 → WASD／QE 與閃身整合」。前兩階段須各連續兩次通過驗收；Stage 0 已在 305、405 updates 通過。整合階段仍須連續三次全項通過，再以獨立 **128 回合**確認，才可替換正式策略。**正式 WASD／QE 策略目前保持停用**，新影片不表示完整互動控制已學會。
+V5 依序訓練「原地抬腳 → 有限左右閃身 → WASD／QE 與閃身整合」。前兩階段須各連續兩次通過驗收；原始控制分支的 Stage 0 曾在 305、405 updates 通過，後續分支均重新驗收。整合階段仍須連續三次全項通過，再以獨立 **128 回合**確認，才可替換正式策略。**正式 WASD／QE 策略目前保持停用**，新影片不表示完整互動控制已學會。
 
 ### 正在驗證的修正
 
@@ -30,7 +30,11 @@ V5 依序訓練「原地抬腳 → 有限左右閃身 → WASD／QE 與閃身整
 
 原生 CAD／FK 與模擬量測一致；左閃前導腳的問題主要來自骨盆側傾約 8 度、下降約 2 cm，以及關節追蹤落差，把幾何參考的離地高度吃掉。縮小支撐腿殘差反而退步；直接加姿態補償 IK，或將補償與速度前饋合用，曾導致腳踝碰地，均未採為新訓練控制。
 
-V5.1 選用原生對照中維持全部回合存活的**閃身擺腿速度前饋**，並以小權重的[左右一致性損失](docs/LIFT_SYMMETRY.md)協助離開單側貼地解；原生左右慣性並不完全對稱，沒有把鏡射資料當作相同物理 transition。新分支保留 actor，重新初始化 critic／Adam 與探索 std（0.06），由原地抬腳重新驗收，**不繼承原分支的通過紀錄**。目前 `q1-leg-lift-training` 已啟動，每 100 次更新做獨立驗證；新分支尚未完成閃身或完整鍵盤控制驗收。
+V5.1 選用原生對照中維持全部回合存活的**閃身擺腿速度前饋**，並以小權重的[左右一致性損失](docs/LIFT_SYMMETRY.md)協助離開單側貼地解；原生左右慣性並不完全對稱，沒有把鏡射資料當作相同物理 transition。分支保留 actor，重新初始化 critic／Adam 與探索 std（0.06），由原地抬腳重新驗收，**不繼承原分支的通過紀錄**。
+
+**2026-10-22 續訓：V5.1b 恢復課程已啟動，累計保存 2,015／15,000 次更新，使用 10,240 envs。** 前一份 2,010-update 的 32 回合驗證中，站立 16／16 完成，但抬腳 0／16 完成，平均在 13.19 秒提前結束。原生診斷捕捉到停止後右腳踝接地 62–87 N；固定訓練停止相位與驗證不同，是有證據支持的原因之一。新課程讓抬腳持續 3.5–8.5 秒、回合延長至 20 秒，納入不同相位停止及至少 10.8 秒的恢復站立；推論、控制、PD、reward、碰撞終止與驗收門檻不變。[證據與課程修正](docs/diagnostics/LIFT_V5_RECOVERY20_REVIEW.md)。
+
+舊分支完整來源與 2,010-update 權重已另行封存，新 run 只新增五次初始化更新後繼續訓練；15,000 上限仍包含所有既有更新。`q1-leg-validation-watchdog` 另行處理超過 300 秒的驗證程序；只重試同一份權重的唯讀驗證，不重跑 PPO 或放寬驗收。新分支尚未完成原地抬腳、閃身或完整鍵盤控制驗收。
 
 兩版均使用 implicit PD **800／32**、**100 Nm** 力矩上限。抬腳命令是 **6 cm**，經原生限位與 CAD／FK 得到約 5–6 cm 參考峰值；此為幾何目標，實際結果以接觸感測和腳底量測為準。原始來源與候選均已封存，新分支使用獨立 run。
 
@@ -38,11 +42,12 @@ V5.1 選用原生對照中維持全部回合存活的**閃身擺腿速度前饋*
 # 查詢保存的階段、更新數及驗收結果；不會啟動訓練。
 .venv/bin/python tools/run_lift_training.py --status
 systemctl --user status q1-leg-lift-training --no-pager
+systemctl --user status q1-leg-validation-watchdog --no-pager
 tail -n 40 outputs/lift_training.log
 
-# 服務中斷後，接續 V5.1；來源及控制契約必須完全一致。
+# 服務中斷後，接續 V5.1b；來源、profile 及控制契約必須完全一致。
 systemctl --user stop q1-leg-live
-bash start_lift_training.sh --resume-run checkpoints/isaac/lift_v5/runs/20261021_1503_ff_mirror
+bash start_lift_training.sh --config config/lift_v5_recovery20.json --resume-run checkpoints/isaac/lift_v5/runs/20261022_0338_recovery20
 
 # 只有來源、控制與資產契約完全一致的 run 才能 resume。
 # 修改控制後須建立新 run，不能直接續接原始 1,805-update 診斷 run。
@@ -54,6 +59,13 @@ bash start_lift_training.sh --resume-run checkpoints/isaac/lift_v5/runs/20261021
 ```bash
 OUT=outputs/v5_inplace_diagnostic.mp4 bash record_interactive_diagnostic.sh --checkpoint /path/to/saved/checkpoint.pt --inplace-only --seed 42
 OUT=outputs/v5_pair_diagnostic.mp4 bash record_interactive_diagnostic.sh --checkpoint /path/to/saved/checkpoint.pt --sequence-only --seed 42
+```
+
+完整策略合格後，使用[正式錄影入口](docs/LIFT_V5_RECORDING.md)錄製 W 前進、停止、左右各閃一下、恢復站立。工具另行核對每個方向的前導／後隨腳實際卸載離地、逐幀數據及完整畫面；未合格權重不能使用此入口：
+
+```bash
+bash record_lift_v5.sh --validate-only
+bash record_lift_v5.sh
 ```
 <!-- V5_STATUS_END -->
 
