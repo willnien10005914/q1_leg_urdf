@@ -137,6 +137,28 @@ def test_source_change_and_stale_result_cannot_mask_failed_worker(tmp_path,monke
     with pytest.raises(RuntimeError,match='Invalid'):monitor.fresh_json(output,None,'worker result')
 
 
+def test_validation_startup_retry_is_bounded_and_never_repeats_training(tmp_path,monkeypatch):
+    run=supervisor(tmp_path,monkeypatch)
+    monkeypatch.setattr(monitor.time,'sleep',lambda seconds:None)
+    calls=[]
+    def child(command,phase):
+        calls.append(phase)
+        if len(calls)==1:raise RuntimeError('Native startup failed')
+    monkeypatch.setattr(run,'child',child)
+    run.validation_worker(['native','--evaluate'],'validating')
+    assert calls==['validating','validating']
+    assert run.state['completed_iterations']==0
+    assert run.state['validation_worker_restart']['training_chunk_repeated'] is False
+    with pytest.raises(ValueError):run.validation_worker(['native'],'training')
+    calls.clear()
+    def broken(command,phase):
+        calls.append(phase);raise RuntimeError('Still broken')
+    monkeypatch.setattr(run,'child',broken)
+    with pytest.raises(RuntimeError,match='Still broken'):
+        run.validation_worker(['native'],'confirming')
+    assert len(calls)==2
+
+
 def test_chunk_retains_immutable_segment_and_resumable_checkpoint(tmp_path,monkeypatch):
     run=supervisor(tmp_path,monkeypatch)
     run.profile['bootstrap']=None

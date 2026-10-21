@@ -140,3 +140,46 @@ class BodyAwareSwingIK(torch.nn.Module):
         result=reference_q.clone()
         result[...,self.joint_ids]=torch.where(active.unsqueeze(-1),q,reference_q[...,self.joint_ids])
         return result
+
+
+class SwingClearanceFloor(torch.nn.Module):
+    """Experimental smooth, raise-only wrapper around bounded body-aware IK.
+
+    A healthy nominal swing is preserved even when it clears more than 4 cm.
+    Corrections fade with the planned swing height and with the actual-root
+    geometry deficit. An update that lowers the predicted CAD sole is rejected
+    per foot. This remains a joint-target ablation, not physical acceptance.
+    """
+    def __init__(self,iterations=3,**ik_kwargs):
+        super().__init__()
+        self.ik=BodyAwareSwingIK(iterations=iterations,**ik_kwargs)
+
+    @property
+    def joint_ids(self):
+        return self.ik.joint_ids
+
+    def sole_height(self,q,root_quaternion,root_height):
+        return self.ik.sole_height(q,root_quaternion,root_height)
+
+    @staticmethod
+    def _smoothstep(x):
+        x=x.clamp(0.,1.)
+        return x*x*(3.-2.*x)
+
+    @torch.no_grad()
+    def forward(self,reference_q,root_quaternion,root_height,
+                target_clearance,reference_contact):
+        legs=reference_q[...,self.joint_ids]
+        predicted=self.ik.sole_height(legs,root_quaternion,root_height)
+        desired=target_clearance.clamp(max=.04)
+        active=(~reference_contact.bool())&(target_clearance>.008)
+        phase=self._smoothstep((target_clearance-.008)/(.022-.008))
+        deficit=self._smoothstep((desired-predicted)/.02)
+        blend=phase*deficit*active
+        projected=self.ik(reference_q,root_quaternion,root_height,desired,reference_contact)
+        corrected=(legs+blend.unsqueeze(-1)*(projected[...,self.joint_ids]-legs)).clamp(self.ik.lower,self.ik.upper)
+        achieved=self.ik.sole_height(corrected,root_quaternion,root_height)
+        accept=active&(blend>0)&torch.isfinite(achieved)&(achieved>=predicted)
+        result=reference_q.clone()
+        result[...,self.joint_ids]=torch.where(accept.unsqueeze(-1),corrected,legs)
+        return result

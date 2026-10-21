@@ -6,7 +6,7 @@ import torch
 from isaaclab.utils import configclass
 from isaaclab.utils.math import quat_apply_inverse
 from .interactive_env import InteractiveEnvCfg,InteractiveLegEnv,interactive_contract
-from .lift_objective import CONTROL_PROFILE,control_targets,swing_terms
+from .lift_objective import CONTROL_PROFILE,control_targets,swing_terms,reference_velocity_targets
 from .robot import ROOT,JOINTS,FOOT_VERTICES,fk
 
 CONTROL_FILE=ROOT/'config/lift_control_v5.json'
@@ -19,7 +19,7 @@ def lift_contract():
             'gait_sha256':hashlib.sha256(gait_path.read_bytes()).hexdigest(),
             'gait_file':control['gait_file'],'control_sha256':hashlib.sha256(CONTROL_FILE.read_bytes()).hexdigest(),
             'control_profile':CONTROL_PROFILE,'motor':control,'default':gait['default'],'root_height':gait['root_height'],
-            'action':'Native IK + bounded phase-dependent residual + support/swing IMU feedback; 100 Nm implicit PD, no root wrench',
+            'action':'Native IK + bounded residual + support/swing IMU feedback + nominal gesture swing qdot feedforward; 100 Nm implicit PD, no root wrench',
             'height_target':'Per-phase actual source-CAD FK recomputed from native bounded joint reference',
             'curriculum':['inplace_lift','finite_gesture','interactive'],
             'proxy':False}
@@ -130,6 +130,18 @@ class LiftLegEnv(InteractiveLegEnv):
         self.refq=self.transition_q*(1-blend[:,None])+self.refq*blend[:,None]
         d=self.robot.data
         self.target,self.action_scales=control_targets(self.refq,self.stand_q,self.actions,d.projected_gravity_b,d.root_ang_vel_b,self.reference_contact,self.reference_height,self.lower,self.upper)
+        if self.control_config['reference_velocity_feedforward']:
+            self.target_velocity=reference_velocity_targets(
+                self.refq,old_reference,self.mode,old_mode,self.episode_length_buf,
+                self.reference_contact,self.reference_height,self.step_dt,
+                limit=self.control_config['motor_velocity_limit_rad_s'],
+                enabled_modes=tuple(self.control_config['velocity_feedforward_modes']))
+        else:
+            self.target_velocity.zero_()
+
+    def _apply_action(self):
+        super()._apply_action()
+        self.robot.set_joint_velocity_target(self.target_velocity,joint_ids=self.jids)
 
     def _get_rewards(self):
         d=self.robot.data;up=-d.projected_gravity_b[:,2]

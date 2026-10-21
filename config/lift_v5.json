@@ -7,8 +7,8 @@
   "early_chunk_until": 2000,
   "num_steps_per_env": 24,
   "learning_rate": 0.0002,
-  "exploration_std": 0.12,
-  "entropy_coef": 0.0003,
+  "exploration_std": 0.06,
+  "entropy_coef": 0.0015,
   "num_mini_batches": 8,
   "validation_episodes": 32,
   "confirmation_episodes": 128,
@@ -23,8 +23,25 @@
   "gait_file": "config/v5_gaits_lift6.json",
   "bootstrap": "checkpoints/isaac/interactive_v4/candidates/deadline_20261021/model.pt",
   "bootstrap_policy": "Load compatible actor hidden layers only, zero actor output, fresh critic, optimizer and exploration. This is initialization, not resume.",
-  "stages": ["inplace", "gesture", "interactive"],
-  "training_episode_lengths_s": [8, 8, 20],
+  "stages": [
+    "inplace",
+    "gesture",
+    "interactive"
+  ],
+  "training_episode_lengths_s": [
+    8,
+    8,
+    20
+  ],
   "early_stop": "Only stage 2 three consecutive full validations plus independent 128-episode confirmation can publish. Plateau is never success.",
-  "log": "outputs/lift_training.log"
+  "log": "outputs/lift_training.log",
+  "experiment": "v5.1_gesture_velocity_mirror",
+  "inherited_budget_note": "Explicit control fork inherits 1805 prior V5 updates; max_iterations=15000 is the cumulative total, not a fresh budget.",
+  "symmetry": {
+    "use_data_augmentation": false,
+    "use_mirror_loss": true,
+    "mirror_loss_coeff": 0.02,
+    "data_augmentation_func": "leg_humanoid_lab.lift_symmetry:augment_policy",
+    "scope": "Weak consistency on mirror-feasible samples; native mass/inertia asymmetry means no exact MDP symmetry claim."
+  }
 }

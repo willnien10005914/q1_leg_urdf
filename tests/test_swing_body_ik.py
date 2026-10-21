@@ -6,7 +6,7 @@ import torch
 from scipy.spatial.transform import Rotation
 
 from leg_humanoid_lab.robot import JOINTS, LOWER, ROOT, UPPER, fk
-from leg_humanoid_lab.swing_body_ik import BodyAwareSwingIK
+from leg_humanoid_lab.swing_body_ik import BodyAwareSwingIK, SwingClearanceFloor
 
 
 def peak_fixture():
@@ -87,3 +87,56 @@ def test_roll_pitch_height_grid_is_finite_bounded_and_stance_unchanged():
 def test_no_planned_swing_is_exact_identity():
     q,quat,height,target,contact=peak_fixture();contact[:]=True
     assert torch.equal(BodyAwareSwingIK(iterations=3)(q,quat,height,target,contact),q)
+
+
+def test_clearance_floor_preserves_healthy_swing_above_four_cm_and_stance():
+    q,_,_,target,contact=peak_fixture()
+    floor=SwingClearanceFloor()
+    quat=torch.tensor([[1.,0.,0.,0.]]);height=torch.tensor([.848])
+    predicted=floor.sole_height(q[...,floor.joint_ids],quat,height)
+    assert float(predicted[0,0])>.04
+    assert torch.equal(floor(q,quat,height,target,contact),q)
+    q,quat,height,target,contact=peak_fixture();contact[:]=True
+    assert torch.equal(floor(q,quat,height,target,contact),q)
+
+
+def test_clearance_floor_peak_is_gentler_than_full_six_cm_compensation():
+    q,quat,height,target,contact=peak_fixture()
+    floor=SwingClearanceFloor();full=BodyAwareSwingIK(iterations=3)
+    result=floor(q,quat,height,target,contact)
+    original_height=floor.sole_height(q[...,floor.joint_ids],quat,height)[0,0]
+    achieved=floor.sole_height(result[...,floor.joint_ids],quat,height)[0,0]
+    full_result=full(q,quat,height,target,contact)
+    assert float(original_height)<.015
+    assert .032<float(achieved)<.036
+    assert torch.linalg.vector_norm(result-q)<torch.linalg.vector_norm(full_result-q)
+    assert torch.all(result>=torch.tensor(LOWER)-1e-6)
+    assert torch.all(result<=torch.tensor(UPPER)+1e-6)
+    assert torch.equal(result[:,floor.joint_ids[1]],q[:,floor.joint_ids[1]])
+
+
+def test_clearance_floor_fades_to_zero_at_swing_height_boundary():
+    q,quat,height,target,contact=peak_fixture();height-=.02
+    floor=SwingClearanceFloor()
+    target[0,0]=.008
+    assert torch.equal(floor(q,quat,height,target,contact),q)
+    target[0,0]=.0081
+    near=floor(q,quat,height,target,contact)
+    target[0,0]=.022
+    full=floor(q,quat,height,target,contact)
+    assert float(torch.linalg.vector_norm(near-q))<.001*float(torch.linalg.vector_norm(full-q))
+
+
+def test_clearance_floor_rejects_geometry_worsening_per_foot():
+    class BadIK(BodyAwareSwingIK):
+        def forward(self,reference_q,*unused):
+            result=reference_q.clone()
+            result[...,JOINTS.index('left_knee_Pitch_joint')]=.3
+            return result
+    q,quat,height,target,contact=peak_fixture()
+    floor=SwingClearanceFloor();floor.ik=BadIK(iterations=3)
+    bad=floor.ik(q,quat,height,target,contact)
+    original=floor.sole_height(q[...,floor.joint_ids],quat,height)[0,0]
+    lowered=floor.sole_height(bad[...,floor.joint_ids],quat,height)[0,0]
+    assert lowered<original
+    assert torch.equal(floor(q,quat,height,target,contact),q)

@@ -8,9 +8,15 @@
   "motor_effort_limit_nm": 100.0,
   "motor_velocity_limit_rad_s": 10.0,
   "gravity_feedforward": false,
-  "reference_velocity_feedforward": false,
+  "reference_velocity_feedforward": true,
   "height_sigma_m": 0.02,
   "reference_height": "Actual source-CAD sole FK at every phase, not the nominal 6 cm command",
   "root_constraints": false,
-  "scope": "Native contact-driven residual PPO; initial curriculum is in-place unloaded foot lift"
+  "scope": "Native contact-driven residual PPO; no body-aware IK override; gesture swing qdot feedforward verified in native ablation",
+  "velocity_feedforward_modes": [
+    2,
+    3
+  ],
+  "velocity_feedforward_reference": "Adjacent nominal blended reference q; swing legs only; zero at reset and mode change",
+  "experiment": "v5.1_gesture_velocity_mirror"
 }

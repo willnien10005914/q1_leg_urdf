@@ -23,7 +23,7 @@ RUNTIME_FILES = (
     "urdf/q1_inertia/quanta_robot_legged.urdf",
     "scripts/reinforcement_learning/rsl_rl/runtime_compat.py",
 ) + tuple(SOURCE_DIR + name for name in (
-    "lift_env.py", "lift_objective.py", "interactive_env.py",
+    "lift_env.py", "lift_objective.py", "lift_symmetry.py", "interactive_env.py",
     "interactive_control.py", "interactive_evaluation.py", "isaac_env.py",
     "robot.py", "agent_cfg.py",
 ))

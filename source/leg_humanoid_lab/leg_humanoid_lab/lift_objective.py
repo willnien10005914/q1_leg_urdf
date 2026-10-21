@@ -11,7 +11,7 @@ import torch
 from .robot import JOINTS
 
 
-CONTROL_PROFILE = "swing_pitch_002_support_035_imu_020_v1"
+CONTROL_PROFILE = "swing_pitch_002_support_035_imu_020_gesture_velocity_v2"
 SWING_HEIGHT_M = .008
 _SWING_SCALES = {
     "hip_Pitch": .02,
@@ -94,3 +94,27 @@ def swing_terms(clearance, target, loaded, reference_contact):
         "wrong_contact": (active * loaded.to(dtype=clearance.dtype)).sum(dim=-1) / count,
         "unload": (active * airborne).sum(dim=-1) / count,
     }
+
+
+def reference_velocity_targets(reference, previous_reference, mode, previous_mode,
+                               episode_length, reference_contact, reference_height,
+                               dt, limit=10., enabled_modes=(2, 3)):
+    """Nominal swing qdot feedforward, zero at resets and mode transitions.
+
+    This differentiates adjacent nominal references, never actions or measured
+    body feedback. Stand/recovery and supporting legs keep zero target speed.
+    The actuator's native effort/velocity limits remain independent constraints.
+    """
+    if dt <= 0 or limit <= 0:
+        raise ValueError('Control dt and velocity limit must be positive')
+    enabled = torch.zeros_like(mode, dtype=torch.bool)
+    for value in enabled_modes:
+        enabled |= mode == value
+    continuous = enabled & (mode == previous_mode) & (episode_length > 0)
+    swing = _swing_mask(reference_contact, reference_height)
+    qdot = ((reference - previous_reference) / dt).clamp(-limit, limit)
+    target = torch.zeros_like(reference)
+    for foot, ids in enumerate(_LEG_IDS):
+        target[..., list(ids)] = torch.where((continuous & swing[..., foot])[..., None],
+                                              qdot[..., list(ids)], 0.)
+    return target

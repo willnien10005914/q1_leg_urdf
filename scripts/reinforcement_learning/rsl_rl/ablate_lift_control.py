@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import traceback
 
@@ -88,12 +89,17 @@ def main():
                         help="Also bound support hip roll/yaw and ankle roll; default protects pitch joints only")
     parser.add_argument("--body-ik-variants", action="store_true",
                         help="Compare baseline, swing velocity FF, body-aware swing IK and their combination; no support caps")
+    parser.add_argument("--body-ik-floor", action="store_true",
+                        help="Use the gentler 4 cm swing-clearance floor in the body-IK variant groups; FF uses nominal reference")
     from isaaclab.app import AppLauncher
     AppLauncher.add_app_launcher_args(parser)
     args = parser.parse_args()
     if args.replicates < 1:
         parser.error("--replicates must be positive")
-    if args.body_ik_variants and args.protect_support_roll_yaw:
+    if args.body_ik_floor and args.body_ik_variants:
+        parser.error("Choose --body-ik-floor or --body-ik-variants, not both")
+    use_body_ik = args.body_ik_variants or args.body_ik_floor
+    if use_body_ik and args.protect_support_roll_yaw:
         parser.error("Support caps are not part of --body-ik-variants")
     args.output = args.output.resolve()
     target_path = args.output.with_name(args.output.stem + "_targets.npz")
@@ -115,10 +121,13 @@ def main():
         from leg_humanoid_lab.robot import JOINTS, ROOT
         from runtime_compat import load_checkpoint, runner_cfg
 
-        variants = BODY_IK_VARIANTS if args.body_ik_variants else VARIANTS
-        support_caps = {} if args.body_ik_variants else {**PITCH_CAPS, **(OTHER_CAPS if args.protect_support_roll_yaw else {})}
+        variants = BODY_IK_VARIANTS if use_body_ik else VARIANTS
+        support_caps = {} if use_body_ik else {**PITCH_CAPS, **(OTHER_CAPS if args.protect_support_roll_yaw else {})}
         body_ik = None
-        if args.body_ik_variants:
+        if args.body_ik_floor:
+            from leg_humanoid_lab.swing_body_ik import SwingClearanceFloor
+            body_ik = SwingClearanceFloor(iterations=3)
+        elif args.body_ik_variants:
             from leg_humanoid_lab.swing_body_ik import BodyAwareSwingIK
             body_ik = BodyAwareSwingIK(iterations=3)
         block = len(STAGE_CASES[1]) * args.replicates
@@ -130,8 +139,8 @@ def main():
                 previous_mode = self.mode.clone()
                 super()._pre_physics_step(actions)
                 variant = torch.arange(self.num_envs, device=self.device) // block
-                protected = ((variant == 1) | (variant == 3)) & (not args.body_ik_variants)
-                feedforward = ((variant == 1) | (variant == 3) if args.body_ik_variants
+                protected = ((variant == 1) | (variant == 3)) & (not use_body_ik)
+                feedforward = ((variant == 1) | (variant == 3) if use_body_ik
                                else (variant == 2) | (variant == 3))
                 swing = ~self.reference_contact.bool() & (self.reference_height > .008)
                 scales = self.action_scales.clone()
@@ -160,7 +169,8 @@ def main():
                 self.action_scales = scales
                 if args.body_ik_variants:
                     previous_ref = getattr(self, "diagnostic_previous_control_reference", previous_ref)
-                qdot = ((control_reference - previous_ref) / self.step_dt).clamp(-10., 10.)
+                velocity_reference = self.refq if args.body_ik_floor else control_reference
+                qdot = ((velocity_reference - previous_ref) / self.step_dt).clamp(-10., 10.)
                 self.diagnostic_previous_control_reference = control_reference.clone()
                 # Zero on initial/reset or mode-switch frames; subsequent values
                 # always use adjacent references, never accumulated differences.
@@ -174,6 +184,7 @@ def main():
                     "reference_q": control_reference.clone(),
                     "nominal_reference_q": self.refq.clone(),
                     "compensated_reference_q": control_reference.clone(),
+                    "velocity_feedforward_reference_q": velocity_reference.clone(),
                     "residual_actions": self.actions.clone(),
                     "residual_scales_rad": scales.clone(), "mode": self.mode.clone(),
                     "reference_contact": self.reference_contact.clone(),
@@ -187,6 +198,40 @@ def main():
                 # reset after a terminal physics step may overwrite live data.
                 self.diagnostic_position_applied = self.robot.data.joint_pos_target[:, self.jids].clone()
                 self.diagnostic_velocity_applied = self.robot.data.joint_vel_target[:, self.jids].clone()
+
+            def _get_dones(self):
+                # Observe the unchanged parent decision before DirectRLEnv can
+                # reset a terminated articulation. No diagnostic changes dones.
+                terminated, truncated = super()._get_dones()
+                active = getattr(self, "diagnostic_termination_active", None)
+                if active is not None:
+                    ended = active & (terminated | truncated)
+                    if bool(ended.any()):
+                        data = self.robot.data
+                        forces = self.contacts.data.net_forces_w
+                        norms = forces.norm(dim=-1)
+                        sole, _, loaded, _ = self.foot_step_metrics()
+                        def number(value):
+                            value = float(value)
+                            return value if math.isfinite(value) else None
+                        for index in ended.nonzero(as_tuple=False).flatten().cpu().tolist():
+                            nonfoot = [{"name": self.contacts.body_names[body],
+                                        "force_norm_n": number(norms[index, body]),
+                                        "force_xyz_n": [number(value) for value in forces[index, body]]}
+                                       for body in self.other_bodies if bool(norms[index, body] > 25.)]
+                            self.diagnostic_first_terminations[index] = {
+                                "episode_time_s": number(self.episode_length_buf[index] * self.step_dt),
+                                "terminated": bool(terminated[index]), "truncated": bool(truncated[index]),
+                                "root_height_m": number(data.root_pos_w[index, 2] - self.scene.env_origins[index, 2]),
+                                "root_upright": number(-data.projected_gravity_b[index, 2]),
+                                "root_state_finite": bool(torch.isfinite(data.root_state_w[index]).all()),
+                                "nonfoot_contacts_above_25_n": nonfoot,
+                                "sole_height_m_per_foot": [number(value) for value in sole[index]],
+                                "foot_loaded_per_foot": loaded[index].cpu().tolist(),
+                                "mode": int(self.mode[index]), "gesture_phase": number(self.gesture_phase[index]),
+                            }
+                    self.diagnostic_termination_active &= ~(terminated | truncated)
+                return terminated, truncated
 
         cfg = LiftEnvCfg()
         cfg.scene.num_envs = count
@@ -219,6 +264,8 @@ def main():
             def reset(self):
                 result = self.transport.reset()
                 self.active = torch.ones(count, device=env.device, dtype=torch.bool)
+                env.diagnostic_termination_active = self.active.clone()
+                env.diagnostic_first_terminations = {}
                 self.length = env.episode_length_buf.clone()
                 self.unloaded_peak = torch.zeros((count, 2), device=env.device)
                 self.side_peak = torch.zeros((count, 2, 2), device=env.device)
@@ -239,6 +286,7 @@ def main():
                           & torch.isfinite(speed).all(-1)
                           & torch.isfinite(actions).all(-1))
                 self.active &= ~done & ~implicit_reset & finite
+                env.diagnostic_termination_active &= self.active
                 command = env.diagnostic_command
                 mode = command["mode"]
                 moving = self.active & ((mode == 2) | (mode == 3))
@@ -269,6 +317,7 @@ def main():
         for row in evaluated["per_episode"]:
             index = row["env_index"]
             row.update(variant=variants[index // block],
+                       first_termination=env.diagnostic_first_terminations.get(index),
                        unloaded_peak_clearance_m_per_foot=to_list(trace.unloaded_peak[index]),
                        direction_unloaded_peak_clearance_m_per_foot=to_list(trace.side_peak[index]),
                        direction_high_swing_samples_per_foot=to_list(trace.side_trials[index]),
@@ -290,22 +339,29 @@ def main():
         overrides = {"support_caps_rad": support_caps, "support_condition": "planned contact with opposite active swing >.008 m",
                      "velocity_ff": "Adjacent blended reference q finite difference / control dt; swing leg joints only; +/-10 rad/s; zero on reset/mode change",
                      "variants": list(variants), "all_contact_residual_cap_rad": .35,
-                     "reference_q_semantics": "Joint reference actually supplied to control_targets and used for adjacent-reference FF; excludes residual and IMU corrections",
+                     "reference_q_semantics": "Joint reference actually supplied to control_targets; excludes residual and IMU corrections",
+                     "velocity_feedforward_reference_q_semantics": "Actual reference differentiated for FF: nominal in clearance-floor mode, compensated in full body-IK mode, nominal in original mode",
                      "nominal_reference_q_semantics": "Original LiftEnv blended reference; remains in actor observations",
                      "compensated_reference_q_semantics": "Body-aware joint reference in selected IK variants; otherwise equals nominal_reference_q",
                      "unchanged": "IMU feedback, swing residual caps, motor/effort/velocity limits, root dynamics, contacts, collisions and episode termination"}
         sources = [Path(__file__), ROOT/"config/lift_control_v5.json", ROOT/contract["gait_file"]]
         sources += [ROOT/"source/leg_humanoid_lab/leg_humanoid_lab"/name for name in
                     ("lift_env.py", "lift_objective.py", "lift_evaluation.py", "interactive_env.py", "isaac_env.py", "robot.py")]
-        if args.body_ik_variants:
+        if use_body_ik:
             ik_file = ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/swing_body_ik.py"
             sources.append(ik_file)
             overrides["body_ik"] = {
                 "iterations": 3, "module_sha256": digest(ik_file),
+                "class": "SwingClearanceFloor" if args.body_ik_floor else "BodyAwareSwingIK",
                 "inputs": "Nominal joint reference, measured root wxyz quaternion and ground-relative height, nominal target sole height/contact",
                 "effect": "Swing joint references only; no root state write; original actor observations retained",
             }
             overrides["velocity_ff"] = "Adjacent compensated reference q finite difference / control dt; swing leg joints only; +/-10 rad/s; zero on reset/mode change"
+            if args.body_ik_floor:
+                overrides["body_ik"].update(
+                    clearance_floor_target_cap_m=.04, full_phase_height_m=.022, full_deficit_m=.02,
+                    blending="Smooth planned-height and actual-root nominal-CAD clearance deficit; no correction to healthy or stance references")
+                overrides["velocity_ff"] = "Adjacent NOMINAL reference q finite difference / control dt; never differentiate body-feedback correction; swing leg joints only; +/-10 rad/s; zero on reset/mode change"
         report = {
             "schema": 1, "kind": "native_checkpoint_control_ablation", "backend": "isaaclab", "proxy": False,
             "ready": False, "production_acceptance": False, "diagnostic_control_override": True,
@@ -315,6 +371,7 @@ def main():
             "seed": args.seed, "envs": count, "replicates_per_case_variant": args.replicates,
             "stage": 1, "duration_s": 20., "first_episode_only": True,
             "exclude_done_and_all_post_reset_samples": True, "reset_between_transitions": False,
+            "first_termination_capture": "Unchanged parent _get_dones outputs observed before auto-reset; first event per environment only; named nonfoot contacts >25 N, root height/upright and sole heights",
             "control_override": overrides,
             "control_override_sha256": hashlib.sha256(json.dumps(overrides, sort_keys=True).encode()).hexdigest(),
             "source_sha256": {str(path.resolve().relative_to(ROOT.resolve())): digest(path) for path in sources},

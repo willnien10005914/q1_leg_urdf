@@ -5,7 +5,7 @@
 <!-- V5_STATUS_START -->
 ## V5：已重拍實際抬腳，左閃前導腳仍待修正
 
-本次使用 **10,240 envs**，已累計保存 **1,805 次新 V5 PPO iterations**；原始上限為 15,000 次。以下是原生 Isaac Sim／PhysX 中執行 PPO 的新錄影，雙腳已有實際離地，沒有固定機身、根部外力或動作間重置。
+以下影片記錄使用 **10,240 envs**、累計保存 **1,805 次新 V5 PPO iterations** 的原始分支。後續 V5.1 已建立新控制分支繼續訓練，**15,000 次總上限包含既有 1,805 次，不重新計算預算**。影片均為原生 Isaac Sim／PhysX 執行 PPO，雙腳已有實際離地，沒有固定機身、根部外力或動作間重置。
 
 ![V5 真實 PPO 左右閃身診斷，左閃前導腳仍不足，尚未合格](docs/images/v5-pair-1805-diagnostic.gif)
 
@@ -28,9 +28,11 @@ V5 依序訓練「原地抬腳 → 有限左右閃身 → WASD／QE 與閃身整
 
 兩支 V5 診斷影片的控制與訓練來源保存在 [111942c](https://github.com/willnien10005914/q1_leg_urdf/commit/111942c51846537676f816abe4bb7edf0874a7ee)，便於日後修正控制後仍能重現比較。
 
-原生 CAD／FK 與模擬量測一致；左閃前導腳的問題主要來自骨盆側傾約 8 度、下降約 2 cm，以及關節追蹤落差，把幾何參考的離地高度吃掉。縮小支撐腿殘差的原生測試反而更差，未採用；加入參考關節速度可改善右向抬腳，左向仍不足，亦未採為正式控制。依實際骨盆姿態與高度補償擺腿目標的原生 IK 方案正在驗證，尚未視為成功控制。
+原生 CAD／FK 與模擬量測一致；左閃前導腳的問題主要來自骨盆側傾約 8 度、下降約 2 cm，以及關節追蹤落差，把幾何參考的離地高度吃掉。縮小支撐腿殘差反而退步；直接加姿態補償 IK，或將補償與速度前饋合用，曾導致腳踝碰地，均未採為新訓練控制。
 
-現有候選使用 implicit PD **800／32**、**100 Nm** 力矩上限。抬腳命令是 **6 cm**，經原生限位與 CAD／FK 得到約 5–6 cm 參考峰值；此為幾何目標，實際結果以接觸感測和腳底量測為準。目前 **PPO worker 已暫停**，先完成新控制的原生驗證；沒有在背景盲目接續舊 run。
+V5.1 選用原生對照中維持全部回合存活的**閃身擺腿速度前饋**，並以小權重的[左右一致性損失](docs/LIFT_SYMMETRY.md)協助離開單側貼地解；原生左右慣性並不完全對稱，沒有把鏡射資料當作相同物理 transition。新分支保留 actor，重新初始化 critic／Adam 與探索 std（0.06），由原地抬腳重新驗收，**不繼承原分支的通過紀錄**。目前 `q1-leg-lift-training` 已啟動，每 100 次更新做獨立驗證；新分支尚未完成閃身或完整鍵盤控制驗收。
+
+兩版均使用 implicit PD **800／32**、**100 Nm** 力矩上限。抬腳命令是 **6 cm**，經原生限位與 CAD／FK 得到約 5–6 cm 參考峰值；此為幾何目標，實際結果以接觸感測和腳底量測為準。原始來源與候選均已封存，新分支使用獨立 run。
 
 ```bash
 # 查詢保存的階段、更新數及驗收結果；不會啟動訓練。
@@ -38,12 +40,12 @@ V5 依序訓練「原地抬腳 → 有限左右閃身 → WASD／QE 與閃身整
 systemctl --user status q1-leg-lift-training --no-pager
 tail -n 40 outputs/lift_training.log
 
-# 全新實驗的啟動方式；只在新控制已驗證、契約已更新後執行。
-# systemctl --user stop q1-leg-live
-# bash start_lift_training.sh
+# 服務中斷後，接續 V5.1；來源及控制契約必須完全一致。
+systemctl --user stop q1-leg-live
+bash start_lift_training.sh --resume-run checkpoints/isaac/lift_v5/runs/20261021_1503_ff_mirror
 
 # 只有來源、控制與資產契約完全一致的 run 才能 resume。
-# 修改控制後須建立新 run，不能直接續接本次 1,805-update 診斷 run。
+# 修改控制後須建立新 run，不能直接續接原始 1,805-update 診斷 run。
 # bash start_lift_training.sh --resume-run /path/to/source-matching/run
 ```
 

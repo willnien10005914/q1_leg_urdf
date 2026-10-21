@@ -146,6 +146,7 @@ def source_manifest(config_path):
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/interactive_env.py",
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/lift_env.py",
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/lift_objective.py",
+               ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/lift_symmetry.py",
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/lift_evaluation.py",
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/interactive_evaluation.py",
                ROOT/"source/leg_humanoid_lab/leg_humanoid_lab/interactive_control.py",
@@ -236,6 +237,7 @@ class Supervisor:
                     if self.state["curriculum_stage"] != 0:
                         raise RuntimeError("Only stage-0 standalone initialization may be adopted without existing gate history")
                     self.state["adopted_worker_iterations"] = completed
+                    self.state["adopted_initialization"] = result.get("initialization")
                     self.state["source_snapshot_note"] = "Adopted completed standalone worker chunk; monitor source manifest captured at adoption"
             elif not existing_monitor or self.state["completed_iterations"]:
                 raise RuntimeError("No resumable training_result.json exists in the requested run")
@@ -352,7 +354,7 @@ class Supervisor:
                    "--num_envs", episodes, "--seed", seed, "--completed", completed,
                    "--checkpoint", checkpoint, "--output-dir", self.run,
                    "--reward-revision", self.state["reward_revision"], "--curriculum-stage", stage, "--headless"]
-        self.child(command, "confirming" if kind == "confirmation" else "validating")
+        self.validation_worker(command, "confirming" if kind == "confirmation" else "validating")
         self.assert_sources_unchanged()
         report = fresh_json(output, before, "independent evaluation")
         contract = json.loads((self.run/"contract.json").read_text())
@@ -389,6 +391,28 @@ class Supervisor:
             self.save(best_by_stage=best)
         print("V5_VALIDATION " + json.dumps(summary), flush=True)
         return report
+
+    def validation_worker(self, command, phase):
+        """Retry one failed validation process; never repeat a PPO chunk.
+
+        Kit can crash during startup before producing any evaluation. A second
+        fresh process uses the same immutable checkpoint and seed. Metadata is
+        still checked by evaluate(); repeated errors retain the usual stop.
+        """
+        if phase not in ("validating", "confirming"):
+            raise ValueError('Only read-only validation workers may be retried')
+        for attempt in range(2):
+            try:
+                self.child(command, phase)
+                return
+            except RuntimeError as error:
+                if attempt or STOP:
+                    raise
+                self.save(validation_worker_restart={"at":utcnow(),"phase":phase,
+                    "attempt":1,"completed_iterations":self.state["completed_iterations"],
+                    "reason":str(error),"training_chunk_repeated":False})
+                print('V5_VALIDATION_RESTART '+json.dumps(self.state['validation_worker_restart']),flush=True)
+                time.sleep(3)
 
     def promote(self, report):
         if not confirmation_passed(report, self.profile["confirmation_episodes"]):
