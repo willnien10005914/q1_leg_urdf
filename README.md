@@ -5,31 +5,24 @@
 ![雙足模型與 YouTube 前七秒示範對照](docs/images/web-reference.png)
 
 <!-- V4_STATUS_START -->
-## V4：鍵盤控制與左右閃身 — 已依早上九點期限結束，尚未通過完整操作驗收
+## V4：限時訓練已結束，候選尚未合格
 
-本次使用 **10,240 envs**，已完成 **641／801 iterations**，reward revision **0**。本次接續自 **501 iterations**；最新完整保存進度為 **641 iterations**。 本次啟動：`2026-10-21T00:41:35.185300+00:00`；最後更新：`2026-10-21T00:52:08.415317+00:00`。
+依 2026-10-21 台北 **09:00 前完成**要求，本次使用 **10,240 envs**，累計保存 **641 iterations**（從 501 次接續；限時上限 801 次，原始上限 15,000 次）。採單一 DirectRLEnv／PPO，WASD／QE、停止與左右閃身共用同一物理狀態。
 
-依使用者要求，以**台北時間早上 09:00 前結束本次訓練與整理結果**為期限，調整本次更新預算並預留驗證時間。期限到達只代表停止訓練，不代表動作已學會。
+**目前未通過完整操作驗收與獨立 128 回合確認，不能稱為已學會。** 最新 32 回合通過的檢查項目比例為 **44.0%**，這不是任務成功率。完整結果與各方向抬腳數值見 [限時訓練報告](docs/DEADLINE_20261021.md)。正式鍵盤策略仍保持停用。
 
-最新 32 回合驗證的通過檢查比例為 **44.0%**；這是檢查項目比例，不是任務成功率。
+![未合格候選的原生 PhysX 診斷，並非成功示範](docs/images/interactive-deadline-diagnostic.gif)
 
-**尚未通過獨立 128 回合確認，因此鍵盤策略保持停用，未發布新版成功 GIF／影片。** 舊版 V3 成果保留於下方。程式碼包含 WASD／QE／Space、有限左右序列、完整 optimizer 續訓、停滯診斷與達標後自動錄影／發布。
+上圖是此候選的真實原生 PhysX／PPO 錄影，seed 42、7.20 秒，畫面標有 **EXPERIMENTAL / NOT ACCEPTED**；本回合完成有限序列，仍不能替代整批驗收。[GoFile 診斷影片](https://gofile.io/d/YrpEDE6i) · [專案 MP4](docs/results/q1_leg_interactive_deadline_diagnostic.mp4)。
+
+候選權重僅保留本機，並未取代正式權重。重新錄製時請指定本機保存的 checkpoint：
 
 ```bash
-cat outputs/interactive_training_status.json
-# 接續剩餘預算，請代入狀態檔的 run 路徑：
-bash start_interactive_training.sh --config config/interactive_v4_deadline.json --resume-run /path/to/the/saved/run
+OUT=outputs/my_diagnostic.mp4 bash record_interactive_diagnostic.sh --checkpoint /path/to/saved/run/resume.pt --sequence-only --seed 42
+bash start_native_web.sh
 ```
 
-請參閱 [V4 架構與驗收](docs/V4_ARCHITECTURE.md)。完整原始評估與失敗項目保留在該次 run 中，不能把達到預算或曲線停滯稱作學會動作。
-
-本次限時段實際新增 **140 次完整速度更新**，接續前 501 次，累計 641 次。49 項 Python 檢查通過。原生 32 回合評估顯示，向後仍會跌倒，雙腳離地幾乎為零，尚不具備可靠的方向行走／閃身步。
-
-[完整限時驗收報告](docs/DEADLINE_20261021.md) · [結構化數值結果](docs/results/interactive_v4_deadline_20261021.json)
-
-![各方向存活與實際雙腳離地量測](docs/images/interactive_deadline_metrics.svg)
-
-7.2 秒、seed 42 的原生候選診斷 MP4 與 GIF 已在本機產生，畫面標示 EXPERIMENTAL / NOT ACCEPTED。候選影片及權重仍保留本機，公開診斷影片待另行確認。這個單一未跌倒回合不能代替完整操作驗收。
+網頁：http://127.0.0.1:8876/web/ 。未合格時仍可檢視 V3 物理預覽與參考動作；新版控制及驗收設計見 [V4 架構](docs/V4_ARCHITECTURE.md)。
 <!-- V4_STATUS_END -->
 
 ## V3 已保存成果
