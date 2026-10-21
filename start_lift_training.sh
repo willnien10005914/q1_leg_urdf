@@ -10,8 +10,16 @@ if systemctl --user is-active --quiet q1-leg-training; then
   exit 1
 fi
 mkdir -p "$ROOT/outputs"
+if ! systemctl --user is-active --quiet q1-leg-validation-watchdog; then
+  systemd-run --user --unit=q1-leg-validation-watchdog --collect \
+    --description='Q1 validation timeout guard without PPO restart' \
+    --property=Restart=on-failure --property=RestartSec=10 \
+    --property="StandardOutput=append:$ROOT/outputs/lift_validation_watchdog.log" \
+    --property=StandardError=inherit --working-directory="$ROOT" \
+    "$ROOT/.venv/bin/python" -u "$ROOT/tools/watch_lift_validation.py" --enforce
+fi
 exec systemd-run --user --unit=q1-leg-lift-training --collect \
-  --description='Q1 lift v5 curriculum PPO: 10240 envs, max 15000 new updates' \
+  --description='Q1 lift v5 curriculum PPO: 10240 envs, max 15000 cumulative updates' \
   --property=KillMode=control-group --property=TimeoutStopSec=30 \
   --property="StandardOutput=append:$ROOT/outputs/lift_training.log" --property=StandardError=inherit \
   --working-directory="$ROOT" "$ROOT/.venv/bin/python" -u "$ROOT/tools/run_lift_training.py" "$@"

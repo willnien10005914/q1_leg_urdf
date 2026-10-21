@@ -1,0 +1,861 @@
+{
+  "schema": 1,
+  "skill": "lift_foundation",
+  "backend": "isaaclab",
+  "proxy": false,
+  "stage": 0,
+  "episodes": 32,
+  "evaluation_seed": 173115,
+  "duration_s": 20.0,
+  "contract": "q1_leg_command_v5",
+  "source": "native_physx_ppo_first_episode_lift_suite",
+  "scope": "Native CAD simulated lift foundation only; keyboard and full directional acceptance require stage 2.",
+  "urdf_sha256": "2a9a5fce0cd4cf116ba22fcc5c2dfc90747e16c7c1c1ccd0914beec61ce7b3ac",
+  "gait_sha256": "624d0c61630c87d94622ce46eaf2a482b064d0d2461f73533f0eabdd0dc9f137",
+  "gait_sha_source": "/home/will/projects/q1_leg_urdf/config/v5_gaits_lift6.json",
+  "environment_sha256": "526cca07ed805fbadbcb09ea309cbceaa89dd4217f6940f60217169d38216d6b",
+  "evaluator_sha256": "906c9ad332ab10d0a890ccefa6aefc606b81aae1833a465c46a97c9dc5d3dc9a",
+  "measurement": {
+    "clearance": "minimum native source-CAD sole world height minus environment origin",
+    "unloaded": "vertical foot force <=5 N, from native foot_step_metrics",
+    "high_swing": "reference_height >.022 m and reference_contact is false",
+    "slip": "RMS horizontal speed of loaded feet during planned stance",
+    "stop": "Mean speed over observed 18–20 s windows only; each counted episode must cover the window except at most one excluded terminal frame; missing coverage fails a separate rate gate"
+  },
+  "explicit_initial_resets": 1,
+  "reset_between_transitions": false,
+  "exclude_done_and_all_post_reset_samples": true,
+  "timeline": {
+    "stand": "stand 0–20 s",
+    "inplace": "stand 0–1; walk with zero command 1–8; stand 8–20",
+    "left_right": "stand 0–1; maneuver 1–2.6; recover 2.6–3.6; stand 3.6–20",
+    "pair": "stand 0–1; left 1–2.6; right 2.6–4.2; recover 4.2–5.2; stand 5.2–20"
+  },
+  "gates": {
+    "survival_rate_min": 0.875,
+    "upright_min": 0.97,
+    "stop_speed_m_s_max": 0.07,
+    "stop_observed_rate_min": 0.875,
+    "stance_slip_rms_m_s_max": 0.1,
+    "foot_clearance_m_min": 0.025,
+    "high_swing_target_height_m_min": 0.022,
+    "unloaded_lift_success_rate_min": 0.4,
+    "unloaded_force_threshold_n": 5.0
+  },
+  "cases": {
+    "stand": {
+      "episodes": 16,
+      "completed_episodes": 16,
+      "survival_rate": 1.0,
+      "duration_s": 20.0,
+      "upright": 0.9999161958694458,
+      "stop_observed_rate": 1.0,
+      "stop_observed_episodes": 16,
+      "final_stand_speed_m_s": 0.0028159962967038155,
+      "stance_slip_m_s": 0.010891174897551537,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    "inplace": {
+      "episodes": 16,
+      "completed_episodes": 16,
+      "survival_rate": 1.0,
+      "duration_s": 20.0,
+      "upright": 0.9983020424842834,
+      "stop_observed_rate": 1.0,
+      "stop_observed_episodes": 16,
+      "final_stand_speed_m_s": 0.0036341273225843906,
+      "stance_slip_m_s": 0.05067116767168045,
+      "foot_peak_clearance_m_per_foot": [
+        0.06849907338619232,
+        0.0810510516166687
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.912162184715271,
+        0.9786931872367859
+      ],
+      "high_swing_samples_per_foot": [
+        1184.0,
+        1408.0
+      ]
+    }
+  },
+  "per_episode": [
+    {
+      "env_index": 0,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999288320541382,
+      "final_stand_speed_m_s": 0.002761039650067687,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.009873619303107262,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 1,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.998272180557251,
+      "final_stand_speed_m_s": 0.003714067628607154,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.054402608424425125,
+      "foot_peak_clearance_m_per_foot": [
+        0.06874607503414154,
+        0.08074326813220978
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.8783783912658691,
+        0.9772727489471436
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 2,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9998803734779358,
+      "final_stand_speed_m_s": 0.0024956788402050734,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.007379276677966118,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 3,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9983346462249756,
+      "final_stand_speed_m_s": 0.003501205239444971,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.050386715680360794,
+      "foot_peak_clearance_m_per_foot": [
+        0.06982123851776123,
+        0.08158464729785919
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9324324131011963,
+        0.9886363744735718
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 4,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9998806118965149,
+      "final_stand_speed_m_s": 0.004269224591553211,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.02477297931909561,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 5,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9983519315719604,
+      "final_stand_speed_m_s": 0.004283081740140915,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.0484633594751358,
+      "foot_peak_clearance_m_per_foot": [
+        0.06823205202817917,
+        0.08147267997264862
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9189189076423645,
+        0.9659090638160706
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 6,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999731779098511,
+      "final_stand_speed_m_s": 0.0019927944522351027,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.011434471234679222,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 7,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9982941746711731,
+      "final_stand_speed_m_s": 0.004937781952321529,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.05082079395651817,
+      "foot_peak_clearance_m_per_foot": [
+        0.06842797249555588,
+        0.08065064251422882
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9054054021835327,
+        0.9659090638160706
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 8,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999753832817078,
+      "final_stand_speed_m_s": 0.002157744253054261,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.009174416773021221,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 9,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9983825087547302,
+      "final_stand_speed_m_s": 0.003738004481419921,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.04868820309638977,
+      "foot_peak_clearance_m_per_foot": [
+        0.06872312724590302,
+        0.08132777363061905
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9189189076423645,
+        0.9772727489471436
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 10,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999711513519287,
+      "final_stand_speed_m_s": 0.0028663661796599627,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.01077908743172884,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 11,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9983265995979309,
+      "final_stand_speed_m_s": 0.003103391733020544,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.051165685057640076,
+      "foot_peak_clearance_m_per_foot": [
+        0.0679212212562561,
+        0.08180303126573563
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9324324131011963,
+        0.9772727489471436
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 12,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999719262123108,
+      "final_stand_speed_m_s": 0.002239502966403961,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.011157918721437454,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 13,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9982851147651672,
+      "final_stand_speed_m_s": 0.0033905962482094765,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.05425795912742615,
+      "foot_peak_clearance_m_per_foot": [
+        0.06836086511611938,
+        0.07989517599344254
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9189189076423645,
+        0.9772727489471436
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 14,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9998618364334106,
+      "final_stand_speed_m_s": 0.0034507059026509523,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.007441391237080097,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 15,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9981898069381714,
+      "final_stand_speed_m_s": 0.0034951898269355297,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.05204050615429878,
+      "foot_peak_clearance_m_per_foot": [
+        0.06969030201435089,
+        0.08086586743593216
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.8918918967247009,
+        0.9772727489471436
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 16,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999308586120605,
+      "final_stand_speed_m_s": 0.0028506240341812372,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.010715636424720287,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 17,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9983311295509338,
+      "final_stand_speed_m_s": 0.003679140703752637,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.05053960904479027,
+      "foot_peak_clearance_m_per_foot": [
+        0.06787755340337753,
+        0.08089342713356018
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9189189076423645,
+        0.9886363744735718
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 18,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9998569488525391,
+      "final_stand_speed_m_s": 0.0027056103572249413,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.00883294828236103,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 19,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9983211755752563,
+      "final_stand_speed_m_s": 0.0034586943220347166,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.04892456904053688,
+      "foot_peak_clearance_m_per_foot": [
+        0.06822983920574188,
+        0.0815688818693161
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9189189076423645,
+        0.9772727489471436
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 20,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9998714327812195,
+      "final_stand_speed_m_s": 0.0034952748101204634,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.006848872173577547,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 21,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9983393549919128,
+      "final_stand_speed_m_s": 0.00341075100004673,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.05085132271051407,
+      "foot_peak_clearance_m_per_foot": [
+        0.06873515248298645,
+        0.08216418325901031
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9324324131011963,
+        0.9886363744735718
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 22,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9998698830604553,
+      "final_stand_speed_m_s": 0.002411382272839546,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.011196144856512547,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 23,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.998312771320343,
+      "final_stand_speed_m_s": 0.0035245749168097973,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.047463275492191315,
+      "foot_peak_clearance_m_per_foot": [
+        0.06970803439617157,
+        0.08073073625564575
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9189189076423645,
+        0.9772727489471436
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 24,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.999920129776001,
+      "final_stand_speed_m_s": 0.002817089669406414,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.010472058318555355,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 25,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9982033967971802,
+      "final_stand_speed_m_s": 0.0035834675654768944,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.052703823894262314,
+      "foot_peak_clearance_m_per_foot": [
+        0.06795255839824677,
+        0.08197058737277985
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.8918918967247009,
+        0.9886363744735718
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 26,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999250173568726,
+      "final_stand_speed_m_s": 0.00238642911426723,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.011631815694272518,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 27,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9982463121414185,
+      "final_stand_speed_m_s": 0.0034093293361365795,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.05069882422685623,
+      "foot_peak_clearance_m_per_foot": [
+        0.06800435483455658,
+        0.0807211846113205
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.8918918967247009,
+        0.9659090638160706
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 28,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999153017997742,
+      "final_stand_speed_m_s": 0.0033358943182975054,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.013368887826800346,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 29,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9983165860176086,
+      "final_stand_speed_m_s": 0.0034434599801898003,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.048913806676864624,
+      "foot_peak_clearance_m_per_foot": [
+        0.06737132370471954,
+        0.07936663925647736
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9189189076423645,
+        0.9772727489471436
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 30,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.999925971031189,
+      "final_stand_speed_m_s": 0.0028205818962305784,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.009179278276860714,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 31,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9983250498771667,
+      "final_stand_speed_m_s": 0.0034732967615127563,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.050417669117450714,
+      "foot_peak_clearance_m_per_foot": [
+        0.06818338483572006,
+        0.08105809986591339
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9054054021835327,
+        0.9886363744735718
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    }
+  ],
+  "survival_rate": 1.0,
+  "checks": {
+    "stage.valid": true,
+    "stand.sample_count": true,
+    "stand.survival": true,
+    "stand.upright": true,
+    "stand.stop_observed": true,
+    "stand.stop": true,
+    "stand.stance_slip": true,
+    "inplace.sample_count": true,
+    "inplace.survival": true,
+    "inplace.upright": true,
+    "inplace.stop_observed": true,
+    "inplace.stop": true,
+    "inplace.stance_slip": true,
+    "inplace.foot_0.foot_peak_clearance_m_per_foot": true,
+    "inplace.foot_0.foot_lift_success_rate_per_foot": true,
+    "inplace.foot_0.high_swing_samples_per_foot": true,
+    "inplace.foot_1.foot_peak_clearance_m_per_foot": true,
+    "inplace.foot_1.foot_lift_success_rate_per_foot": true,
+    "inplace.foot_1.high_swing_samples_per_foot": true
+  },
+  "failed_gates": [],
+  "passed": true,
+  "score": 1.0,
+  "checkpoint_sha256": "4f6afbfb1d449a7f0f0ccec62fe85d576783faf09b0173896073d713912aa42c",
+  "checkpoint": "checkpoints/isaac/lift_v5/runs/20261022_0338_recovery20/chunks/0002115_s0_r1/resume.pt",
+  "completed_iterations": 2115,
+  "base_environment_sha256": "e24bd4c037c1240d4a3f67f22fb4666e8e870da21206356089342a278798ee11",
+  "publication_scope": "Stage 0 only: first independent in-place/stand validation; not full interactive or 128-episode acceptance"
+}

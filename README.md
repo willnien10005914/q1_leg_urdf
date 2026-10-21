@@ -32,7 +32,9 @@ V5 依序訓練「原地抬腳 → 有限左右閃身 → WASD／QE 與閃身整
 
 V5.1 選用原生對照中維持全部回合存活的**閃身擺腿速度前饋**，並以小權重的[左右一致性損失](docs/LIFT_SYMMETRY.md)協助離開單側貼地解；原生左右慣性並不完全對稱，沒有把鏡射資料當作相同物理 transition。分支保留 actor，重新初始化 critic／Adam 與探索 std（0.06），由原地抬腳重新驗收，**不繼承原分支的通過紀錄**。
 
-**2026-10-22 續訓：V5.1b 恢復課程已啟動，累計保存 2,015／15,000 次更新，使用 10,240 envs。** 前一份 2,010-update 的 32 回合驗證中，站立 16／16 完成，但抬腳 0／16 完成，平均在 13.19 秒提前結束。原生診斷捕捉到停止後右腳踝接地 62–87 N；固定訓練停止相位與驗證不同，是有證據支持的原因之一。新課程讓抬腳持續 3.5–8.5 秒、回合延長至 20 秒，納入不同相位停止及至少 10.8 秒的恢復站立；推論、控制、PD、reward、碰撞終止與驗收門檻不變。[證據與課程修正](docs/diagnostics/LIFT_V5_RECOVERY20_REVIEW.md)。
+**2026-10-22 續訓：V5.1b 恢復課程已啟動，累計保存 2,115／15,000 次更新，使用 10,240 envs。** 前一份 2,010-update 的 32 回合驗證中，站立 16／16 完成，但抬腳 0／16 完成，平均在 13.19 秒提前結束。原生診斷捕捉到停止後右腳踝接地 62–87 N；固定訓練停止相位與驗證不同，是有證據支持的原因之一。新課程讓抬腳持續 3.5–8.5 秒、回合延長至 20 秒，納入不同相位停止及至少 10.8 秒的恢復站立；推論、控制、PD、reward、碰撞終止與驗收門檻不變。[證據與課程修正](docs/diagnostics/LIFT_V5_RECOVERY20_REVIEW.md)。
+
+[2,115-update 獨立原地課程驗證](docs/results/lift_v5_recovery2115_stage0.json)首次通過：站立／抬腳各 16 回合，**32／32 完整存活 20 秒**；抬腳左右峰值平均 **6.85／8.11 cm**，指定擺腿窗口的卸載成功率 **91.2%／97.9%**，停止後速度約 **0.0036 m/s**。這是 Stage 0 第一次通過，仍須連續第二次通過才能進入閃身課程，不代表完整鍵盤策略已完成。
 
 舊分支完整來源與 2,010-update 權重已另行封存，新 run 只新增五次初始化更新後繼續訓練；15,000 上限仍包含所有既有更新。`q1-leg-validation-watchdog` 另行處理超過 300 秒的驗證程序；只重試同一份權重的唯讀驗證，不重跑 PPO 或放寬驗收。新分支尚未完成原地抬腳、閃身或完整鍵盤控制驗收。
 
@@ -66,6 +68,14 @@ OUT=outputs/v5_pair_diagnostic.mp4 bash record_interactive_diagnostic.sh --check
 ```bash
 bash record_lift_v5.sh --validate-only
 bash record_lift_v5.sh
+```
+
+[成果管線](docs/LIFT_V5_FINALIZER.md)可在訓練完整驗收、GPU 空閒後，自動錄影、逐腳驗證、轉 GIF，再按明確的 `--publish` 指令上傳 GoFile、更新 README 並經 SSH 推送。預設不觸網；未合格時只等待，不發布候選權重：
+
+```bash
+.venv/bin/python tools/finalize_lift_v5.py --once
+# 已授權自動公開影片與 GitHub 更新時：
+.venv/bin/python tools/finalize_lift_v5.py --wait --publish
 ```
 <!-- V5_STATUS_END -->
 
