@@ -5,26 +5,23 @@
 ![雙足模型與 YouTube 前七秒示範對照](docs/images/web-reference.png)
 
 <!-- V4_STATUS_START -->
-## V4：WASD 方向控制與左右閃身（大規模訓練中）
+## V4：鍵盤控制與左右閃身 — 執行異常，已保留權重與診斷
 
-本版新增 **W/S 前後、A/D 左右、Q/E 轉向、Space 停止**，以及「左閃身 → 右閃身 → 回站立」按鈕。採單一 command-conditioned PPO，所有轉換在同一物理狀態進行，不以 reset 假裝完成動作。
+本次使用 **10,240 envs**，已完成 **601／801 iterations**，reward revision **0**。本次接續自 **501 iterations**；最新完整保存進度為 **601 iterations**。 本次啟動：`2026-10-21T00:41:35.185300+00:00`；最後更新：`2026-10-21T00:47:50.745650+00:00`。
 
-原始預算為 **10,240 個平行環境、最多 15,000 iterations**。依最新的 **2026-10-21 台北時間 09:00 前完成**要求，本次改用 [限時設定](config/interactive_v4_deadline.json)：維持 **10,240 envs**、沿用已保存 **501 iterations**、總上限縮為 **801 iterations**，並在 **08:52** 停止新增更新，預留驗收與整理時間。實際完成次數可能因截止時間更少，以狀態檔為準。
+依使用者要求，以**台北時間早上 09:00 前結束本次訓練與整理結果**為期限，調整本次更新預算並預留驗證時間。期限到達只代表停止訓練，不代表動作已學會。
 
-每段自動評估；停滯時診斷與調整 reward，連續通過驗證後仍須獨立 128 回合確認，才開放正式新版鍵盤策略。**期限與迭代完成不代表學會；下方 V3 結果不代表新版已通過。**
+最新 32 回合驗證的通過檢查比例為 **41.3%**；這是檢查項目比例，不是任務成功率。
 
-訓練包含走路中改方向、反向、放鍵停止，以及閃身回站姿後再接鍵盤行走。低速保留約 4 cm 的抬腳參考，避免只縮小關節角而再次學成拖腳；最終仍以原生 PhysX 的實際足底高度與滑動驗收。
+**尚未通過獨立 128 回合確認，因此鍵盤策略保持停用，未發布新版成功 GIF／影片。** 舊版 V3 成果保留於下方。程式碼包含 WASD／QE／Space、有限左右序列、完整 optimizer 續訓、停滯診斷與達標後自動錄影／發布。
 
 ```bash
-bash start_interactive_training.sh --config config/interactive_v4_deadline.json --resume-run /path/to/saved/run
-systemctl --user status q1-leg-training --no-pager
-tail -f outputs/interactive_training.log
 cat outputs/interactive_training_status.json
+# 接續剩餘預算，請代入狀態檔的 run 路徑：
+bash start_interactive_training.sh --resume-run /path/to/the/saved/run
 ```
 
-![新版鍵盤操作面板：未通過驗收時保持停用](docs/images/web-keyboard-v4.png)
-
-尚未通過驗收時，正式鍵盤面板保持停用。通過後自動錄製真實物理示範、轉 GIF、上傳 GoFile，再更新本區與 GitHub；未通過則保留候選與失敗診斷，若公開診斷錄影會明確標示尚未合格。見 [架構與監控](docs/V4_ARCHITECTURE.md)、[逐段影片觀察](docs/SIDESTEP_V4_MOTION_REVIEW.md)、[操作驗收](docs/V4_ACCEPTANCE.md)。
+請參閱 [V4 架構與驗收](docs/V4_ARCHITECTURE.md)。完整原始評估與失敗項目保留在該次 run 中，不能把達到預算或曲線停滯稱作學會動作。
 <!-- V4_STATUS_END -->
 
 ## V3 已保存成果
