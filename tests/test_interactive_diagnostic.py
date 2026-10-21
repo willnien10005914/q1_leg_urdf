@@ -31,3 +31,10 @@ def test_plan_is_finite_and_contains_only_native_control_requests():
     assert abs(plan[-1]['end'] - 9.7) < 1e-7
     assert all(a['end'] == b['start'] for a, b in zip(plan, plan[1:]))
     assert [item['name'] for item in plan] == ['stand', 'W_forward', 'stop', 'sidestep_sequence', 'final_stand']
+
+
+def test_sequence_diagnostic_does_not_hide_a_failed_walk_in_the_same_episode():
+    plan=diagnostic_plan(sequence_only=True)
+    assert [item['name'] for item in plan]==['stand','sidestep_sequence','final_stand']
+    assert abs(plan[-1]['end']-7.2)<1e-7
+    assert all(a['end']==b['start'] for a,b in zip(plan,plan[1:]))

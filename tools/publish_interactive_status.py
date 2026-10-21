@@ -21,6 +21,7 @@ def status_block(state):
     for label,key in (('本次啟動','started_at'),('最後更新','updated_at')):
         if state.get(key):timestamps.append(f'{label}：`{state[key]}`')
     if timestamps:progress+=' '+'；'.join(timestamps)+'。'
+    config='config/interactive_v4_deadline.json' if profile.get('training_deadline_utc') else 'config/interactive_v4.json'
     deadline=''
     if state.get('state')=='deadline_reached' or profile.get('training_stop_at') or profile.get('training_deadline_at') or profile.get('training_deadline_utc'):
         deadline='\n\n依使用者要求，以**台北時間早上 09:00 前結束本次訓練與整理結果**為期限，調整本次更新預算並預留驗證時間。期限到達只代表停止訓練，不代表動作已學會。'
@@ -35,7 +36,7 @@ def status_block(state):
 ```bash
 cat outputs/interactive_training_status.json
 # 接續剩餘預算，請代入狀態檔的 run 路徑：
-bash start_interactive_training.sh --resume-run /path/to/the/saved/run
+bash start_interactive_training.sh --config {config} --resume-run /path/to/the/saved/run
 ```
 
 請參閱 [V4 架構與驗收](docs/V4_ARCHITECTURE.md)。完整原始評估與失敗項目保留在該次 run 中，不能把達到預算或曲線停滯稱作學會動作。

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+<rect width="1200" height="650" fill="#f8fafc"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#0f172a">
+<text x="30" y="42" font-size="29" font-weight="bold" fill="#b91c1c">NOT ACCEPTED</text>
+<text x="30" y="72" font-size="17">Native PhysX PPO · 10,240 envs · 641 saved updates</text>
+<text x="30" y="115" font-size="21">20-second survival by command</text>
+<text x="620" y="115" font-size="21">Mean peak sole clearance (cm)</text>
+<text x="620" y="142" font-size="14">Left / right foot; 2.5 cm threshold; stand excluded</text>
+<path d="M438.125 145V545" stroke="#64748b" stroke-dasharray="6 5"/>
+<text x="416.125" y="568" font-size="13">87.5%</text>
+<path d="M922.5 155V545" stroke="#64748b" stroke-dasharray="6 5"/>
+<text x="902.5" y="568" font-size="13">2.5 cm</text>
+<text x="30" y="179" font-size="16">stand</text>
+<rect x="145" y="160" width="335" height="23" rx="3" fill="#e2e8f0"/>
+<rect x="145" y="160" width="335.00" height="23" rx="3" fill="#16a34a"/>
+<text x="495" y="178" font-size="15">100.0%</text>
+<text x="620" y="178" font-size="15">stand: no lift requested</text>
+<text x="30" y="224" font-size="16">w</text>
+<rect x="145" y="205" width="335" height="23" rx="3" fill="#e2e8f0"/>
+<rect x="145" y="205" width="335.00" height="23" rx="3" fill="#16a34a"/>
+<text x="495" y="223" font-size="15">100.0%</text>
+<text x="620" y="223" font-size="16">w</text>
+<rect x="755" y="203" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="203" width="0.30" height="11" fill="#f97316"/>
+<text x="1100" y="213" font-size="12">0.004</text>
+<rect x="755" y="217" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="217" width="0.44" height="11" fill="#f97316"/>
+<text x="1100" y="228" font-size="12">0.007</text>
+<text x="30" y="269" font-size="16">s</text>
+<rect x="145" y="250" width="335" height="23" rx="3" fill="#e2e8f0"/>
+<rect x="145" y="250" width="0.00" height="23" rx="3" fill="#ef4444"/>
+<text x="495" y="268" font-size="15">0.0%</text>
+<text x="620" y="268" font-size="16">s</text>
+<rect x="755" y="248" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="248" width="0.67" height="11" fill="#f97316"/>
+<text x="1100" y="258" font-size="12">0.010</text>
+<rect x="755" y="262" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="262" width="0.36" height="11" fill="#f97316"/>
+<text x="1100" y="273" font-size="12">0.005</text>
+<text x="30" y="314" font-size="16">a</text>
+<rect x="145" y="295" width="335" height="23" rx="3" fill="#e2e8f0"/>
+<rect x="145" y="295" width="335.00" height="23" rx="3" fill="#16a34a"/>
+<text x="495" y="313" font-size="15">100.0%</text>
+<text x="620" y="313" font-size="16">a</text>
+<rect x="755" y="293" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="293" width="0.27" height="11" fill="#f97316"/>
+<text x="1100" y="303" font-size="12">0.004</text>
+<rect x="755" y="307" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="307" width="0.05" height="11" fill="#f97316"/>
+<text x="1100" y="318" font-size="12">0.001</text>
+<text x="30" y="359" font-size="16">d</text>
+<rect x="145" y="340" width="335" height="23" rx="3" fill="#e2e8f0"/>
+<rect x="145" y="340" width="335.00" height="23" rx="3" fill="#16a34a"/>
+<text x="495" y="358" font-size="15">100.0%</text>
+<text x="620" y="358" font-size="16">d</text>
+<rect x="755" y="338" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="338" width="0.14" height="11" fill="#f97316"/>
+<text x="1100" y="348" font-size="12">0.002</text>
+<rect x="755" y="352" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="352" width="0.38" height="11" fill="#f97316"/>
+<text x="1100" y="363" font-size="12">0.006</text>
+<text x="30" y="404" font-size="16">yaw_left</text>
+<rect x="145" y="385" width="335" height="23" rx="3" fill="#e2e8f0"/>
+<rect x="145" y="385" width="335.00" height="23" rx="3" fill="#16a34a"/>
+<text x="495" y="403" font-size="15">100.0%</text>
+<text x="620" y="403" font-size="16">yaw_left</text>
+<rect x="755" y="383" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="383" width="0.01" height="11" fill="#f97316"/>
+<text x="1100" y="393" font-size="12">0.000</text>
+<rect x="755" y="397" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="397" width="0.22" height="11" fill="#f97316"/>
+<text x="1100" y="408" font-size="12">0.003</text>
+<text x="30" y="449" font-size="16">yaw_right</text>
+<rect x="145" y="430" width="335" height="23" rx="3" fill="#e2e8f0"/>
+<rect x="145" y="430" width="335.00" height="23" rx="3" fill="#16a34a"/>
+<text x="495" y="448" font-size="15">100.0%</text>
+<text x="620" y="448" font-size="16">yaw_right</text>
+<rect x="755" y="428" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="428" width="0.19" height="11" fill="#f97316"/>
+<text x="1100" y="438" font-size="12">0.003</text>
+<rect x="755" y="442" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="442" width="0.12" height="11" fill="#f97316"/>
+<text x="1100" y="453" font-size="12">0.002</text>
+<text x="30" y="494" font-size="16">sequence</text>
+<rect x="145" y="475" width="335" height="23" rx="3" fill="#e2e8f0"/>
+<rect x="145" y="475" width="335.00" height="23" rx="3" fill="#16a34a"/>
+<text x="495" y="493" font-size="15">100.0%</text>
+<text x="620" y="493" font-size="16">sequence</text>
+<rect x="755" y="473" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="473" width="0.05" height="11" fill="#f97316"/>
+<text x="1100" y="483" font-size="12">0.001</text>
+<rect x="755" y="487" width="335" height="11" fill="#e2e8f0"/>
+<rect x="755" y="487" width="0.23" height="11" fill="#f97316"/>
+<text x="1100" y="498" font-size="12">0.003</text>
+<text x="30" y="610" font-size="14">Bars summarize the actual first-episode evaluation; passing selected bars is not full acceptance.</text>
+</g></svg>

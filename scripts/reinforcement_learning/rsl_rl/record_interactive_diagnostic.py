@@ -15,7 +15,14 @@ import time
 from play_interactive_web import ROOT, sha256
 
 
-def diagnostic_plan(sidestep_duration=1.6):
+def diagnostic_plan(sidestep_duration=1.6,sequence_only=False):
+    if sequence_only:
+        end=1.+.5+2*sidestep_duration+1.
+        return [
+            {"name":"stand","start":0.,"end":1.,"command":None},
+            {"name":"sidestep_sequence","start":1.,"end":end,"command":None},
+            {"name":"final_stand","start":end,"end":end+1.5,"command":None},
+        ]
     sequence_end = 3.5 + .5 + 2 * sidestep_duration + 1.
     return [
         {"name": "stand", "start": 0., "end": 1., "command": None},
@@ -54,6 +61,7 @@ def main():
     parser.add_argument("--contract", type=Path)
     parser.add_argument("--video", type=Path, default=ROOT / "outputs/interactive_diagnostic.mp4")
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--sequence-only",action="store_true",help="Diagnose the finite sidestep without an earlier walking segment")
     parser.add_argument("--sidestep-duration", type=float, default=1.6)
     from isaaclab.app import AppLauncher
     AppLauncher.add_app_launcher_args(parser)
@@ -103,7 +111,7 @@ def main():
             else:
                 self.suppressed_resets += len(env_ids) if env_ids is not None else self.num_envs
 
-    plan = diagnostic_plan(args.sidestep_duration)
+    plan = diagnostic_plan(args.sidestep_duration,args.sequence_only)
     report = {"diagnostic": True, "gate_passed": False, "accepted": False,
         "source": "native Isaac Sim PhysX PPO", "proxy": False,
         "overlay": "EXPERIMENTAL / NOT ACCEPTED", "checkpoint": str(checkpoint),

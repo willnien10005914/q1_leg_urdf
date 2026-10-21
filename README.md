@@ -18,10 +18,18 @@
 ```bash
 cat outputs/interactive_training_status.json
 # 接續剩餘預算，請代入狀態檔的 run 路徑：
-bash start_interactive_training.sh --resume-run /path/to/the/saved/run
+bash start_interactive_training.sh --config config/interactive_v4_deadline.json --resume-run /path/to/the/saved/run
 ```
 
 請參閱 [V4 架構與驗收](docs/V4_ARCHITECTURE.md)。完整原始評估與失敗項目保留在該次 run 中，不能把達到預算或曲線停滯稱作學會動作。
+
+本次限時段實際新增 **140 次完整速度更新**，接續前 501 次，累計 641 次。49 項 Python 檢查通過。原生 32 回合評估顯示，向後仍會跌倒，雙腳離地幾乎為零，尚不具備可靠的方向行走／閃身步。
+
+[完整限時驗收報告](docs/DEADLINE_20261021.md) · [結構化數值結果](docs/results/interactive_v4_deadline_20261021.json)
+
+![各方向存活與實際雙腳離地量測](docs/images/interactive_deadline_metrics.svg)
+
+7.2 秒、seed 42 的原生候選診斷 MP4 與 GIF 已在本機產生，畫面標示 EXPERIMENTAL / NOT ACCEPTED。候選影片及權重仍保留本機，公開診斷影片待另行確認。這個單一未跌倒回合不能代替完整操作驗收。
 <!-- V4_STATUS_END -->
 
 ## V3 已保存成果
