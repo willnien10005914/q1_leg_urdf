@@ -48,7 +48,7 @@ V5.1 選用原生對照中維持全部回合存活的**閃身擺腿速度前饋*
 
 [2,115-update 獨立原地課程驗證](docs/results/lift_v5_recovery2115_stage0.json)首次通過；[2,215-update 第二次驗證](docs/results/lift_v5_recovery2215_stage0.json)亦通過，兩批合計 **64／64 完整存活 20 秒**。第二批抬腳左右峰值平均 **6.90／7.69 cm**，指定擺腿窗口的卸載成功率 **95.6%／94.8%**，停止後速度約 **0.0041 m/s**。有限閃身後於 2,515、2,615 updates 連續通過驗收；完整鍵盤策略與獨立 128 回合確認仍待完成。
 
-舊分支完整來源與 2,010-update 權重已另行封存，新 run 先新增五次初始化更新後繼續訓練；15,000 上限仍包含所有既有更新。`q1-leg-validation-watchdog` 另行處理超過 300 秒的驗證程序；只重試同一份權重的唯讀驗證，不重跑 PPO 或放寬驗收。目前尚未完成完整鍵盤控制驗收；即時更新數與服務狀態請查下列指令。
+舊分支完整來源與 2,010-update 權重已另行封存，新 run 先新增五次初始化更新後繼續訓練；15,000 上限仍包含所有既有更新。`q1-leg-validation-watchdog` 另行處理超過 300 秒的驗證程序；只重試同一份權重的唯讀驗證，不重跑 PPO 或放寬驗收。`q1-leg-initialization-watchdog` 另檢查超過 600 秒的訓練初始化：必須確認尚未建立 actor、未開始 PPO，並重新核對來源、權重、程序及紀錄，才會終止該次初始化並保留保存點；不會中止已開始學習的程序或自動重排訓練。目前尚未完成完整鍵盤控制驗收；即時更新數與服務狀態請查下列指令。
 
 兩版均使用 implicit PD **800／32**、**100 Nm** 力矩上限。抬腳命令是 **6 cm**，經原生限位與 CAD／FK 得到約 5–6 cm 參考峰值；此為幾何目標，實際結果以接觸感測和腳底量測為準。原始來源與候選均已封存，新分支使用獨立 run。
 
@@ -57,6 +57,7 @@ V5.1 選用原生對照中維持全部回合存活的**閃身擺腿速度前饋*
 .venv/bin/python tools/run_lift_training.py --status
 systemctl --user status q1-leg-lift-training --no-pager
 systemctl --user status q1-leg-validation-watchdog --no-pager
+systemctl --user status q1-leg-initialization-watchdog --no-pager
 tail -n 40 outputs/lift_training.log
 
 # 服務中斷後，接續 V5.1b；來源、profile 及控制契約必須完全一致。

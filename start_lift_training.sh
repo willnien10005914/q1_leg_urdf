@@ -18,6 +18,14 @@ if ! systemctl --user is-active --quiet q1-leg-validation-watchdog; then
     --property=StandardError=inherit --working-directory="$ROOT" \
     "$ROOT/.venv/bin/python" -u "$ROOT/tools/watch_lift_validation.py" --enforce
 fi
+if ! systemctl --user is-active --quiet q1-leg-initialization-watchdog; then
+  systemd-run --user --unit=q1-leg-initialization-watchdog --collect \
+    --description='Q1 pre-PPO initialization timeout guard' \
+    --property=Restart=on-failure --property=RestartSec=10 \
+    --property="StandardOutput=append:$ROOT/outputs/lift_initialization_watchdog.log" \
+    --property=StandardError=inherit --working-directory="$ROOT" \
+    "$ROOT/.venv/bin/python" -u "$ROOT/tools/watch_lift_initialization.py" --enforce
+fi
 exec systemd-run --user --unit=q1-leg-lift-training --collect \
   --description='Q1 lift v5 curriculum PPO: 10240 envs, max 15000 cumulative updates' \
   --property=KillMode=control-group --property=TimeoutStopSec=30 \
