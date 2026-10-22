@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Continuous accepted-v4/v5 PPO with a local keyboard / sidestep API.
+"""Continuous accepted-v4/v5/v6 PPO with a local keyboard / sidestep API.
 
 Each accepted policy uses its own native environment and control contract.
 Legacy v3 weights never unlock these controls. Ordinary mode transitions do
@@ -29,6 +29,10 @@ _GATE_SPEC = importlib.util.spec_from_file_location(
     "q1_leg_v5_policy_gate", Path(__file__).resolve().parents[3] / "tools/v5_policy_gate.py")
 _V5_GATE = importlib.util.module_from_spec(_GATE_SPEC)
 _GATE_SPEC.loader.exec_module(_V5_GATE)
+_V6_SPEC = importlib.util.spec_from_file_location(
+    "q1_leg_v6_policy_gate", Path(__file__).resolve().parents[3] / "tools/v6_policy_gate.py")
+_V6_GATE = importlib.util.module_from_spec(_V6_SPEC)
+_V6_SPEC.loader.exec_module(_V6_GATE)
 
 
 def sha256(path):
@@ -91,43 +95,57 @@ def policy_gate(root=ROOT, folder=None):
 
 
 def selected_policy(root=ROOT, folder=None, version="auto"):
-    """Choose once before constructing an environment; never mix v4/v5.
+    """Choose once before constructing an environment; never mix generations.
 
-    Only formally confirmed v5 weights take priority. A preparatory or failed
-    v5 candidate leaves the accepted v4 player (or the caller's v3 fallback)
+    Only formally confirmed v6/v5 weights take priority. A preparatory or failed
+    candidate leaves the accepted older player (or the caller's v3 fallback)
     available. Explicit folders are checked as their own version, with no
     substitution from a different checkpoint directory.
     """
     root = Path(root)
-    if version not in ("auto", "v4", "v5"):
-        raise ValueError("policy version must be auto, v4 or v5")
+    if version not in ("auto", "v4", "v5", "v6"):
+        raise ValueError("policy version must be auto, v4, v5 or v6")
     if folder is not None:
         folder = Path(folder)
         if version == "auto":
             try:
                 saved = json.loads((folder / "contract.json").read_text())
-                version = {ROBOT_VERSION: "v4", _V5_GATE.ROBOT_VERSION: "v5"}[saved["robot"]]
+                version = {ROBOT_VERSION: "v4", _V5_GATE.ROBOT_VERSION: "v5",
+                           _V6_GATE.ROBOT_VERSION: "v6"}[saved["robot"]]
             except (OSError, ValueError, KeyError, TypeError) as error:
                 return "v4", folder, {"ready": False, "error": f"無法辨識指定策略的環境契約：{error}"}
+    if version == "v6":
+        folder = folder or root / "checkpoints/isaac/upper_body_v6"
+        return "v6", folder, _V6_GATE.v6_policy_gate(root, folder)
     if version == "v5":
         folder = folder or root / "checkpoints/isaac/lift_v5"
         return "v5", folder, _V5_GATE.v5_policy_gate(root, folder)
     if version == "v4":
         folder = folder or root / "checkpoints/isaac/interactive_v4"
         return "v4", folder, policy_gate(root, folder)
+    v6 = _V6_GATE.v6_policy_gate(root)
+    if v6["ready"]:
+        return "v6", root / "checkpoints/isaac/upper_body_v6", v6
     v5 = _V5_GATE.v5_policy_gate(root)
     if v5["ready"]:
         return "v5", root / "checkpoints/isaac/lift_v5", v5
     folder = root / "checkpoints/isaac/interactive_v4"
     v4 = policy_gate(root, folder)
     if not v4["ready"]:
-        v4["error"] = v5["error"] + "；" + v4["error"]
+        v4["error"] = v6["error"] + "；" + v5["error"] + "；" + v4["error"]
     return "v4", folder, v4
 
 
 
 def policy_environment(root, version):
     """Create the config matching a selected policy without importing both envs."""
+    if version == "v6":
+        from leg_humanoid_lab.upper_body_env import UpperBodyLegEnv, UpperBodyEnvCfg
+        cfg = UpperBodyEnvCfg()
+        cfg.curriculum_stage = 2
+        control = json.loads((Path(root) / "config/lift_control_v5.json").read_text())
+        cfg.gait_file = control["gait_file"]
+        return UpperBodyLegEnv, cfg
     if version == "v5":
         from leg_humanoid_lab.lift_env import LiftLegEnv, LiftEnvCfg
         cfg = LiftEnvCfg()
@@ -138,7 +156,7 @@ def policy_environment(root, version):
     if version == "v4":
         from leg_humanoid_lab.interactive_env import InteractiveLegEnv, InteractiveEnvCfg
         return InteractiveLegEnv, InteractiveEnvCfg()
-    raise ValueError("A confirmed interactive policy must use v4 or v5")
+    raise ValueError("A confirmed interactive policy must use v4, v5 or v6")
 
 
 def normalized_velocity(payload):
@@ -155,6 +173,8 @@ def normalized_velocity(payload):
 
 def runtime_sources(root, version="v4"):
     """Pin sources used to construct this process; hot file edits need a restart."""
+    if version == "v6":
+        return _V6_GATE.runtime_sources(root)
     if version == "v5":
         return _V5_GATE.runtime_sources(root)
     paths = ["config/v4_gaits.json", "urdf/q1_inertia/quanta_robot_legged.urdf",
@@ -230,7 +250,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=8877)
     parser.add_argument("--checkpoint-dir", type=Path)
-    parser.add_argument("--policy-version", choices=("auto", "v4", "v5"), default="auto")
+    parser.add_argument("--policy-version", choices=("auto", "v4", "v5", "v6"), default="auto")
     parser.add_argument("--sidestep-duration", type=float, default=1.6)
     parser.add_argument("--validate-only", action="store_true", help="Print the gate without starting Isaac Sim")
     if "--validate-only" in sys.argv:
@@ -246,15 +266,16 @@ def main():
     if args.sidestep_duration <= 0:
         parser.error("--sidestep-duration must be positive")
     version, checkpoint_dir, startup_gate = selected_policy(ROOT, args.checkpoint_dir, args.policy_version)
-    if version == "v5" and startup_gate["ready"] and not math.isclose(
+    if version in ("v5", "v6") and startup_gate["ready"] and not math.isclose(
             args.sidestep_duration, startup_gate["sidestep_duration_s"], abs_tol=1e-9):
-        parser.error("v5 sidestep duration must match its confirmed native gait")
-    controller_version = _V5_GATE.CONTROLLER_VERSION if version == "v5" else CONTROLLER_VERSION
+        parser.error(f"{version} sidestep duration must match its confirmed native gait")
+    controller_version = {"v6": _V6_GATE.CONTROLLER_VERSION, "v5": _V5_GATE.CONTROLLER_VERSION,
+                          "v4": CONTROLLER_VERSION}[version]
 
     commands = queue.Queue(maxsize=32)
     lock, stopping = threading.Lock(), threading.Event()
     state = {"controller_version": controller_version, "ready": False,
-             "status": "starting", "skill": "lift_v5" if version == "v5" else "interactive_v4", "mode": "stand",
+             "status": "starting", "skill": {"v6": "upper_body_v6", "v5": "lift_v5", "v4": "interactive_v4"}[version], "mode": "stand",
              "backend": "isaaclab", "proxy": False, "sequence_active": False,
              "command": {"vx": 0., "vy": 0., "wz": 0.}, "frame": None,
              "duration": 3600., "error": None}
@@ -320,8 +341,9 @@ def main():
                 now = time.monotonic()
                 if now - last_gate_time >= 1.:
                     last_gate_time = now
-                    gate = (_V5_GATE.v5_policy_gate(ROOT, checkpoint_dir) if version == "v5"
-                            else policy_gate(ROOT, checkpoint_dir))
+                    gate = (_V6_GATE.v6_policy_gate(ROOT, checkpoint_dir) if version == "v6" else
+                            _V5_GATE.v5_policy_gate(ROOT, checkpoint_dir) if version == "v5" else
+                            policy_gate(ROOT, checkpoint_dir))
                     if gate["ready"] and runtime_sources(ROOT, version) != startup_sources:
                         gate = {"ready": False, "error": f"{version} 模擬程式或模型素材已變更，請重新啟動即時服務。"}
                     if gate["ready"] and gate["checkpoint_sha256"] != loaded_hash and now >= retry_at:

@@ -62,8 +62,8 @@ const isReplay=()=>Object.hasOwn(replaySources,source);
 const requestedSource=new URLSearchParams(location.search).get('source');
 if(Object.hasOwn(replaySources,requestedSource)){source=requestedSource;$('source').value=source;}
 const heldKeys=new Set(),movementKeys=new Set(['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE']);
-const isInteractive=()=>['q1_leg_v4','q1_leg_v5'].includes(liveState?.controller_version);
-const controllerLabel=()=>liveState?.controller_version==='q1_leg_v5'?'v5':'v4';
+const isInteractive=()=>['q1_leg_v4','q1_leg_v5','q1_leg_v6'].includes(liveState?.controller_version);
+const controllerLabel=()=>({'q1_leg_v4':'v4','q1_leg_v5':'v5','q1_leg_v6':'v6 上半身穩定'}[liveState?.controller_version]??'—');
 const liveControlsReady=()=>source==='live'&&isInteractive()&&liveState.ready===true&&!liveError&&!liveState.error&&!['paused','failed','starting'].includes(liveState.status);
 const sequenceActive=()=>sequencePending||Boolean(liveState?.sequence_active);
 async function json(url){const r=await fetch(url);if(!r.ok)throw Error(`${url}: ${r.status}`);return r.json();}
@@ -145,7 +145,7 @@ function updateKeyboardControls(){
  $('sidestep-sequence').textContent=sequence?'閃身步執行中 · 完成後回站立':'閃身步 · 左右各一次 → 站立';
  document.querySelectorAll('[data-control-key]').forEach(b=>{b.disabled=!ready||sequence;b.classList.toggle('held',heldKeys.has(b.dataset.controlKey));});
  document.querySelectorAll('[data-skill]').forEach(b=>{b.disabled=isReplay()||(source==='live'&&isInteractive());});
- $('keyboard-status').textContent=source!=='live'?'切換至「即時 PPO / Isaac PhysX」才能控制移動。':!isInteractive()?'目前為舊版播放服務；WASD 與一鍵閃身需通過完整驗證的 v4 或 v5 控制器。':!ready?`${controllerLabel()} 控制器尚未就緒，方向控制已鎖定；請等待載入或通過訓練驗證。`:sequence?'正在左右閃身，方向輸入暫時鎖定；Space 可停止。':keyboardArmed?'鍵盤已啟用。放開按鍵、切換視窗或離開即時模式會停止移動。':`${controllerLabel()} 控制器已就緒。點「啟用鍵盤」，或按住方向按鈕移動。`;
+ $('keyboard-status').textContent=source!=='live'?'切換至「即時 PPO / Isaac PhysX」才能控制移動。':!isInteractive()?'目前為舊版播放服務；WASD 與一鍵閃身需通過完整驗證的 v4、v5 或 v6 控制器。':!ready?`${controllerLabel()} 控制器尚未就緒，方向控制已鎖定；請等待載入或通過訓練驗證。`:sequence?'正在左右閃身，方向輸入暫時鎖定；Space 可停止。':keyboardArmed?'鍵盤已啟用。放開按鍵、切換視窗或離開即時模式會停止移動。':`${controllerLabel()} 控制器已就緒。點「啟用鍵盤」，或按住方向按鈕移動。`;
  const modes={stand:'站立',walk:'方向行走',sidestep_left:'向左閃身',sidestep_right:'向右閃身',recover:'回復站姿'};
  $('controller-mode').textContent=source==='live'&&isInteractive()?`即時狀態：${modes[liveState.mode]??liveState.mode??'等待控制器'}`:'控制器尚未就緒';
  const c=source==='live'&&isInteractive()?liveState.command??{}:{};

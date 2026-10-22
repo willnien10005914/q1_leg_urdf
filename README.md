@@ -2,6 +2,20 @@
 
 以 BU10 原生雙足 CAD 建立的機器人動作專案，沿用 `q1_wheel_urdf` 的資產目錄與啟動方式。包含 URDF、MediaPipe 前七秒動作映射、Isaac Lab **DirectRLEnv + RSL-RL PPO**、MuJoCo 驗證，以及 Three.js 網頁。
 
+## V6 上半身穩定重訓：10,240 envs × 20,000 次上限
+
+**2026-10-23 台北 04:47 已啟動新的 V6 PPO 訓練**，使用 **10,240 envs、最多 20,000 次新更新**。以 13115 完整 actor 初始化，critic／Adam／探索與更新計數重新建立；舊 15000 run 保留。新增胸口姿態、roll／pitch 晃動、腰臂追蹤與受控回手目標，保留原生 PD、抬腳、接觸、滑動及完整 WASD／QE 驗收。
+
+原地抬腳與恢復 → 有限左右閃身與回手 → 方向控制整合；各階段訓練回合皆 20 秒，最後須連續三次完整驗證及獨立 128 回合確認。啟動前原生 actor 短測 **32／32 第一回合存活 20 秒**；這是初始化檢查，**訓練尚未完成，也尚未發布 V6 即時策略**。下方影片仍是上一版 13115 控制修正實驗。
+
+[架構、reward、回手驗收與接續指令](docs/UPPER_BODY_V6_TRAINING.md) · [訓練設定](config/upper_body_v6.json)
+
+```bash
+systemctl --user status q1-leg-upper-training --no-pager
+.venv/bin/python tools/run_upper_body_training.py --status
+tail -n 40 outputs/upper_body_training.log
+```
+
 ## 2026-10-23：腰臂回位與胸口晃動修正實驗
 
 針對 13115 影片的手臂鬆垂與胸口晃動，保留同一 PPO，限制腰臂修正幅度並維持原 PD。三批原生對照共 **80／80 回合存活 20 秒**；左右連續閃身的胸口峰值平均 **39.0° → 24.2°**，手臂追蹤誤差降低約 **61%**，回站姿雙手距離誤差 **4.9／3.0 cm → 0.9／0.5 cm**。直接加硬 PD 的版本出現提前終止，未採用。**這是物理控制修正實驗，尚未重訓，胸口仍有擺動，也未通過完整鍵盤驗收。**

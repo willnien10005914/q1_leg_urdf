@@ -1,0 +1,57 @@
+{
+  "robot": "q1_leg_upper_body_v6",
+  "experiment": "upper_body_v6_guard_caps_native_retraining",
+  "num_envs": 10240,
+  "max_iterations": 20000,
+  "budget_mode": "new_updates",
+  "source_iteration": 13115,
+  "source_checkpoint_sha256": "b4077ac2a5d3fd98de67e43165cc753263c01d60e33240562303f912e11dbab9",
+  "chunk_iterations": 500,
+  "early_chunk_iterations": 100,
+  "early_chunk_until": 2000,
+  "num_steps_per_env": 24,
+  "learning_rate": 0.00015,
+  "exploration_std": 0.04,
+  "entropy_coef": 0.001,
+  "num_mini_batches": 8,
+  "validation_episodes": 32,
+  "confirmation_episodes": 128,
+  "validation_seed_base": 271000,
+  "confirmation_seed": 291000,
+  "stage_passes_to_advance": 2,
+  "consecutive_passes_to_confirm": 3,
+  "plateau_window_evaluations": 4,
+  "plateau_relative_improvement": 0.01,
+  "max_reward_revisions": 2,
+  "reward_revision_learning_rate_factor": 0.7,
+  "gait_file": "config/v5_gaits_lift6.json",
+  "control_file": "config/upper_body_control_v6.json",
+  "bootstrap": "checkpoints/isaac/lift_v5/runs/20261022_0338_recovery20/chunks/0013115_s2_r2/resume.pt",
+  "bootstrap_policy": "Preserve complete frozen 13115 actor MLP including output; fresh critic, Adam, std and V6 counter zero. No source acceptance inherited.",
+  "stages": [
+    "inplace",
+    "finite_gesture",
+    "interactive"
+  ],
+  "training_episode_lengths_s": [
+    20,
+    20,
+    20
+  ],
+  "early_stop": "Only three consecutive stage-2 full validations plus independent 128-episode confirmation can publish. Plateau cannot mark success.",
+  "reward_revisions": {
+    "0": "Base native lift objective plus initial declared upper-body pose, chest angular rate and controlled-return tracking rewards.",
+    "1": "Base lift revision 1; upper chest_weight=2.5, chest_rate_weight=1.0 and return_velocity_weight=1.25; native PD, residual caps and acceptance gates unchanged.",
+    "2": "Base lift revision 2; upper chest_weight=3.0, chest_rate_weight=1.0, arm_weight=1.75 and return_velocity_weight=1.25; native PD, residual caps and acceptance gates unchanged."
+  },
+  "validation_worker_timeout_s": 420,
+  "training_worker_timeout_s": 10800,
+  "log": "outputs/upper_body_training.log",
+  "symmetry": {
+    "use_data_augmentation": false,
+    "use_mirror_loss": true,
+    "mirror_loss_coeff": 0.02,
+    "data_augmentation_func": "leg_humanoid_lab.lift_symmetry:augment_policy",
+    "scope": "Weak mirror consistency on feasible samples; native asymmetry retained."
+  }
+}

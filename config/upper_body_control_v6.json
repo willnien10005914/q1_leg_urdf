@@ -1,0 +1,63 @@
+{
+  "schema": 6,
+  "robot": "q1_leg_upper_body_v6",
+  "base_control_file": "config/lift_control_v5.json",
+  "base_control_sha256": "b4e9c6ae242cb28e5d88ed4605b23820667648628fb66dd02702e8295fdd39f4",
+  "upper_pd": {
+    "stiffness": 70.0,
+    "damping": 4.0,
+    "changed": false
+  },
+  "residual_rad": {
+    "waist_Yaw": 0.08,
+    "waist_Roll": 0.025,
+    "waist_Pitch": 0.04,
+    "arm": 0.08
+  },
+  "reward": {
+    "tilt_deadband_deg": 4.0,
+    "tilt_sigma_rad": 0.12,
+    "chest_weight": 2.0,
+    "chest_rate_weight": 0.75,
+    "chest_rate_sigma_rad_s": 0.7,
+    "arm_weight": 1.5,
+    "arm_sigma_rad": 0.08,
+    "velocity_weight": 0.5,
+    "return_velocity_weight": 1.0,
+    "arm_rate_sigma_rad_s": 0.6,
+    "waist_weight": 0.5,
+    "waist_sigma_rad": 0.06
+  },
+  "evaluation_gates": {
+    "chest_peak_max_deg": 25.0,
+    "chest_peak_p95_max_deg": 20.0,
+    "chest_rms_max_deg": 8.0,
+    "dynamic_chest_angular_xy_rms_max_rad_s": 0.7,
+    "gesture_arm_reference_rmse_max_rad": 0.08,
+    "early_return_chest_peak_max_deg": 8.0,
+    "early_return_arm_reference_rmse_max_rad": 0.08,
+    "early_return_hand_distance_rms_max_m": 0.02,
+    "early_return_arm_speed_rms_max_rad_s": 0.6,
+    "tail_hand_distance_rms_max_m": 0.015,
+    "tail_chest_angular_xy_rms_max_rad_s": 0.35,
+    "tail_arm_speed_rms_max_rad_s": 0.4,
+    "observed_episode_rate_min": 0.875,
+    "prep_chest_peak_max_deg": 15.0,
+    "prep_chest_peak_p95_max_deg": 15.0
+  },
+  "scope": "Fresh V6 PPO run; all V5 foot, contact, termination and direction gates retained. Original upper PD, guarded residuals, no base forces or pose filtering.",
+  "reward_revisions": {
+    "0": {},
+    "1": {
+      "chest_weight": 2.5,
+      "chest_rate_weight": 1.0,
+      "return_velocity_weight": 1.25
+    },
+    "2": {
+      "chest_weight": 3.0,
+      "chest_rate_weight": 1.0,
+      "arm_weight": 1.75,
+      "return_velocity_weight": 1.25
+    }
+  }
+}
