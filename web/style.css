@@ -30,3 +30,5 @@ button:disabled{opacity:.42;cursor:not-allowed}button:disabled:hover{border-colo
 .command-readout{display:flex;flex-direction:column;gap:6px;margin-top:14px;font-size:11px;color:#c5d3e3;font-variant-numeric:tabular-nums}
 #velocity-command{font-size:10px;color:#96a8bf;overflow-wrap:anywhere}
 #canvas canvas:focus-visible{outline:2px solid #e5bc89;outline-offset:-3px}
+
+.video-sources{flex-wrap:wrap}#policy-version{border-left:2px solid #d7b07e;padding-left:10px}

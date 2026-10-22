@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "accepted": false,
+  "experimental": true,
+  "retrained": false,
+  "source": "native_physx_frozen_ppo_upper_body_ablation",
+  "checkpoint_sha256": "b4077ac2a5d3fd98de67e43165cc753263c01d60e33240562303f912e11dbab9",
+  "baseline_control_sha256": "b4e9c6ae242cb28e5d88ed4605b23820667648628fb66dd02702e8295fdd39f4",
+  "profile": {
+    "schema": 1,
+    "experimental": true,
+    "revision": "medium_pd_r2",
+    "waist": {
+      "stiffness": 160.0,
+      "damping": 14.0
+    },
+    "shoulder": {
+      "stiffness": 100.0,
+      "damping": 8.0
+    },
+    "elbow": {
+      "stiffness": 90.0,
+      "damping": 8.0
+    },
+    "residual_rad": {
+      "waist_Yaw": 0.08,
+      "waist_Roll": 0.025,
+      "waist_Pitch": 0.04,
+      "arm": 0.08
+    },
+    "scope": "Native joint targets and PD only; same actor, legs, contacts and motor limits; no root force or pose filtering"
+  },
+  "profile_module_sha256": "3205dd08dcd24b74cef0098e9cc10226bc95b5279108a1d30bcc39388e9f641d",
+  "script_sha256": "2cadf6b78777919391d9e34a33cd496f1f37a5b41f0402ae36d2dbb448de0358",
+  "seed": 42,
+  "duration_s": 7.2,
+  "rows": [
+    {
+      "variant": "upper_pd_guard",
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.16,
+      "chest_tilt_rms_deg": 10.3513395173565,
+      "chest_tilt_peak_deg": 18.932082265981425,
+      "pelvis_tilt_rms_deg": 5.690474776800451,
+      "waist_tilt_rms_deg": 5.220191919896155,
+      "chest_angular_speed_rms_rad_s": 0.7224988341331482,
+      "arm_reference_rmse_rad": 0.0709042027592659,
+      "arm_drive_tracking_rmse_rad": 0.07604528218507767,
+      "waist_reference_rmse_rad": 0.05099157243967056,
+      "final_stand_speed_m_s": null,
+      "hand_return_error_m_per_hand": null,
+      "hand_return_distance_rms_m_per_hand": null,
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05574548989534378,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06024348735809326,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.036859795451164246,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.5384615384615384,
+          "trailing_unloaded_peak_m": 0.016800761222839355,
+          "trailing_high_swing_samples": 0,
+          "trailing_lift_rate": null
+        }
+      }
+    }
+  ],
+  "first_terminations": [
+    {
+      "index": 0,
+      "time_s": 4.18,
+      "terminated": true,
+      "truncated": false,
+      "nonfoot_contacts_over_25n": [
+        {
+          "body": "right_ankle_pitch_link",
+          "force_n": 31.76848602294922
+        }
+      ]
+    }
+  ],
+  "motor_effort_limit_nm": 100.0,
+  "motor_velocity_limit_rad_s": 10.0,
+  "root_forces_or_constraints": false,
+  "rendered_pose_filtering": false,
+  "torso_measurement": "center_torso_link world inclination and angular velocity; root upright alone does not measure chest stability",
+  "hand_measurement": "hand_return_error is per-coordinate RMS; hand_return_distance_rms is Euclidean distance RMS, both versus native reference FK in pelvis coordinates",
+  "torque_measurement": "Implicit actuator applied-torque estimate, not an independent sensor",
+  "video_sha256": "0c4874410c820111b4a54601dcab587b61289f5e81b887ab61b1073f67860b34",
+  "frames": 360,
+  "failure": true,
+  "publication_note": "Rejected PD+guard recording: physical termination. Video excluded from public demonstration."
+}

@@ -1,0 +1,7 @@
+{
+  "as_of": "2026-10-23",
+  "v5_completed_updates": 15000,
+  "v5_live_accepted": false,
+  "diagnostic_checkpoint_updates": 13115,
+  "notice": "V5 已完成 15000 次更新，完整互動策略尚未驗收；13115 原版與腰臂實驗版可在下拉選單播放。腰臂實驗使用相同權重，未重訓。"
+}

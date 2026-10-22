@@ -1,0 +1,4381 @@
+{
+  "schema": 1,
+  "accepted": false,
+  "experimental": true,
+  "retrained": false,
+  "source": "native_physx_frozen_ppo_upper_body_ablation",
+  "checkpoint_sha256": "b4077ac2a5d3fd98de67e43165cc753263c01d60e33240562303f912e11dbab9",
+  "baseline_control_sha256": "b4e9c6ae242cb28e5d88ed4605b23820667648628fb66dd02702e8295fdd39f4",
+  "profile": {
+    "schema": 1,
+    "experimental": true,
+    "revision": "medium_pd_r2",
+    "waist": {
+      "stiffness": 160.0,
+      "damping": 14.0
+    },
+    "shoulder": {
+      "stiffness": 100.0,
+      "damping": 8.0
+    },
+    "elbow": {
+      "stiffness": 90.0,
+      "damping": 8.0
+    },
+    "residual_rad": {
+      "waist_Yaw": 0.08,
+      "waist_Roll": 0.025,
+      "waist_Pitch": 0.04,
+      "arm": 0.08
+    },
+    "scope": "Native joint targets and PD only; same actor, legs, contacts and motor limits; no root force or pose filtering"
+  },
+  "profile_module_sha256": "3205dd08dcd24b74cef0098e9cc10226bc95b5279108a1d30bcc39388e9f641d",
+  "script_sha256": "2cadf6b78777919391d9e34a33cd496f1f37a5b41f0402ae36d2dbb448de0358",
+  "seed": 137,
+  "duration_s": 20.0,
+  "rows": [
+    {
+      "variant": "baseline",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.3886498000873786,
+      "chest_tilt_peak_deg": 3.4922217214443942,
+      "pelvis_tilt_rms_deg": 0.8010341271319289,
+      "waist_tilt_rms_deg": 3.7713534101328325,
+      "chest_angular_speed_rms_rad_s": 0.06456325948238373,
+      "arm_reference_rmse_rad": 0.05933692678809166,
+      "arm_drive_tracking_rmse_rad": 0.1498848795890808,
+      "waist_reference_rmse_rad": 0.05718499422073364,
+      "final_stand_speed_m_s": 0.00614172825589776,
+      "hand_return_error_m_per_hand": [
+        0.026117121800780296,
+        0.017522692680358887
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04523618146777153,
+        0.03035019338130951
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "baseline",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 14.136982110119822,
+      "chest_tilt_peak_deg": 39.24717538605288,
+      "pelvis_tilt_rms_deg": 3.3015290296765736,
+      "waist_tilt_rms_deg": 14.153652894336531,
+      "chest_angular_speed_rms_rad_s": 1.4886181354522705,
+      "arm_reference_rmse_rad": 0.12612174451351166,
+      "arm_drive_tracking_rmse_rad": 0.14329984784126282,
+      "waist_reference_rmse_rad": 0.15982909500598907,
+      "final_stand_speed_m_s": 0.009286937303841114,
+      "hand_return_error_m_per_hand": [
+        0.02335966005921364,
+        0.018919559195637703
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.040460117161273956,
+        0.032769639045000076
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06503753364086151,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.07446284592151642,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 12.628617647966193,
+      "chest_tilt_peak_deg": 42.61345460906117,
+      "pelvis_tilt_rms_deg": 2.8381576838820957,
+      "waist_tilt_rms_deg": 11.825693052538051,
+      "chest_angular_speed_rms_rad_s": 1.1542060375213623,
+      "arm_reference_rmse_rad": 0.10521672666072845,
+      "arm_drive_tracking_rmse_rad": 0.1464817076921463,
+      "waist_reference_rmse_rad": 0.15496417880058289,
+      "final_stand_speed_m_s": 0.005654186476022005,
+      "hand_return_error_m_per_hand": [
+        0.027147943153977394,
+        0.0172392800450325
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.047021616250276566,
+        0.029859310016036034
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06606848537921906,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07827320694923401,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 14.833599933758592,
+      "chest_tilt_peak_deg": 40.91867977030591,
+      "pelvis_tilt_rms_deg": 3.8001055183308243,
+      "waist_tilt_rms_deg": 14.273397209544255,
+      "chest_angular_speed_rms_rad_s": 1.5319935083389282,
+      "arm_reference_rmse_rad": 0.13402755558490753,
+      "arm_drive_tracking_rmse_rad": 0.14755691587924957,
+      "waist_reference_rmse_rad": 0.1776220202445984,
+      "final_stand_speed_m_s": 0.0057144081220030785,
+      "hand_return_error_m_per_hand": [
+        0.0300750695168972,
+        0.016610391438007355
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.05209154635667801,
+        0.028770042583346367
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06526759266853333,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07373768091201782,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.08011455833911896,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.08412937819957733,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 2.7182289535667805,
+      "chest_tilt_peak_deg": 2.7931621051773443,
+      "pelvis_tilt_rms_deg": 0.8728956146066909,
+      "waist_tilt_rms_deg": 3.0144668510315156,
+      "chest_angular_speed_rms_rad_s": 0.06723565608263016,
+      "arm_reference_rmse_rad": 0.06116350740194321,
+      "arm_drive_tracking_rmse_rad": 0.15006990730762482,
+      "waist_reference_rmse_rad": 0.05271277576684952,
+      "final_stand_speed_m_s": 0.005866545252501965,
+      "hand_return_error_m_per_hand": [
+        0.025048179551959038,
+        0.018278682604432106
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.043384719640016556,
+        0.03165960684418678
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "baseline",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 14.02791252681118,
+      "chest_tilt_peak_deg": 37.82470652912768,
+      "pelvis_tilt_rms_deg": 3.499693521509565,
+      "waist_tilt_rms_deg": 14.012088686051554,
+      "chest_angular_speed_rms_rad_s": 1.4890252351760864,
+      "arm_reference_rmse_rad": 0.1259482353925705,
+      "arm_drive_tracking_rmse_rad": 0.1462419480085373,
+      "waist_reference_rmse_rad": 0.15890377759933472,
+      "final_stand_speed_m_s": 0.009338364005088806,
+      "hand_return_error_m_per_hand": [
+        0.0235272366553545,
+        0.018670348450541496
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04075036942958832,
+        0.032337989658117294
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06187407299876213,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07668806612491608,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.748658763984063,
+      "chest_tilt_peak_deg": 39.6315545268791,
+      "pelvis_tilt_rms_deg": 2.475533335892598,
+      "waist_tilt_rms_deg": 11.064790342204766,
+      "chest_angular_speed_rms_rad_s": 1.1484750509262085,
+      "arm_reference_rmse_rad": 0.10410214960575104,
+      "arm_drive_tracking_rmse_rad": 0.1627453714609146,
+      "waist_reference_rmse_rad": 0.14696407318115234,
+      "final_stand_speed_m_s": 0.005952280014753342,
+      "hand_return_error_m_per_hand": [
+        0.027848640456795692,
+        0.0164022296667099
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04823525995016098,
+        0.02840949408710003
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06742452085018158,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07509589940309525,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 13.3641299838336,
+      "chest_tilt_peak_deg": 39.35323114839025,
+      "pelvis_tilt_rms_deg": 3.4029791100792424,
+      "waist_tilt_rms_deg": 13.123276169357794,
+      "chest_angular_speed_rms_rad_s": 1.4541006088256836,
+      "arm_reference_rmse_rad": 0.1312788724899292,
+      "arm_drive_tracking_rmse_rad": 0.14183442294597626,
+      "waist_reference_rmse_rad": 0.16676034033298492,
+      "final_stand_speed_m_s": 0.007722146343439817,
+      "hand_return_error_m_per_hand": [
+        0.027933113276958466,
+        0.018078215420246124
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04838157445192337,
+        0.03131238743662834
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06596788763999939,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.0738368034362793,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.0850319191813469,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 1.0,
+          "trailing_unloaded_peak_m": 0.07418149709701538,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.7517439370257257,
+      "chest_tilt_peak_deg": 3.851631184768931,
+      "pelvis_tilt_rms_deg": 0.4320494589625481,
+      "waist_tilt_rms_deg": 4.16515650446638,
+      "chest_angular_speed_rms_rad_s": 0.29405707120895386,
+      "arm_reference_rmse_rad": 0.05787963047623634,
+      "arm_drive_tracking_rmse_rad": 0.18064191937446594,
+      "waist_reference_rmse_rad": 0.05989835411310196,
+      "final_stand_speed_m_s": 0.004898319486528635,
+      "hand_return_error_m_per_hand": [
+        0.028443820774555206,
+        0.017672255635261536
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04926614090800285,
+        0.030609244480729103
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "baseline",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 14.681850205873834,
+      "chest_tilt_peak_deg": 41.41772754201289,
+      "pelvis_tilt_rms_deg": 2.9717320649420382,
+      "waist_tilt_rms_deg": 14.542693639271286,
+      "chest_angular_speed_rms_rad_s": 1.517026662826538,
+      "arm_reference_rmse_rad": 0.1278783231973648,
+      "arm_drive_tracking_rmse_rad": 0.1452636569738388,
+      "waist_reference_rmse_rad": 0.16285938024520874,
+      "final_stand_speed_m_s": 0.007617469877004623,
+      "hand_return_error_m_per_hand": [
+        0.022733813151717186,
+        0.02053302899003029
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.039376117289066315,
+        0.03556424751877785
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.0648948922753334,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07219745218753815,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.288983617747618,
+      "chest_tilt_peak_deg": 38.301347865262436,
+      "pelvis_tilt_rms_deg": 2.358178092790497,
+      "waist_tilt_rms_deg": 10.688225791562685,
+      "chest_angular_speed_rms_rad_s": 1.11495840549469,
+      "arm_reference_rmse_rad": 0.10516847670078278,
+      "arm_drive_tracking_rmse_rad": 0.14569179713726044,
+      "waist_reference_rmse_rad": 0.14358212053775787,
+      "final_stand_speed_m_s": 0.005915509536862373,
+      "hand_return_error_m_per_hand": [
+        0.02721705660223961,
+        0.016918599605560303
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04714132472872734,
+        0.02930387295782566
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06763170659542084,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.07399389147758484,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 12.708599163147042,
+      "chest_tilt_peak_deg": 36.551859796160784,
+      "pelvis_tilt_rms_deg": 3.6190286656973236,
+      "waist_tilt_rms_deg": 12.426765921198452,
+      "chest_angular_speed_rms_rad_s": 1.4169331789016724,
+      "arm_reference_rmse_rad": 0.1308128833770752,
+      "arm_drive_tracking_rmse_rad": 0.15535515546798706,
+      "waist_reference_rmse_rad": 0.1610955148935318,
+      "final_stand_speed_m_s": 0.006731345783919096,
+      "hand_return_error_m_per_hand": [
+        0.029071088880300522,
+        0.016573943197727203
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.05035260319709778,
+        0.028706911951303482
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.0622578039765358,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07541650533676147,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.08550119400024414,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 1.0,
+          "trailing_unloaded_peak_m": 0.07374252378940582,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.820838557556398,
+      "chest_tilt_peak_deg": 3.960618378920709,
+      "pelvis_tilt_rms_deg": 0.725570782087043,
+      "waist_tilt_rms_deg": 4.267641785415129,
+      "chest_angular_speed_rms_rad_s": 0.06697362661361694,
+      "arm_reference_rmse_rad": 0.06037772074341774,
+      "arm_drive_tracking_rmse_rad": 0.15005435049533844,
+      "waist_reference_rmse_rad": 0.061577241867780685,
+      "final_stand_speed_m_s": 0.005095948930829763,
+      "hand_return_error_m_per_hand": [
+        0.026271024718880653,
+        0.018881233409047127
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04550275206565857,
+        0.032703254371881485
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "baseline",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 13.993821345116354,
+      "chest_tilt_peak_deg": 39.86395854357796,
+      "pelvis_tilt_rms_deg": 3.2246770217960594,
+      "waist_tilt_rms_deg": 13.936691935351075,
+      "chest_angular_speed_rms_rad_s": 1.4964025020599365,
+      "arm_reference_rmse_rad": 0.1266252100467682,
+      "arm_drive_tracking_rmse_rad": 0.1628304421901703,
+      "waist_reference_rmse_rad": 0.1587723195552826,
+      "final_stand_speed_m_s": 0.004934017080813646,
+      "hand_return_error_m_per_hand": [
+        0.0258264672011137,
+        0.01889200322329998
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.044732753187417984,
+        0.03272191062569618
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.0653611421585083,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.07423844933509827,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.539177715913416,
+      "chest_tilt_peak_deg": 38.88238522776625,
+      "pelvis_tilt_rms_deg": 2.5159012479912546,
+      "waist_tilt_rms_deg": 10.883655432963321,
+      "chest_angular_speed_rms_rad_s": 1.1290037631988525,
+      "arm_reference_rmse_rad": 0.10433535277843475,
+      "arm_drive_tracking_rmse_rad": 0.14782100915908813,
+      "waist_reference_rmse_rad": 0.14602848887443542,
+      "final_stand_speed_m_s": 0.006005231756716967,
+      "hand_return_error_m_per_hand": [
+        0.026376916095614433,
+        0.017169062048196793
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.045686159282922745,
+        0.029737688601017
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06675606220960617,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.0754145085811615,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 13.363210469616588,
+      "chest_tilt_peak_deg": 40.393052317443825,
+      "pelvis_tilt_rms_deg": 3.2195055013773017,
+      "waist_tilt_rms_deg": 13.11015964483043,
+      "chest_angular_speed_rms_rad_s": 1.427499532699585,
+      "arm_reference_rmse_rad": 0.13231657445430756,
+      "arm_drive_tracking_rmse_rad": 0.1430700272321701,
+      "waist_reference_rmse_rad": 0.1653992384672165,
+      "final_stand_speed_m_s": 0.006796864792704582,
+      "hand_return_error_m_per_hand": [
+        0.028355984017252922,
+        0.01758509874343872
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04911400377750397,
+        0.03045828454196453
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.0640212893486023,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.0715753510594368,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.08452990651130676,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 1.0,
+          "trailing_unloaded_peak_m": 0.0736428052186966,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.9580677301525324,
+      "chest_tilt_peak_deg": 4.082646538632157,
+      "pelvis_tilt_rms_deg": 0.6497417551172969,
+      "waist_tilt_rms_deg": 4.430692061281674,
+      "chest_angular_speed_rms_rad_s": 0.06700489670038223,
+      "arm_reference_rmse_rad": 0.06078073009848595,
+      "arm_drive_tracking_rmse_rad": 0.15016904473304749,
+      "waist_reference_rmse_rad": 0.06350836902856827,
+      "final_stand_speed_m_s": 0.005023914854973555,
+      "hand_return_error_m_per_hand": [
+        0.02696061320602894,
+        0.019616568461060524
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04669715091586113,
+        0.03397689014673233
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "baseline",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 13.469832283881425,
+      "chest_tilt_peak_deg": 36.812243682794595,
+      "pelvis_tilt_rms_deg": 3.160441227086205,
+      "waist_tilt_rms_deg": 13.57328403659773,
+      "chest_angular_speed_rms_rad_s": 1.4507019519805908,
+      "arm_reference_rmse_rad": 0.12625530362129211,
+      "arm_drive_tracking_rmse_rad": 0.16185347735881805,
+      "waist_reference_rmse_rad": 0.15464268624782562,
+      "final_stand_speed_m_s": 0.006650716532021761,
+      "hand_return_error_m_per_hand": [
+        0.026356296613812447,
+        0.01763984002172947
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04565044492483139,
+        0.030553098767995834
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06553225219249725,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.07116533815860748,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.843327747201377,
+      "chest_tilt_peak_deg": 40.494835796455355,
+      "pelvis_tilt_rms_deg": 2.5138284990215674,
+      "waist_tilt_rms_deg": 11.198742304659763,
+      "chest_angular_speed_rms_rad_s": 1.1230860948562622,
+      "arm_reference_rmse_rad": 0.1046435534954071,
+      "arm_drive_tracking_rmse_rad": 0.14690349996089935,
+      "waist_reference_rmse_rad": 0.14857205748558044,
+      "final_stand_speed_m_s": 0.005896523129194975,
+      "hand_return_error_m_per_hand": [
+        0.026406971737742424,
+        0.017297280952334404
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04573821648955345,
+        0.029959769919514656
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06750182807445526,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.07573364675045013,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 13.50288527682241,
+      "chest_tilt_peak_deg": 39.84005288148291,
+      "pelvis_tilt_rms_deg": 3.4111510045343394,
+      "waist_tilt_rms_deg": 13.214563355162307,
+      "chest_angular_speed_rms_rad_s": 1.4642044305801392,
+      "arm_reference_rmse_rad": 0.13067544996738434,
+      "arm_drive_tracking_rmse_rad": 0.15410000085830688,
+      "waist_reference_rmse_rad": 0.16665394604206085,
+      "final_stand_speed_m_s": 0.005412801634520292,
+      "hand_return_error_m_per_hand": [
+        0.029310474172234535,
+        0.016686834394931793
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.05076722800731659,
+        0.02890244498848915
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06396481394767761,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07459085434675217,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.08461953699588776,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 1.0,
+          "trailing_unloaded_peak_m": 0.07354998588562012,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.899441655185374,
+      "chest_tilt_peak_deg": 4.001152563436973,
+      "pelvis_tilt_rms_deg": 0.6661040602434443,
+      "waist_tilt_rms_deg": 4.3492190035408225,
+      "chest_angular_speed_rms_rad_s": 0.06706439703702927,
+      "arm_reference_rmse_rad": 0.060585808008909225,
+      "arm_drive_tracking_rmse_rad": 0.15011568367481232,
+      "waist_reference_rmse_rad": 0.06263493001461029,
+      "final_stand_speed_m_s": 0.005238776095211506,
+      "hand_return_error_m_per_hand": [
+        0.0267079658806324,
+        0.019220152869820595
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.046259555965662,
+        0.03329028561711311
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "baseline",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 13.817459884331102,
+      "chest_tilt_peak_deg": 37.66660472531481,
+      "pelvis_tilt_rms_deg": 3.587340856816696,
+      "waist_tilt_rms_deg": 13.846575273215572,
+      "chest_angular_speed_rms_rad_s": 1.4917007684707642,
+      "arm_reference_rmse_rad": 0.1271330565214157,
+      "arm_drive_tracking_rmse_rad": 0.16424624621868134,
+      "waist_reference_rmse_rad": 0.1576734483242035,
+      "final_stand_speed_m_s": 0.004676162730902433,
+      "hand_return_error_m_per_hand": [
+        0.0263699758797884,
+        0.01883181557059288
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04567413777112961,
+        0.032617662101984024
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.062184665352106094,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.0769154280424118,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.281518220984795,
+      "chest_tilt_peak_deg": 38.6599806080123,
+      "pelvis_tilt_rms_deg": 2.3549685442108257,
+      "waist_tilt_rms_deg": 10.653496840954109,
+      "chest_angular_speed_rms_rad_s": 1.130149483680725,
+      "arm_reference_rmse_rad": 0.10529714077711105,
+      "arm_drive_tracking_rmse_rad": 0.14668245613574982,
+      "waist_reference_rmse_rad": 0.14348070323467255,
+      "final_stand_speed_m_s": 0.007367326412349939,
+      "hand_return_error_m_per_hand": [
+        0.026926370337605476,
+        0.01624814048409462
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04663784056901932,
+        0.02814260497689247
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06714920699596405,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.07354749739170074,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 13.910199339107889,
+      "chest_tilt_peak_deg": 38.32668786708319,
+      "pelvis_tilt_rms_deg": 3.837018848813335,
+      "waist_tilt_rms_deg": 13.4536208298864,
+      "chest_angular_speed_rms_rad_s": 1.5055142641067505,
+      "arm_reference_rmse_rad": 0.13235962390899658,
+      "arm_drive_tracking_rmse_rad": 0.14211207628250122,
+      "waist_reference_rmse_rad": 0.16992869973182678,
+      "final_stand_speed_m_s": 0.005620406474918127,
+      "hand_return_error_m_per_hand": [
+        0.02702375315129757,
+        0.018062278628349304
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.046806514263153076,
+        0.03128478303551674
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06230924278497696,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07686230540275574,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.08126476407051086,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.0789511427283287,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.6555428570002118,
+      "chest_tilt_peak_deg": 3.7825822411283334,
+      "pelvis_tilt_rms_deg": 0.7048728543026713,
+      "waist_tilt_rms_deg": 4.091302949631501,
+      "chest_angular_speed_rms_rad_s": 0.0674930289387703,
+      "arm_reference_rmse_rad": 0.06149255111813545,
+      "arm_drive_tracking_rmse_rad": 0.1500702053308487,
+      "waist_reference_rmse_rad": 0.060652974992990494,
+      "final_stand_speed_m_s": 0.00507305609062314,
+      "hand_return_error_m_per_hand": [
+        0.02592412754893303,
+        0.01934085786342621
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.044901907444000244,
+        0.033499348908662796
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "baseline",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 14.456431765148611,
+      "chest_tilt_peak_deg": 39.73955347803534,
+      "pelvis_tilt_rms_deg": 3.3263832342926034,
+      "waist_tilt_rms_deg": 14.32732752945703,
+      "chest_angular_speed_rms_rad_s": 1.538520097732544,
+      "arm_reference_rmse_rad": 0.12507404386997223,
+      "arm_drive_tracking_rmse_rad": 0.16405446827411652,
+      "waist_reference_rmse_rad": 0.16173017024993896,
+      "final_stand_speed_m_s": 0.004558604210615158,
+      "hand_return_error_m_per_hand": [
+        0.026181068271398544,
+        0.019209012389183044
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.0453469417989254,
+        0.03327098488807678
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06473545730113983,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07565395534038544,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.947512037706167,
+      "chest_tilt_peak_deg": 39.99669985500257,
+      "pelvis_tilt_rms_deg": 2.4497790404100073,
+      "waist_tilt_rms_deg": 11.18138252511053,
+      "chest_angular_speed_rms_rad_s": 1.1541069746017456,
+      "arm_reference_rmse_rad": 0.10375125706195831,
+      "arm_drive_tracking_rmse_rad": 0.16316334903240204,
+      "waist_reference_rmse_rad": 0.1476919949054718,
+      "final_stand_speed_m_s": 0.006010181736201048,
+      "hand_return_error_m_per_hand": [
+        0.02786269597709179,
+        0.0162091925740242
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04825960472226143,
+        0.028075147420167923
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06535433232784271,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.074390709400177,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 14.07755946434071,
+      "chest_tilt_peak_deg": 38.532061410141715,
+      "pelvis_tilt_rms_deg": 3.9669149595618145,
+      "waist_tilt_rms_deg": 13.6345721777939,
+      "chest_angular_speed_rms_rad_s": 1.4849917888641357,
+      "arm_reference_rmse_rad": 0.13271468877792358,
+      "arm_drive_tracking_rmse_rad": 0.14066855609416962,
+      "waist_reference_rmse_rad": 0.17246228456497192,
+      "final_stand_speed_m_s": 0.005504858214408159,
+      "hand_return_error_m_per_hand": [
+        0.02751566469669342,
+        0.018553845584392548
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.0476585291326046,
+        0.032136205583810806
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06230107694864273,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07689268887042999,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.08134490251541138,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.0830453634262085,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.3077662730492645,
+      "chest_tilt_peak_deg": 3.395344879577872,
+      "pelvis_tilt_rms_deg": 0.8934495214491104,
+      "waist_tilt_rms_deg": 3.7540973640816184,
+      "chest_angular_speed_rms_rad_s": 0.06411390006542206,
+      "arm_reference_rmse_rad": 0.0583268478512764,
+      "arm_drive_tracking_rmse_rad": 0.1498098224401474,
+      "waist_reference_rmse_rad": 0.053894512355327606,
+      "final_stand_speed_m_s": 0.006653153337538242,
+      "hand_return_error_m_per_hand": [
+        0.026507653295993805,
+        0.015850963070988655
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04591260105371475,
+        0.027454674243927002
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "baseline",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 14.00301990238107,
+      "chest_tilt_peak_deg": 37.003441168230765,
+      "pelvis_tilt_rms_deg": 3.624896651968011,
+      "waist_tilt_rms_deg": 14.010213799124385,
+      "chest_angular_speed_rms_rad_s": 1.4788830280303955,
+      "arm_reference_rmse_rad": 0.1249391958117485,
+      "arm_drive_tracking_rmse_rad": 0.14559924602508545,
+      "waist_reference_rmse_rad": 0.15922428667545319,
+      "final_stand_speed_m_s": 0.008669758215546608,
+      "hand_return_error_m_per_hand": [
+        0.02237946353852749,
+        0.019120382145047188
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.03876236826181412,
+        0.033117473125457764
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.061950840055942535,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07784207165241241,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.419586226188372,
+      "chest_tilt_peak_deg": 38.81704080797674,
+      "pelvis_tilt_rms_deg": 2.4427004031089354,
+      "waist_tilt_rms_deg": 10.704510670091288,
+      "chest_angular_speed_rms_rad_s": 1.152470588684082,
+      "arm_reference_rmse_rad": 0.10534986853599548,
+      "arm_drive_tracking_rmse_rad": 0.15351688861846924,
+      "waist_reference_rmse_rad": 0.14433231949806213,
+      "final_stand_speed_m_s": 0.005980099085718393,
+      "hand_return_error_m_per_hand": [
+        0.026201218366622925,
+        0.01703089475631714
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04538184404373169,
+        0.029498374089598656
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.0664539784193039,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07459557056427002,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "baseline",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 14.152361988583397,
+      "chest_tilt_peak_deg": 40.31043434924335,
+      "pelvis_tilt_rms_deg": 3.560878569537951,
+      "waist_tilt_rms_deg": 13.764440540898878,
+      "chest_angular_speed_rms_rad_s": 1.5412412881851196,
+      "arm_reference_rmse_rad": 0.13332009315490723,
+      "arm_drive_tracking_rmse_rad": 0.15129409730434418,
+      "waist_reference_rmse_rad": 0.17214207351207733,
+      "final_stand_speed_m_s": 0.0063065593130886555,
+      "hand_return_error_m_per_hand": [
+        0.028592543676495552,
+        0.01660151407122612
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.0495237372815609,
+        0.028754664584994316
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06635488569736481,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.07398951053619385,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.08029267191886902,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.07735900580883026,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.3138227298523617,
+      "chest_tilt_peak_deg": 3.566558939049874,
+      "pelvis_tilt_rms_deg": 0.7032423067208895,
+      "waist_tilt_rms_deg": 3.7614645768751234,
+      "chest_angular_speed_rms_rad_s": 0.12453033775091171,
+      "arm_reference_rmse_rad": 0.057359348982572556,
+      "arm_drive_tracking_rmse_rad": 0.15908735990524292,
+      "waist_reference_rmse_rad": 0.05625798925757408,
+      "final_stand_speed_m_s": 0.014962228946387768,
+      "hand_return_error_m_per_hand": [
+        0.02488810382783413,
+        0.018336109817028046
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04310746118426323,
+        0.031759072095155716
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.464417026579396,
+      "chest_tilt_peak_deg": 29.610772259689124,
+      "pelvis_tilt_rms_deg": 2.9580992208021044,
+      "waist_tilt_rms_deg": 10.920526501650341,
+      "chest_angular_speed_rms_rad_s": 1.2160874605178833,
+      "arm_reference_rmse_rad": 0.12321098893880844,
+      "arm_drive_tracking_rmse_rad": 0.17050714790821075,
+      "waist_reference_rmse_rad": 0.1305854171514511,
+      "final_stand_speed_m_s": 0.03155527263879776,
+      "hand_return_error_m_per_hand": [
+        0.025011979043483734,
+        0.01820695586502552
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04332201927900314,
+        0.031535372138023376
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06350365281105042,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07113604992628098,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 10.032095621776458,
+      "chest_tilt_peak_deg": 32.85052222832293,
+      "pelvis_tilt_rms_deg": 2.7959074143368663,
+      "waist_tilt_rms_deg": 9.06806820816887,
+      "chest_angular_speed_rms_rad_s": 0.9779138565063477,
+      "arm_reference_rmse_rad": 0.1005655974149704,
+      "arm_drive_tracking_rmse_rad": 0.17350757122039795,
+      "waist_reference_rmse_rad": 0.131384015083313,
+      "final_stand_speed_m_s": 0.02353532426059246,
+      "hand_return_error_m_per_hand": [
+        0.02638263627886772,
+        0.01580912433564663
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.045696064829826355,
+        0.027382204309105873
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06633640080690384,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07443137466907501,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 12.01438471232247,
+      "chest_tilt_peak_deg": 30.42643345037205,
+      "pelvis_tilt_rms_deg": 3.428723160278078,
+      "waist_tilt_rms_deg": 11.262547370565084,
+      "chest_angular_speed_rms_rad_s": 1.2627426385879517,
+      "arm_reference_rmse_rad": 0.13028639554977417,
+      "arm_drive_tracking_rmse_rad": 0.15503758192062378,
+      "waist_reference_rmse_rad": 0.15102554857730865,
+      "final_stand_speed_m_s": 0.014643792062997818,
+      "hand_return_error_m_per_hand": [
+        0.02525891177356243,
+        0.018094906583428383
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04374971613287926,
+        0.031341299414634705
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06495650112628937,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06876135617494583,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.07703986763954163,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.08055289089679718,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.4200104002180804,
+      "chest_tilt_peak_deg": 3.556113018487986,
+      "pelvis_tilt_rms_deg": 0.5886868542091116,
+      "waist_tilt_rms_deg": 3.7930755461275885,
+      "chest_angular_speed_rms_rad_s": 0.12720151245594025,
+      "arm_reference_rmse_rad": 0.05841902270913124,
+      "arm_drive_tracking_rmse_rad": 0.15931425988674164,
+      "waist_reference_rmse_rad": 0.05840618163347244,
+      "final_stand_speed_m_s": 0.0157447699457407,
+      "hand_return_error_m_per_hand": [
+        0.02603975497186184,
+        0.018943147733807564
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04510217905044556,
+        0.03281049430370331
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.235061835571306,
+      "chest_tilt_peak_deg": 29.330546673516427,
+      "pelvis_tilt_rms_deg": 2.896030090163025,
+      "waist_tilt_rms_deg": 10.793314228358854,
+      "chest_angular_speed_rms_rad_s": 1.2345622777938843,
+      "arm_reference_rmse_rad": 0.1234627515077591,
+      "arm_drive_tracking_rmse_rad": 0.17102964222431183,
+      "waist_reference_rmse_rad": 0.1291700303554535,
+      "final_stand_speed_m_s": 0.030001448467373848,
+      "hand_return_error_m_per_hand": [
+        0.024894792586565018,
+        0.01712098903954029
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.043119046837091446,
+        0.029654424637556076
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06511193513870239,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.0708947703242302,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 10.537280318452696,
+      "chest_tilt_peak_deg": 33.65809989012315,
+      "pelvis_tilt_rms_deg": 2.9457182222709872,
+      "waist_tilt_rms_deg": 9.513780740194516,
+      "chest_angular_speed_rms_rad_s": 0.9890155792236328,
+      "arm_reference_rmse_rad": 0.10155421495437622,
+      "arm_drive_tracking_rmse_rad": 0.17312437295913696,
+      "waist_reference_rmse_rad": 0.1341870129108429,
+      "final_stand_speed_m_s": 0.028017036616802216,
+      "hand_return_error_m_per_hand": [
+        0.02589893341064453,
+        0.016084453091025352
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04485826939344406,
+        0.027859089896082878
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06607454270124435,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07518620043992996,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.477388409586897,
+      "chest_tilt_peak_deg": 28.53697772970391,
+      "pelvis_tilt_rms_deg": 3.031529944238677,
+      "waist_tilt_rms_deg": 10.914044652128,
+      "chest_angular_speed_rms_rad_s": 1.2447301149368286,
+      "arm_reference_rmse_rad": 0.13044382631778717,
+      "arm_drive_tracking_rmse_rad": 0.15554556250572205,
+      "waist_reference_rmse_rad": 0.14683671295642853,
+      "final_stand_speed_m_s": 0.013477754779160023,
+      "hand_return_error_m_per_hand": [
+        0.025895535945892334,
+        0.017010478302836418
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04485238343477249,
+        0.029463013634085655
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06523768603801727,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06563152372837067,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.0795164406299591,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 1.0,
+          "trailing_unloaded_peak_m": 0.07703104615211487,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.699697041776582,
+      "chest_tilt_peak_deg": 4.030752041978869,
+      "pelvis_tilt_rms_deg": 0.6934184669820013,
+      "waist_tilt_rms_deg": 4.224082680870196,
+      "chest_angular_speed_rms_rad_s": 0.12149488925933838,
+      "arm_reference_rmse_rad": 0.057260338217020035,
+      "arm_drive_tracking_rmse_rad": 0.15873704850673676,
+      "waist_reference_rmse_rad": 0.058138541877269745,
+      "final_stand_speed_m_s": 0.014645956456661224,
+      "hand_return_error_m_per_hand": [
+        0.02488408237695694,
+        0.018713202327489853
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.043100494891405106,
+        0.03241221606731415
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.35943958035724,
+      "chest_tilt_peak_deg": 29.39913884825628,
+      "pelvis_tilt_rms_deg": 2.9114503094313866,
+      "waist_tilt_rms_deg": 10.871411465102426,
+      "chest_angular_speed_rms_rad_s": 1.2198909521102905,
+      "arm_reference_rmse_rad": 0.12246151268482208,
+      "arm_drive_tracking_rmse_rad": 0.15444695949554443,
+      "waist_reference_rmse_rad": 0.1296921968460083,
+      "final_stand_speed_m_s": 0.014566543512046337,
+      "hand_return_error_m_per_hand": [
+        0.023676550015807152,
+        0.0187684353441
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04100898653268814,
+        0.03250788524746895
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06433942168951035,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07083176076412201,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 10.047109231345791,
+      "chest_tilt_peak_deg": 32.83347407615458,
+      "pelvis_tilt_rms_deg": 2.8630874474658192,
+      "waist_tilt_rms_deg": 9.09825252165845,
+      "chest_angular_speed_rms_rad_s": 0.9428773522377014,
+      "arm_reference_rmse_rad": 0.10122594237327576,
+      "arm_drive_tracking_rmse_rad": 0.16000117361545563,
+      "waist_reference_rmse_rad": 0.13246411085128784,
+      "final_stand_speed_m_s": 0.013913288712501526,
+      "hand_return_error_m_per_hand": [
+        0.02570575661957264,
+        0.01545301266014576
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04452367499470711,
+        0.026765402406454086
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06723468005657196,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07516925781965256,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.590887370572291,
+      "chest_tilt_peak_deg": 29.284425821145916,
+      "pelvis_tilt_rms_deg": 3.009252428487034,
+      "waist_tilt_rms_deg": 11.030688915226186,
+      "chest_angular_speed_rms_rad_s": 1.2445906400680542,
+      "arm_reference_rmse_rad": 0.13124674558639526,
+      "arm_drive_tracking_rmse_rad": 0.15562552213668823,
+      "waist_reference_rmse_rad": 0.14744722843170166,
+      "final_stand_speed_m_s": 0.013496448285877705,
+      "hand_return_error_m_per_hand": [
+        0.025678303092718124,
+        0.016285965219140053
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04447612538933754,
+        0.028208117932081223
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06567765772342682,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06750292330980301,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.07911673933267593,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 1.0,
+          "trailing_unloaded_peak_m": 0.07605014741420746,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 2.9971666221941082,
+      "chest_tilt_peak_deg": 3.144791342707002,
+      "pelvis_tilt_rms_deg": 0.8418692134976434,
+      "waist_tilt_rms_deg": 3.4213538130504575,
+      "chest_angular_speed_rms_rad_s": 0.12243479490280151,
+      "arm_reference_rmse_rad": 0.057364728301763535,
+      "arm_drive_tracking_rmse_rad": 0.15895749628543854,
+      "waist_reference_rmse_rad": 0.0530548021197319,
+      "final_stand_speed_m_s": 0.014758038334548473,
+      "hand_return_error_m_per_hand": [
+        0.025109345093369484,
+        0.017826063558459282
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.043490659445524216,
+        0.03087564930319786
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.470127064725526,
+      "chest_tilt_peak_deg": 29.264017215905916,
+      "pelvis_tilt_rms_deg": 2.944500314164609,
+      "waist_tilt_rms_deg": 10.82568590993013,
+      "chest_angular_speed_rms_rad_s": 1.2157857418060303,
+      "arm_reference_rmse_rad": 0.12315918505191803,
+      "arm_drive_tracking_rmse_rad": 0.17148742079734802,
+      "waist_reference_rmse_rad": 0.13006430864334106,
+      "final_stand_speed_m_s": 0.029580621048808098,
+      "hand_return_error_m_per_hand": [
+        0.025315148755908012,
+        0.018743103370070457
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04384712502360344,
+        0.032464008778333664
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06428904831409454,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07031375914812088,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 9.902765989842266,
+      "chest_tilt_peak_deg": 32.571287019579884,
+      "pelvis_tilt_rms_deg": 2.849197830901775,
+      "waist_tilt_rms_deg": 8.958560638979703,
+      "chest_angular_speed_rms_rad_s": 0.9364305734634399,
+      "arm_reference_rmse_rad": 0.10111217945814133,
+      "arm_drive_tracking_rmse_rad": 0.15972687304019928,
+      "waist_reference_rmse_rad": 0.13169515132904053,
+      "final_stand_speed_m_s": 0.013719418086111546,
+      "hand_return_error_m_per_hand": [
+        0.025978531688451767,
+        0.01563229411840439
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04499613866209984,
+        0.027075927704572678
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06716567277908325,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07549718767404556,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 12.879147279174967,
+      "chest_tilt_peak_deg": 32.66222757328402,
+      "pelvis_tilt_rms_deg": 3.362352504565772,
+      "waist_tilt_rms_deg": 11.904521973296461,
+      "chest_angular_speed_rms_rad_s": 1.291245937347412,
+      "arm_reference_rmse_rad": 0.13245603442192078,
+      "arm_drive_tracking_rmse_rad": 0.15339137613773346,
+      "waist_reference_rmse_rad": 0.15416772663593292,
+      "final_stand_speed_m_s": 0.013749387115240097,
+      "hand_return_error_m_per_hand": [
+        0.02589629404246807,
+        0.017295733094215393
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04485369846224785,
+        0.029957087710499763
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06332053989171982,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06980130821466446,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.07252690196037292,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07595542073249817,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.5183854013903626,
+      "chest_tilt_peak_deg": 3.911463641898243,
+      "pelvis_tilt_rms_deg": 0.6800796945023482,
+      "waist_tilt_rms_deg": 4.004100216950656,
+      "chest_angular_speed_rms_rad_s": 0.12304148823022842,
+      "arm_reference_rmse_rad": 0.05663168057799339,
+      "arm_drive_tracking_rmse_rad": 0.1586393266916275,
+      "waist_reference_rmse_rad": 0.05641981214284897,
+      "final_stand_speed_m_s": 0.015623793005943298,
+      "hand_return_error_m_per_hand": [
+        0.02482389472424984,
+        0.017886199057102203
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04299624636769295,
+        0.030979806557297707
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.346317079414352,
+      "chest_tilt_peak_deg": 29.34883108992455,
+      "pelvis_tilt_rms_deg": 2.936317107208699,
+      "waist_tilt_rms_deg": 10.917426449540802,
+      "chest_angular_speed_rms_rad_s": 1.225476622581482,
+      "arm_reference_rmse_rad": 0.12248195707798004,
+      "arm_drive_tracking_rmse_rad": 0.15483330190181732,
+      "waist_reference_rmse_rad": 0.12980788946151733,
+      "final_stand_speed_m_s": 0.014537119306623936,
+      "hand_return_error_m_per_hand": [
+        0.023667508736252785,
+        0.018741406500339508
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.040993329137563705,
+        0.03246106952428818
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06406991183757782,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07097285240888596,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 9.62823165879548,
+      "chest_tilt_peak_deg": 32.17123600970307,
+      "pelvis_tilt_rms_deg": 2.742141872737818,
+      "waist_tilt_rms_deg": 8.833823455488698,
+      "chest_angular_speed_rms_rad_s": 0.9283854961395264,
+      "arm_reference_rmse_rad": 0.10087451338768005,
+      "arm_drive_tracking_rmse_rad": 0.15966090559959412,
+      "waist_reference_rmse_rad": 0.13041239976882935,
+      "final_stand_speed_m_s": 0.013884071260690689,
+      "hand_return_error_m_per_hand": [
+        0.02592252939939499,
+        0.016246248036623
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04489913955330849,
+        0.028139328584074974
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06824088841676712,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07615756243467331,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 12.084973009847259,
+      "chest_tilt_peak_deg": 30.416574072305135,
+      "pelvis_tilt_rms_deg": 3.5845033401033786,
+      "waist_tilt_rms_deg": 11.298324755211258,
+      "chest_angular_speed_rms_rad_s": 1.2771292924880981,
+      "arm_reference_rmse_rad": 0.12970055639743805,
+      "arm_drive_tracking_rmse_rad": 0.15507587790489197,
+      "waist_reference_rmse_rad": 0.15112580358982086,
+      "final_stand_speed_m_s": 0.013685092329978943,
+      "hand_return_error_m_per_hand": [
+        0.025976840406656265,
+        0.017613986507058144
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04499321058392525,
+        0.030508320778608322
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06312783807516098,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.0705929845571518,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.07777001708745956,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.08186601102352142,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 2.940031022569894,
+      "chest_tilt_peak_deg": 3.0744070970836668,
+      "pelvis_tilt_rms_deg": 0.6696656303696357,
+      "waist_tilt_rms_deg": 3.302860489677903,
+      "chest_angular_speed_rms_rad_s": 0.12056253105401993,
+      "arm_reference_rmse_rad": 0.05766357108950615,
+      "arm_drive_tracking_rmse_rad": 0.15866123139858246,
+      "waist_reference_rmse_rad": 0.05420159175992012,
+      "final_stand_speed_m_s": 0.01548907719552517,
+      "hand_return_error_m_per_hand": [
+        0.025787493214011192,
+        0.017942525446414948
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.044665247201919556,
+        0.031077364459633827
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 10.934074181869063,
+      "chest_tilt_peak_deg": 27.6737323186208,
+      "pelvis_tilt_rms_deg": 2.83390418357647,
+      "waist_tilt_rms_deg": 10.573379575763505,
+      "chest_angular_speed_rms_rad_s": 1.1881146430969238,
+      "arm_reference_rmse_rad": 0.12154348939657211,
+      "arm_drive_tracking_rmse_rad": 0.15414085984230042,
+      "waist_reference_rmse_rad": 0.12719042599201202,
+      "final_stand_speed_m_s": 0.016376828774809837,
+      "hand_return_error_m_per_hand": [
+        0.02348804473876953,
+        0.017964649945497513
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.040682487189769745,
+        0.031115688383579254
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06484539806842804,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06940861791372299,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 9.954633592625695,
+      "chest_tilt_peak_deg": 32.901659854638815,
+      "pelvis_tilt_rms_deg": 2.7600491346377107,
+      "waist_tilt_rms_deg": 9.04201615912715,
+      "chest_angular_speed_rms_rad_s": 0.9556298851966858,
+      "arm_reference_rmse_rad": 0.10055223107337952,
+      "arm_drive_tracking_rmse_rad": 0.1731441169977188,
+      "waist_reference_rmse_rad": 0.13123521208763123,
+      "final_stand_speed_m_s": 0.02349480241537094,
+      "hand_return_error_m_per_hand": [
+        0.02628277614712715,
+        0.015877949073910713
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.045523107051849365,
+        0.027501415461301804
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06780718266963959,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07432843744754791,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 12.504491766405904,
+      "chest_tilt_peak_deg": 30.78970730666293,
+      "pelvis_tilt_rms_deg": 3.3716106125423124,
+      "waist_tilt_rms_deg": 11.629676014868794,
+      "chest_angular_speed_rms_rad_s": 1.2721376419067383,
+      "arm_reference_rmse_rad": 0.13040855526924133,
+      "arm_drive_tracking_rmse_rad": 0.1643305867910385,
+      "waist_reference_rmse_rad": 0.15319393575191498,
+      "final_stand_speed_m_s": 0.02366561070084572,
+      "hand_return_error_m_per_hand": [
+        0.026356423273682594,
+        0.01768856681883335
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.045650664716959,
+        0.03063749521970749
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06458412110805511,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06948283314704895,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.0747152790427208,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07773155719041824,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.3565406539123255,
+      "chest_tilt_peak_deg": 3.484532422542841,
+      "pelvis_tilt_rms_deg": 0.7262227983485148,
+      "waist_tilt_rms_deg": 3.749827215189891,
+      "chest_angular_speed_rms_rad_s": 0.12797914445400238,
+      "arm_reference_rmse_rad": 0.05714082345366478,
+      "arm_drive_tracking_rmse_rad": 0.15923157334327698,
+      "waist_reference_rmse_rad": 0.057305872440338135,
+      "final_stand_speed_m_s": 0.01574653573334217,
+      "hand_return_error_m_per_hand": [
+        0.02627434954047203,
+        0.018256977200508118
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04550850763916969,
+        0.031622011214494705
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.32667687045598,
+      "chest_tilt_peak_deg": 29.189373493561433,
+      "pelvis_tilt_rms_deg": 2.858041218329649,
+      "waist_tilt_rms_deg": 10.887582791736078,
+      "chest_angular_speed_rms_rad_s": 1.2128429412841797,
+      "arm_reference_rmse_rad": 0.12201207131147385,
+      "arm_drive_tracking_rmse_rad": 0.15490755438804626,
+      "waist_reference_rmse_rad": 0.13032619655132294,
+      "final_stand_speed_m_s": 0.013733236119151115,
+      "hand_return_error_m_per_hand": [
+        0.02341715805232525,
+        0.01815360225737095
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04055970907211304,
+        0.03144296258687973
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.0652308389544487,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06990799307823181,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 10.169381570320068,
+      "chest_tilt_peak_deg": 33.0300571657513,
+      "pelvis_tilt_rms_deg": 2.9115677033077465,
+      "waist_tilt_rms_deg": 9.156432073008618,
+      "chest_angular_speed_rms_rad_s": 0.9727597832679749,
+      "arm_reference_rmse_rad": 0.10041902214288712,
+      "arm_drive_tracking_rmse_rad": 0.17270033061504364,
+      "waist_reference_rmse_rad": 0.1326906383037567,
+      "final_stand_speed_m_s": 0.022740930318832397,
+      "hand_return_error_m_per_hand": [
+        0.026742475107312202,
+        0.015609515830874443
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.046319324523210526,
+        0.027036475017666817
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06650854647159576,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07504604756832123,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.246100275043693,
+      "chest_tilt_peak_deg": 28.701431609444892,
+      "pelvis_tilt_rms_deg": 3.443408493880429,
+      "waist_tilt_rms_deg": 10.632089320547996,
+      "chest_angular_speed_rms_rad_s": 1.244926929473877,
+      "arm_reference_rmse_rad": 0.12798145413398743,
+      "arm_drive_tracking_rmse_rad": 0.15582533180713654,
+      "waist_reference_rmse_rad": 0.14527349174022675,
+      "final_stand_speed_m_s": 0.01646534539759159,
+      "hand_return_error_m_per_hand": [
+        0.02547498419880867,
+        0.017345722764730453
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.04412396624684334,
+        0.030043672770261765
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06475323438644409,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07113370299339294,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.08176808059215546,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.9230769230769231,
+          "trailing_unloaded_peak_m": 0.07876625657081604,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 3.143376639775163,
+      "chest_tilt_peak_deg": 3.288012085309118,
+      "pelvis_tilt_rms_deg": 0.7393930572547389,
+      "waist_tilt_rms_deg": 3.520929860299604,
+      "chest_angular_speed_rms_rad_s": 0.12995456159114838,
+      "arm_reference_rmse_rad": 0.05946413800120354,
+      "arm_drive_tracking_rmse_rad": 0.15943686664104462,
+      "waist_reference_rmse_rad": 0.05610883608460426,
+      "final_stand_speed_m_s": 0.015791818499565125,
+      "hand_return_error_m_per_hand": [
+        0.02483794093132019,
+        0.019273988902568817
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.0430205762386322,
+        0.03338352590799332
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.085333843680873,
+      "chest_tilt_peak_deg": 28.332662865966732,
+      "pelvis_tilt_rms_deg": 2.8896255071556687,
+      "waist_tilt_rms_deg": 10.768052773713562,
+      "chest_angular_speed_rms_rad_s": 1.2108186483383179,
+      "arm_reference_rmse_rad": 0.12398737668991089,
+      "arm_drive_tracking_rmse_rad": 0.15372225642204285,
+      "waist_reference_rmse_rad": 0.129416823387146,
+      "final_stand_speed_m_s": 0.015549655072391033,
+      "hand_return_error_m_per_hand": [
+        0.024189602583646774,
+        0.018055513501167297
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.041897621005773544,
+        0.031273066997528076
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06419980525970459,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06927254050970078,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 10.142097525906806,
+      "chest_tilt_peak_deg": 33.08025564105631,
+      "pelvis_tilt_rms_deg": 2.965175510225649,
+      "waist_tilt_rms_deg": 9.118939457107127,
+      "chest_angular_speed_rms_rad_s": 0.9482724070549011,
+      "arm_reference_rmse_rad": 0.10107194632291794,
+      "arm_drive_tracking_rmse_rad": 0.15994133055210114,
+      "waist_reference_rmse_rad": 0.13288038969039917,
+      "final_stand_speed_m_s": 0.01383936032652855,
+      "hand_return_error_m_per_hand": [
+        0.025901153683662415,
+        0.015270261093974113
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.044862110167741776,
+        0.026448868215084076
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06650493294000626,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.07630429416894913,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.195960710120277,
+      "chest_tilt_peak_deg": 28.303851420500326,
+      "pelvis_tilt_rms_deg": 3.201214254780008,
+      "waist_tilt_rms_deg": 10.650740859624008,
+      "chest_angular_speed_rms_rad_s": 1.2285608053207397,
+      "arm_reference_rmse_rad": 0.12877260148525238,
+      "arm_drive_tracking_rmse_rad": 0.1557280421257019,
+      "waist_reference_rmse_rad": 0.14545400440692902,
+      "final_stand_speed_m_s": 0.015612144023180008,
+      "hand_return_error_m_per_hand": [
+        0.025390947237610817,
+        0.01669595018029213
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.043978411704301834,
+        0.028918234631419182
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.06517362594604492,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06897007673978806,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.08117875456809998,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 1.0,
+          "trailing_unloaded_peak_m": 0.07727433741092682,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.968234268781418,
+      "chest_tilt_peak_deg": 2.350186984904994,
+      "pelvis_tilt_rms_deg": 1.7534661206846545,
+      "waist_tilt_rms_deg": 0.2641501489916913,
+      "chest_angular_speed_rms_rad_s": 0.13070549070835114,
+      "arm_reference_rmse_rad": 0.01483083050698042,
+      "arm_drive_tracking_rmse_rad": 0.035074859857559204,
+      "waist_reference_rmse_rad": 0.009486179798841476,
+      "final_stand_speed_m_s": 0.01802687533199787,
+      "hand_return_error_m_per_hand": [
+        0.0051042623817920685,
+        0.0031236158683896065
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008840842172503471,
+        0.005410260986536741
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.747975661584455,
+      "chest_tilt_peak_deg": 22.232612380491883,
+      "pelvis_tilt_rms_deg": 3.7573984798848503,
+      "waist_tilt_rms_deg": 6.178116986367157,
+      "chest_angular_speed_rms_rad_s": 0.722910463809967,
+      "arm_reference_rmse_rad": 0.045005738735198975,
+      "arm_drive_tracking_rmse_rad": 0.05188161879777908,
+      "waist_reference_rmse_rad": 0.06426882743835449,
+      "final_stand_speed_m_s": 0.01720864698290825,
+      "hand_return_error_m_per_hand": [
+        0.004923774395138025,
+        0.0039613982662558556
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008528226986527443,
+        0.006861343514174223
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.057676758617162704,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05980178713798523,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 7.808767447873403,
+      "chest_tilt_peak_deg": 19.004325176832648,
+      "pelvis_tilt_rms_deg": 2.6866446647407605,
+      "waist_tilt_rms_deg": 6.066084808506023,
+      "chest_angular_speed_rms_rad_s": 0.6693080067634583,
+      "arm_reference_rmse_rad": 0.0433235764503479,
+      "arm_drive_tracking_rmse_rad": 0.05229886248707771,
+      "waist_reference_rmse_rad": 0.05956065282225609,
+      "final_stand_speed_m_s": 0.018091224133968353,
+      "hand_return_error_m_per_hand": [
+        0.0050177136436104774,
+        0.0031536074820905924
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008690934628248215,
+        0.005462208297103643
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.060878410935401917,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06293442845344543,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.778353011400693,
+      "chest_tilt_peak_deg": 26.447271107854753,
+      "pelvis_tilt_rms_deg": 5.160570771744291,
+      "waist_tilt_rms_deg": 7.806753395841896,
+      "chest_angular_speed_rms_rad_s": 0.8303692936897278,
+      "arm_reference_rmse_rad": 0.05187879875302315,
+      "arm_drive_tracking_rmse_rad": 0.05712553486227989,
+      "waist_reference_rmse_rad": 0.07820994406938553,
+      "final_stand_speed_m_s": 0.017325693741440773,
+      "hand_return_error_m_per_hand": [
+        0.005096524953842163,
+        0.002925494220107794
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008827440440654755,
+        0.005067104939371347
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.057085610926151276,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06020813435316086,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.04369499534368515,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.07112234830856323,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.8653737543151419,
+      "chest_tilt_peak_deg": 2.2655494151443114,
+      "pelvis_tilt_rms_deg": 1.673686843136261,
+      "waist_tilt_rms_deg": 0.24101152247652444,
+      "chest_angular_speed_rms_rad_s": 0.128540500998497,
+      "arm_reference_rmse_rad": 0.014824879355728626,
+      "arm_drive_tracking_rmse_rad": 0.03511837124824524,
+      "waist_reference_rmse_rad": 0.009374314919114113,
+      "final_stand_speed_m_s": 0.018079306930303574,
+      "hand_return_error_m_per_hand": [
+        0.004974900744855404,
+        0.003168321680277586
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008616780862212181,
+        0.005487693939357996
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.649269182794015,
+      "chest_tilt_peak_deg": 22.260684457980634,
+      "pelvis_tilt_rms_deg": 3.6582130340788637,
+      "waist_tilt_rms_deg": 6.134101966695126,
+      "chest_angular_speed_rms_rad_s": 0.7276620864868164,
+      "arm_reference_rmse_rad": 0.044528063386678696,
+      "arm_drive_tracking_rmse_rad": 0.05183111131191254,
+      "waist_reference_rmse_rad": 0.06397709250450134,
+      "final_stand_speed_m_s": 0.017370162531733513,
+      "hand_return_error_m_per_hand": [
+        0.004937243647873402,
+        0.0038549229502677917
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.00855155661702156,
+        0.006676922552287579
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05671694874763489,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06155405193567276,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.319988324228639,
+      "chest_tilt_peak_deg": 22.012147534462212,
+      "pelvis_tilt_rms_deg": 2.8096392962197654,
+      "waist_tilt_rms_deg": 6.408911212856004,
+      "chest_angular_speed_rms_rad_s": 0.7003084421157837,
+      "arm_reference_rmse_rad": 0.04347117990255356,
+      "arm_drive_tracking_rmse_rad": 0.054701633751392365,
+      "waist_reference_rmse_rad": 0.06303301453590393,
+      "final_stand_speed_m_s": 0.01182530540972948,
+      "hand_return_error_m_per_hand": [
+        0.0053208270110189915,
+        0.0022761670406907797
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.00921594351530075,
+        0.003942437004297972
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.0607970766723156,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06281309574842453,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 10.263040539313867,
+      "chest_tilt_peak_deg": 21.7949714245179,
+      "pelvis_tilt_rms_deg": 4.005543948186467,
+      "waist_tilt_rms_deg": 7.395112408717213,
+      "chest_angular_speed_rms_rad_s": 0.8320527076721191,
+      "arm_reference_rmse_rad": 0.051322177052497864,
+      "arm_drive_tracking_rmse_rad": 0.0589715838432312,
+      "waist_reference_rmse_rad": 0.07476162910461426,
+      "final_stand_speed_m_s": 0.011065962724387646,
+      "hand_return_error_m_per_hand": [
+        0.005280757788568735,
+        0.00275084818713367
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.00914654042571783,
+        0.004764608573168516
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.056419488042593,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.060289740562438965,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.05094660073518753,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.7692307692307693,
+          "trailing_unloaded_peak_m": 0.06602750718593597,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.882999911242006,
+      "chest_tilt_peak_deg": 2.2441098782264643,
+      "pelvis_tilt_rms_deg": 1.6843943385990197,
+      "waist_tilt_rms_deg": 0.2798330904192604,
+      "chest_angular_speed_rms_rad_s": 0.12856458127498627,
+      "arm_reference_rmse_rad": 0.015133460983633995,
+      "arm_drive_tracking_rmse_rad": 0.035152167081832886,
+      "waist_reference_rmse_rad": 0.009969203732907772,
+      "final_stand_speed_m_s": 0.018227748572826385,
+      "hand_return_error_m_per_hand": [
+        0.004962860606610775,
+        0.003415266750380397
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008595926687121391,
+        0.005915415473282337
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.860302391353546,
+      "chest_tilt_peak_deg": 22.5978601614529,
+      "pelvis_tilt_rms_deg": 3.8008880018776137,
+      "waist_tilt_rms_deg": 6.235228893772688,
+      "chest_angular_speed_rms_rad_s": 0.7318516373634338,
+      "arm_reference_rmse_rad": 0.04473874717950821,
+      "arm_drive_tracking_rmse_rad": 0.051873356103897095,
+      "waist_reference_rmse_rad": 0.06470117717981339,
+      "final_stand_speed_m_s": 0.016614699736237526,
+      "hand_return_error_m_per_hand": [
+        0.00481148436665535,
+        0.004055920988321304
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008333735167980194,
+        0.007025061175227165
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05695004016160965,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05989222973585129,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.392661536997576,
+      "chest_tilt_peak_deg": 22.02683927136691,
+      "pelvis_tilt_rms_deg": 2.928411376687821,
+      "waist_tilt_rms_deg": 6.35628119020647,
+      "chest_angular_speed_rms_rad_s": 0.6976308226585388,
+      "arm_reference_rmse_rad": 0.04331967979669571,
+      "arm_drive_tracking_rmse_rad": 0.052405670285224915,
+      "waist_reference_rmse_rad": 0.06244644522666931,
+      "final_stand_speed_m_s": 0.017779575660824776,
+      "hand_return_error_m_per_hand": [
+        0.005124017596244812,
+        0.0028746873140335083
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008875058963894844,
+        0.004979104269295931
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06055179610848427,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06400186568498611,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 10.534901705074239,
+      "chest_tilt_peak_deg": 24.15726065085851,
+      "pelvis_tilt_rms_deg": 4.080821597463294,
+      "waist_tilt_rms_deg": 7.616520674625993,
+      "chest_angular_speed_rms_rad_s": 0.8580355644226074,
+      "arm_reference_rmse_rad": 0.05143599584698677,
+      "arm_drive_tracking_rmse_rad": 0.05718959495425224,
+      "waist_reference_rmse_rad": 0.07669970393180847,
+      "final_stand_speed_m_s": 0.01790175400674343,
+      "hand_return_error_m_per_hand": [
+        0.0051640793681144714,
+        0.0028356360271573067
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008944448083639145,
+        0.00491146557033062
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05598717927932739,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.059089839458465576,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.051931142807006836,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.7692307692307693,
+          "trailing_unloaded_peak_m": 0.06777957081794739,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.8827296918829672,
+      "chest_tilt_peak_deg": 2.2248397801437427,
+      "pelvis_tilt_rms_deg": 1.6633969497082253,
+      "waist_tilt_rms_deg": 0.31398368942378035,
+      "chest_angular_speed_rms_rad_s": 0.12747392058372498,
+      "arm_reference_rmse_rad": 0.01496745366603136,
+      "arm_drive_tracking_rmse_rad": 0.03513841703534126,
+      "waist_reference_rmse_rad": 0.010191150940954685,
+      "final_stand_speed_m_s": 0.018093565478920937,
+      "hand_return_error_m_per_hand": [
+        0.005053129978477955,
+        0.003549236571416259
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008752278052270412,
+        0.006147458218038082
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.400859471548884,
+      "chest_tilt_peak_deg": 22.29259339423564,
+      "pelvis_tilt_rms_deg": 3.4948818666827024,
+      "waist_tilt_rms_deg": 6.061816367161589,
+      "chest_angular_speed_rms_rad_s": 0.7357694506645203,
+      "arm_reference_rmse_rad": 0.044345833361148834,
+      "arm_drive_tracking_rmse_rad": 0.05193419009447098,
+      "waist_reference_rmse_rad": 0.06357899308204651,
+      "final_stand_speed_m_s": 0.01854330487549305,
+      "hand_return_error_m_per_hand": [
+        0.004923203960061073,
+        0.003779367310926318
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008527238853275776,
+        0.006546055898070335
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05676379054784775,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06320136785507202,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.690617440481981,
+      "chest_tilt_peak_deg": 22.7875464675352,
+      "pelvis_tilt_rms_deg": 3.115421102389124,
+      "waist_tilt_rms_deg": 6.47906067072662,
+      "chest_angular_speed_rms_rad_s": 0.7204800844192505,
+      "arm_reference_rmse_rad": 0.043199531733989716,
+      "arm_drive_tracking_rmse_rad": 0.052172400057315826,
+      "waist_reference_rmse_rad": 0.06360352784395218,
+      "final_stand_speed_m_s": 0.018187180161476135,
+      "hand_return_error_m_per_hand": [
+        0.0051027811132371426,
+        0.002831557299941778
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008838276378810406,
+        0.004904401488602161
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06005559489130974,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06436321884393692,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 10.809681069157497,
+      "chest_tilt_peak_deg": 23.14806263494869,
+      "pelvis_tilt_rms_deg": 4.365436007064549,
+      "waist_tilt_rms_deg": 7.5288876400274365,
+      "chest_angular_speed_rms_rad_s": 0.8286704421043396,
+      "arm_reference_rmse_rad": 0.051083993166685104,
+      "arm_drive_tracking_rmse_rad": 0.05715792998671532,
+      "waist_reference_rmse_rad": 0.07567570358514786,
+      "final_stand_speed_m_s": 0.017977571114897728,
+      "hand_return_error_m_per_hand": [
+        0.005171722266823053,
+        0.002819923684000969
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.00895768590271473,
+        0.004884250927716494
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.057149481028318405,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06049571931362152,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.04560272395610809,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06793409585952759,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.8824223333703167,
+      "chest_tilt_peak_deg": 2.2468116449300277,
+      "pelvis_tilt_rms_deg": 1.6915896227245109,
+      "waist_tilt_rms_deg": 0.2504770440882514,
+      "chest_angular_speed_rms_rad_s": 0.12935695052146912,
+      "arm_reference_rmse_rad": 0.015034022741019726,
+      "arm_drive_tracking_rmse_rad": 0.03506949543952942,
+      "waist_reference_rmse_rad": 0.009551817551255226,
+      "final_stand_speed_m_s": 0.018100444227457047,
+      "hand_return_error_m_per_hand": [
+        0.005023621022701263,
+        0.0033040931448340416
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008701167069375515,
+        0.00572285708039999
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.497598855858358,
+      "chest_tilt_peak_deg": 22.077131661773006,
+      "pelvis_tilt_rms_deg": 3.5386428886949743,
+      "waist_tilt_rms_deg": 6.071169884343098,
+      "chest_angular_speed_rms_rad_s": 0.7242187261581421,
+      "arm_reference_rmse_rad": 0.04468855261802673,
+      "arm_drive_tracking_rmse_rad": 0.05170726403594017,
+      "waist_reference_rmse_rad": 0.06342501938343048,
+      "final_stand_speed_m_s": 0.01741926744580269,
+      "hand_return_error_m_per_hand": [
+        0.004976087249815464,
+        0.003656517481431365
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008618836291134357,
+        0.0063332743011415005
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05684209242463112,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06147968769073486,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 7.8702818390858305,
+      "chest_tilt_peak_deg": 19.145942319083694,
+      "pelvis_tilt_rms_deg": 2.7075418419498263,
+      "waist_tilt_rms_deg": 6.109099205464648,
+      "chest_angular_speed_rms_rad_s": 0.6653556823730469,
+      "arm_reference_rmse_rad": 0.04346923902630806,
+      "arm_drive_tracking_rmse_rad": 0.054561417549848557,
+      "waist_reference_rmse_rad": 0.059868380427360535,
+      "final_stand_speed_m_s": 0.011206593364477158,
+      "hand_return_error_m_per_hand": [
+        0.005242929793894291,
+        0.002271441975608468
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.009081020951271057,
+        0.003934253007173538
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06050841882824898,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06217899173498154,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.926437489022092,
+      "chest_tilt_peak_deg": 26.474089845630807,
+      "pelvis_tilt_rms_deg": 5.280148601090996,
+      "waist_tilt_rms_deg": 7.825515071718274,
+      "chest_angular_speed_rms_rad_s": 0.8206565380096436,
+      "arm_reference_rmse_rad": 0.0517423115670681,
+      "arm_drive_tracking_rmse_rad": 0.05712155997753143,
+      "waist_reference_rmse_rad": 0.07823433727025986,
+      "final_stand_speed_m_s": 0.016933906823396683,
+      "hand_return_error_m_per_hand": [
+        0.005198780447244644,
+        0.003000549739226699
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.00900455191731453,
+        0.005197104532271624
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.055924270302057266,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05954331159591675,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.042526692152023315,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.0709829330444336,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.5695924123077396,
+      "chest_tilt_peak_deg": 1.9104933436420113,
+      "pelvis_tilt_rms_deg": 1.4367148172648438,
+      "waist_tilt_rms_deg": 0.2255239351313883,
+      "chest_angular_speed_rms_rad_s": 0.12464668601751328,
+      "arm_reference_rmse_rad": 0.015402888879179955,
+      "arm_drive_tracking_rmse_rad": 0.0351664274930954,
+      "waist_reference_rmse_rad": 0.009920072741806507,
+      "final_stand_speed_m_s": 0.017300182953476906,
+      "hand_return_error_m_per_hand": [
+        0.00480722775682807,
+        0.003752666525542736
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008326362818479538,
+        0.006499809212982655
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.738265693905635,
+      "chest_tilt_peak_deg": 22.750043606349955,
+      "pelvis_tilt_rms_deg": 3.6809080451435237,
+      "waist_tilt_rms_deg": 6.219522873776244,
+      "chest_angular_speed_rms_rad_s": 0.7403731942176819,
+      "arm_reference_rmse_rad": 0.04446518421173096,
+      "arm_drive_tracking_rmse_rad": 0.05184032768011093,
+      "waist_reference_rmse_rad": 0.06440716236829758,
+      "final_stand_speed_m_s": 0.016742756590247154,
+      "hand_return_error_m_per_hand": [
+        0.004821350332349539,
+        0.0039809164591133595
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008350824005901814,
+        0.00689514959231019
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.0564986951649189,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.060946643352508545,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.278797160891585,
+      "chest_tilt_peak_deg": 21.880326591028258,
+      "pelvis_tilt_rms_deg": 2.8313819227820316,
+      "waist_tilt_rms_deg": 6.360915046671501,
+      "chest_angular_speed_rms_rad_s": 0.700893223285675,
+      "arm_reference_rmse_rad": 0.043289490044116974,
+      "arm_drive_tracking_rmse_rad": 0.05486350506544113,
+      "waist_reference_rmse_rad": 0.06258606165647507,
+      "final_stand_speed_m_s": 0.011694037355482578,
+      "hand_return_error_m_per_hand": [
+        0.005327438469976187,
+        0.0024239267222583294
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.009227394126355648,
+        0.004198364447802305
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06088084727525711,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06352034211158752,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 11.192724054227336,
+      "chest_tilt_peak_deg": 24.855442587817215,
+      "pelvis_tilt_rms_deg": 4.662857021359577,
+      "waist_tilt_rms_deg": 7.6506178327363425,
+      "chest_angular_speed_rms_rad_s": 0.8322271704673767,
+      "arm_reference_rmse_rad": 0.05129724740982056,
+      "arm_drive_tracking_rmse_rad": 0.05719880759716034,
+      "waist_reference_rmse_rad": 0.07683240622282028,
+      "final_stand_speed_m_s": 0.01804244890809059,
+      "hand_return_error_m_per_hand": [
+        0.0051283156499266624,
+        0.003019907744601369
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008882503025233746,
+        0.005230633541941643
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05688280612230301,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.060616232454776764,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.04479767382144928,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06966686993837357,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.6081475495119921,
+      "chest_tilt_peak_deg": 2.0252605853789123,
+      "pelvis_tilt_rms_deg": 1.4632441257748197,
+      "waist_tilt_rms_deg": 0.22397380235491274,
+      "chest_angular_speed_rms_rad_s": 0.1260436773300171,
+      "arm_reference_rmse_rad": 0.015275298617780209,
+      "arm_drive_tracking_rmse_rad": 0.03517519682645798,
+      "waist_reference_rmse_rad": 0.009645010344684124,
+      "final_stand_speed_m_s": 0.017824089154601097,
+      "hand_return_error_m_per_hand": [
+        0.004828863311558962,
+        0.003637275192886591
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008363836444914341,
+        0.006299945525825024
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.324620900033201,
+      "chest_tilt_peak_deg": 21.605630042988686,
+      "pelvis_tilt_rms_deg": 3.354757120765306,
+      "waist_tilt_rms_deg": 6.0428600308938645,
+      "chest_angular_speed_rms_rad_s": 0.7158504724502563,
+      "arm_reference_rmse_rad": 0.04467301070690155,
+      "arm_drive_tracking_rmse_rad": 0.05174117535352707,
+      "waist_reference_rmse_rad": 0.06291189789772034,
+      "final_stand_speed_m_s": 0.017557045444846153,
+      "hand_return_error_m_per_hand": [
+        0.004975247196853161,
+        0.0035949000157415867
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008617380633950233,
+        0.00622654939070344
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.055853817611932755,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05956751108169556,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 7.715529389287205,
+      "chest_tilt_peak_deg": 18.583573571128817,
+      "pelvis_tilt_rms_deg": 2.6319126513741558,
+      "waist_tilt_rms_deg": 6.022445022351519,
+      "chest_angular_speed_rms_rad_s": 0.6617997288703918,
+      "arm_reference_rmse_rad": 0.04332754388451576,
+      "arm_drive_tracking_rmse_rad": 0.05241641402244568,
+      "waist_reference_rmse_rad": 0.05921122059226036,
+      "final_stand_speed_m_s": 0.018260613083839417,
+      "hand_return_error_m_per_hand": [
+        0.005084756296128035,
+        0.002984825521707535
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008807056583464146,
+        0.0051698689348995686
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06121073290705681,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06311563402414322,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 10.844878741497865,
+      "chest_tilt_peak_deg": 22.788973977071734,
+      "pelvis_tilt_rms_deg": 4.429665398472056,
+      "waist_tilt_rms_deg": 7.499768836048379,
+      "chest_angular_speed_rms_rad_s": 0.8160057067871094,
+      "arm_reference_rmse_rad": 0.05112303048372269,
+      "arm_drive_tracking_rmse_rad": 0.057210661470890045,
+      "waist_reference_rmse_rad": 0.07525834441184998,
+      "final_stand_speed_m_s": 0.01748509146273136,
+      "hand_return_error_m_per_hand": [
+        0.005336503963917494,
+        0.002949344227090478
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.009243096224963665,
+        0.005108414217829704
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05629711225628853,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05965828895568848,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.0443749874830246,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06864810734987259,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.6707033311294348,
+      "chest_tilt_peak_deg": 2.070748364590728,
+      "pelvis_tilt_rms_deg": 1.5147693653261034,
+      "waist_tilt_rms_deg": 0.2349918313010689,
+      "chest_angular_speed_rms_rad_s": 0.12498544901609421,
+      "arm_reference_rmse_rad": 0.015239128842949867,
+      "arm_drive_tracking_rmse_rad": 0.03517324477434158,
+      "waist_reference_rmse_rad": 0.009726745076477528,
+      "final_stand_speed_m_s": 0.01772839017212391,
+      "hand_return_error_m_per_hand": [
+        0.004853898659348488,
+        0.0036965329200029373
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008407199755311012,
+        0.006402582861483097
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.440418219674305,
+      "chest_tilt_peak_deg": 22.00484776978676,
+      "pelvis_tilt_rms_deg": 3.478076826560121,
+      "waist_tilt_rms_deg": 6.087762975157998,
+      "chest_angular_speed_rms_rad_s": 0.7277393341064453,
+      "arm_reference_rmse_rad": 0.044443659484386444,
+      "arm_drive_tracking_rmse_rad": 0.051883649080991745,
+      "waist_reference_rmse_rad": 0.06354796886444092,
+      "final_stand_speed_m_s": 0.017375364899635315,
+      "hand_return_error_m_per_hand": [
+        0.004958524834364653,
+        0.00375464023090899
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008588417433202267,
+        0.006503227632492781
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.056425224989652634,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06074254959821701,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 7.9231893381703955,
+      "chest_tilt_peak_deg": 18.975254184177782,
+      "pelvis_tilt_rms_deg": 2.7447375580658346,
+      "waist_tilt_rms_deg": 6.12087317093328,
+      "chest_angular_speed_rms_rad_s": 0.6690223217010498,
+      "arm_reference_rmse_rad": 0.043441928923130035,
+      "arm_drive_tracking_rmse_rad": 0.05235422030091286,
+      "waist_reference_rmse_rad": 0.06006934866309166,
+      "final_stand_speed_m_s": 0.017994586378335953,
+      "hand_return_error_m_per_hand": [
+        0.0050597889348864555,
+        0.003058038419112563
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008763812482357025,
+        0.005296677816659212
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06014776974916458,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06271369755268097,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_residual_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 10.784344482431335,
+      "chest_tilt_peak_deg": 22.773426758973493,
+      "pelvis_tilt_rms_deg": 4.338427304652202,
+      "waist_tilt_rms_deg": 7.54543889593367,
+      "chest_angular_speed_rms_rad_s": 0.8277294039726257,
+      "arm_reference_rmse_rad": 0.0512806735932827,
+      "arm_drive_tracking_rmse_rad": 0.05719736963510513,
+      "waist_reference_rmse_rad": 0.07567509263753891,
+      "final_stand_speed_m_s": 0.01790892705321312,
+      "hand_return_error_m_per_hand": [
+        0.005174295511096716,
+        0.0028155443724244833
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008962142281234264,
+        0.004876665771007538
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05511128157377243,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05900661647319794,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.044964730739593506,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06786561757326126,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.823636389287898,
+      "chest_tilt_peak_deg": 2.2070868378304103,
+      "pelvis_tilt_rms_deg": 1.7487154039517934,
+      "waist_tilt_rms_deg": 0.11456110876218425,
+      "chest_angular_speed_rms_rad_s": 0.07334303855895996,
+      "arm_reference_rmse_rad": 0.014182647690176964,
+      "arm_drive_tracking_rmse_rad": 0.037046246230602264,
+      "waist_reference_rmse_rad": 0.00895580556243658,
+      "final_stand_speed_m_s": 0.014011077582836151,
+      "hand_return_error_m_per_hand": [
+        0.004952138755470514,
+        0.003364867065101862
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008577356114983559,
+        0.005828120745718479
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 7.231494373375911,
+      "chest_tilt_peak_deg": 15.313029694622005,
+      "pelvis_tilt_rms_deg": 4.800371354353559,
+      "waist_tilt_rms_deg": 3.288085936729519,
+      "chest_angular_speed_rms_rad_s": 0.5151446461677551,
+      "arm_reference_rmse_rad": 0.05312194302678108,
+      "arm_drive_tracking_rmse_rad": 0.0606791153550148,
+      "waist_reference_rmse_rad": 0.03461820259690285,
+      "final_stand_speed_m_s": 0.014090240933001041,
+      "hand_return_error_m_per_hand": [
+        0.004865431692451239,
+        0.0037713423371315002
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008427174761891365,
+        0.006532156374305487
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.056012656539678574,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05915059149265289,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 5.757735918425798,
+      "chest_tilt_peak_deg": 13.687109139115993,
+      "pelvis_tilt_rms_deg": 3.3596336623892835,
+      "waist_tilt_rms_deg": 3.0724069188739107,
+      "chest_angular_speed_rms_rad_s": 0.45731300115585327,
+      "arm_reference_rmse_rad": 0.05154258757829666,
+      "arm_drive_tracking_rmse_rad": 0.06190798059105873,
+      "waist_reference_rmse_rad": 0.031361233443021774,
+      "final_stand_speed_m_s": 0.014557167887687683,
+      "hand_return_error_m_per_hand": [
+        0.005072448402643204,
+        0.003028379287570715
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008785737678408623,
+        0.00524530652910471
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06177572160959244,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06564914435148239,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 5.66,
+      "chest_tilt_rms_deg": 15.119120624085342,
+      "chest_tilt_peak_deg": 50.61851827858616,
+      "pelvis_tilt_rms_deg": 12.055512696409702,
+      "waist_tilt_rms_deg": 4.703161967651822,
+      "chest_angular_speed_rms_rad_s": 0.812844455242157,
+      "arm_reference_rmse_rad": 0.06937874108552933,
+      "arm_drive_tracking_rmse_rad": 0.0728757232427597,
+      "waist_reference_rmse_rad": 0.047820158302783966,
+      "final_stand_speed_m_s": null,
+      "hand_return_error_m_per_hand": null,
+      "hand_return_distance_rms_m_per_hand": null,
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05668172612786293,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06050565838813782,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.03892974555492401,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.5384615384615384,
+          "trailing_unloaded_peak_m": 0.06748445332050323,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 2.013643287374367,
+      "chest_tilt_peak_deg": 2.4170276430095616,
+      "pelvis_tilt_rms_deg": 1.9129263850904168,
+      "waist_tilt_rms_deg": 0.15525692330185406,
+      "chest_angular_speed_rms_rad_s": 0.07391861081123352,
+      "arm_reference_rmse_rad": 0.013985488563776016,
+      "arm_drive_tracking_rmse_rad": 0.03700847923755646,
+      "waist_reference_rmse_rad": 0.009241278283298016,
+      "final_stand_speed_m_s": 0.014879736118018627,
+      "hand_return_error_m_per_hand": [
+        0.005026340018957853,
+        0.0032035470940172672
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008705876767635345,
+        0.005548706278204918
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 6.3106414392856225,
+      "chest_tilt_peak_deg": 14.634098645838982,
+      "pelvis_tilt_rms_deg": 3.9202596448887497,
+      "waist_tilt_rms_deg": 3.1737003318124923,
+      "chest_angular_speed_rms_rad_s": 0.519542932510376,
+      "arm_reference_rmse_rad": 0.052487101405858994,
+      "arm_drive_tracking_rmse_rad": 0.060633108019828796,
+      "waist_reference_rmse_rad": 0.033606596291065216,
+      "final_stand_speed_m_s": 0.014071593061089516,
+      "hand_return_error_m_per_hand": [
+        0.004914728458970785,
+        0.003360299626365304
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008512559346854687,
+        0.005820209626108408
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05742998048663139,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05736441910266876,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 5.88096106878929,
+      "chest_tilt_peak_deg": 13.975005881500262,
+      "pelvis_tilt_rms_deg": 3.4689548954801572,
+      "waist_tilt_rms_deg": 3.0987336695863132,
+      "chest_angular_speed_rms_rad_s": 0.4616670608520508,
+      "arm_reference_rmse_rad": 0.051330551505088806,
+      "arm_drive_tracking_rmse_rad": 0.061851922422647476,
+      "waist_reference_rmse_rad": 0.031734105199575424,
+      "final_stand_speed_m_s": 0.014444608241319656,
+      "hand_return_error_m_per_hand": [
+        0.00505758635699749,
+        0.003002696204930544
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008759996853768826,
+        0.005200822371989489
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.061095334589481354,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.7692307692307693,
+          "trailing_unloaded_peak_m": 0.06681127101182938,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.08,
+      "chest_tilt_rms_deg": 10.94795483380982,
+      "chest_tilt_peak_deg": 20.698855836325084,
+      "pelvis_tilt_rms_deg": 6.141517417699644,
+      "waist_tilt_rms_deg": 5.323867788194601,
+      "chest_angular_speed_rms_rad_s": 0.7433784604072571,
+      "arm_reference_rmse_rad": 0.07177732139825821,
+      "arm_drive_tracking_rmse_rad": 0.07631949335336685,
+      "waist_reference_rmse_rad": 0.05211701989173889,
+      "final_stand_speed_m_s": null,
+      "hand_return_error_m_per_hand": null,
+      "hand_return_distance_rms_m_per_hand": null,
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.056743379682302475,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.0578351765871048,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.02903859317302704,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.3076923076923077,
+          "trailing_unloaded_peak_m": 0.02028840035200119,
+          "trailing_high_swing_samples": 0,
+          "trailing_lift_rate": null
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.8333598039016457,
+      "chest_tilt_peak_deg": 2.231778612010241,
+      "pelvis_tilt_rms_deg": 1.7576622047125696,
+      "waist_tilt_rms_deg": 0.10978755358428581,
+      "chest_angular_speed_rms_rad_s": 0.07148566842079163,
+      "arm_reference_rmse_rad": 0.01370755210518837,
+      "arm_drive_tracking_rmse_rad": 0.037068773061037064,
+      "waist_reference_rmse_rad": 0.00910295732319355,
+      "final_stand_speed_m_s": 0.014162509702146053,
+      "hand_return_error_m_per_hand": [
+        0.005002908408641815,
+        0.003259295132011175
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008665291592478752,
+        0.005645264871418476
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 6.607555312034777,
+      "chest_tilt_peak_deg": 14.961095659900636,
+      "pelvis_tilt_rms_deg": 4.2009693207188725,
+      "waist_tilt_rms_deg": 3.1942105361163944,
+      "chest_angular_speed_rms_rad_s": 0.5138452649116516,
+      "arm_reference_rmse_rad": 0.05218379199504852,
+      "arm_drive_tracking_rmse_rad": 0.06246046721935272,
+      "waist_reference_rmse_rad": 0.03400886058807373,
+      "final_stand_speed_m_s": 0.011970116756856441,
+      "hand_return_error_m_per_hand": [
+        0.0048462580889463425,
+        0.003959683235734701
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008393964730203152,
+        0.0068583725951612
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.055864784866571426,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06099715828895569,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 5.763185555609821,
+      "chest_tilt_peak_deg": 13.714173763702169,
+      "pelvis_tilt_rms_deg": 3.3305312935529168,
+      "waist_tilt_rms_deg": 3.0969424524764775,
+      "chest_angular_speed_rms_rad_s": 0.46190568804740906,
+      "arm_reference_rmse_rad": 0.051476988941431046,
+      "arm_drive_tracking_rmse_rad": 0.06167120486497879,
+      "waist_reference_rmse_rad": 0.03150126338005066,
+      "final_stand_speed_m_s": 0.013929188251495361,
+      "hand_return_error_m_per_hand": [
+        0.004999727476388216,
+        0.0030111088417470455
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008659781888127327,
+        0.005215393379330635
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06165435165166855,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06464412808418274,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.425102374234196,
+      "chest_tilt_peak_deg": 17.067169122548435,
+      "pelvis_tilt_rms_deg": 5.302274145133606,
+      "waist_tilt_rms_deg": 3.9313826079521155,
+      "chest_angular_speed_rms_rad_s": 0.5664937496185303,
+      "arm_reference_rmse_rad": 0.06058346480131149,
+      "arm_drive_tracking_rmse_rad": 0.06972607970237732,
+      "waist_reference_rmse_rad": 0.040218718349933624,
+      "final_stand_speed_m_s": 0.011510751210153103,
+      "hand_return_error_m_per_hand": [
+        0.005134834907948971,
+        0.002665550448000431
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008893794380128384,
+        0.004616868682205677
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05690459907054901,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05962450057268143,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.04076118767261505,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.5384615384615384,
+          "trailing_unloaded_peak_m": 0.07104458659887314,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.5830801149278106,
+      "chest_tilt_peak_deg": 1.9265088565852218,
+      "pelvis_tilt_rms_deg": 1.5177662175461522,
+      "waist_tilt_rms_deg": 0.11070528021272695,
+      "chest_angular_speed_rms_rad_s": 0.06446748226881027,
+      "arm_reference_rmse_rad": 0.015061809681355953,
+      "arm_drive_tracking_rmse_rad": 0.03727271035313606,
+      "waist_reference_rmse_rad": 0.009298531338572502,
+      "final_stand_speed_m_s": 0.013388085179030895,
+      "hand_return_error_m_per_hand": [
+        0.004640139173716307,
+        0.003935425076633692
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008036956191062927,
+        0.006816355511546135
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 6.116242302676012,
+      "chest_tilt_peak_deg": 14.462170831598714,
+      "pelvis_tilt_rms_deg": 3.7615461122583405,
+      "waist_tilt_rms_deg": 3.1305081364920357,
+      "chest_angular_speed_rms_rad_s": 0.5199267268180847,
+      "arm_reference_rmse_rad": 0.05237405747175217,
+      "arm_drive_tracking_rmse_rad": 0.06252811849117279,
+      "waist_reference_rmse_rad": 0.033386923372745514,
+      "final_stand_speed_m_s": 0.011606037616729736,
+      "hand_return_error_m_per_hand": [
+        0.004978973884135485,
+        0.0035064942203462124
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008623835630714893,
+        0.006073425989598036
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05666125938296318,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.057934075593948364,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 5.831822553466103,
+      "chest_tilt_peak_deg": 13.967424371521547,
+      "pelvis_tilt_rms_deg": 3.423780451196516,
+      "waist_tilt_rms_deg": 3.0960927342550457,
+      "chest_angular_speed_rms_rad_s": 0.4691172242164612,
+      "arm_reference_rmse_rad": 0.051085855811834335,
+      "arm_drive_tracking_rmse_rad": 0.06174895539879799,
+      "waist_reference_rmse_rad": 0.03166913613677025,
+      "final_stand_speed_m_s": 0.014485242776572704,
+      "hand_return_error_m_per_hand": [
+        0.005063808057457209,
+        0.0029954363126307726
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008770772255957127,
+        0.005188248120248318
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06138681247830391,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.7692307692307693,
+          "trailing_unloaded_peak_m": 0.06681803613901138,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 9.419781115515862,
+      "chest_tilt_peak_deg": 18.252587726591877,
+      "pelvis_tilt_rms_deg": 6.245587729422659,
+      "waist_tilt_rms_deg": 4.085554064784467,
+      "chest_angular_speed_rms_rad_s": 0.5781798958778381,
+      "arm_reference_rmse_rad": 0.060880545526742935,
+      "arm_drive_tracking_rmse_rad": 0.06837881356477737,
+      "waist_reference_rmse_rad": 0.041824549436569214,
+      "final_stand_speed_m_s": 0.013642101548612118,
+      "hand_return_error_m_per_hand": [
+        0.005115104839205742,
+        0.0029212837107479572
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008859621360898018,
+        0.005059811752289534
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05549653246998787,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.0617716908454895,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.04167334735393524,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6153846153846154,
+          "trailing_unloaded_peak_m": 0.06778669357299805,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.8039916980178834,
+      "chest_tilt_peak_deg": 2.0992838277259835,
+      "pelvis_tilt_rms_deg": 1.7346490562429753,
+      "waist_tilt_rms_deg": 0.11185465297367332,
+      "chest_angular_speed_rms_rad_s": 0.07268103212118149,
+      "arm_reference_rmse_rad": 0.01441237609833479,
+      "arm_drive_tracking_rmse_rad": 0.03711321949958801,
+      "waist_reference_rmse_rad": 0.009305755607783794,
+      "final_stand_speed_m_s": 0.01405569538474083,
+      "hand_return_error_m_per_hand": [
+        0.004854608327150345,
+        0.0035795795265585184
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.00840842816978693,
+        0.006200013216584921
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 6.079978267051476,
+      "chest_tilt_peak_deg": 14.756606626339623,
+      "pelvis_tilt_rms_deg": 3.702414176405778,
+      "waist_tilt_rms_deg": 3.1388102314281863,
+      "chest_angular_speed_rms_rad_s": 0.522799551486969,
+      "arm_reference_rmse_rad": 0.05218663066625595,
+      "arm_drive_tracking_rmse_rad": 0.06259847432374954,
+      "waist_reference_rmse_rad": 0.033484186977148056,
+      "final_stand_speed_m_s": 0.011461441405117512,
+      "hand_return_error_m_per_hand": [
+        0.004969937261193991,
+        0.003615075023844838
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008608183823525906,
+        0.006261493545025587
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.056849926710128784,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05994030088186264,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 5.69977237180813,
+      "chest_tilt_peak_deg": 13.543879218447179,
+      "pelvis_tilt_rms_deg": 3.3032224897039133,
+      "waist_tilt_rms_deg": 3.0440362340523817,
+      "chest_angular_speed_rms_rad_s": 0.4525828957557678,
+      "arm_reference_rmse_rad": 0.05170245096087456,
+      "arm_drive_tracking_rmse_rad": 0.06168200448155403,
+      "waist_reference_rmse_rad": 0.031037921085953712,
+      "final_stand_speed_m_s": 0.014000722207129002,
+      "hand_return_error_m_per_hand": [
+        0.005009837914258242,
+        0.0029454699251800776
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008677293546497822,
+        0.0051017035730183125
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06102019548416138,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.0651831179857254,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.453271781918623,
+      "chest_tilt_peak_deg": 17.651662560772277,
+      "pelvis_tilt_rms_deg": 5.245194681126633,
+      "waist_tilt_rms_deg": 3.990162362175599,
+      "chest_angular_speed_rms_rad_s": 0.5693663358688354,
+      "arm_reference_rmse_rad": 0.060815684497356415,
+      "arm_drive_tracking_rmse_rad": 0.06831034272909164,
+      "waist_reference_rmse_rad": 0.04070649296045303,
+      "final_stand_speed_m_s": 0.014228854328393936,
+      "hand_return_error_m_per_hand": [
+        0.005053334403783083,
+        0.002986108185723424
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008752631954848766,
+        0.005172091070562601
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.056956514716148376,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.0572175607085228,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.042089954018592834,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6153846153846154,
+          "trailing_unloaded_peak_m": 0.06957016885280609,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.811143759852533,
+      "chest_tilt_peak_deg": 2.155857857734376,
+      "pelvis_tilt_rms_deg": 1.7385655294017428,
+      "waist_tilt_rms_deg": 0.1163714423975682,
+      "chest_angular_speed_rms_rad_s": 0.07283160090446472,
+      "arm_reference_rmse_rad": 0.014462891034781933,
+      "arm_drive_tracking_rmse_rad": 0.03707338869571686,
+      "waist_reference_rmse_rad": 0.008968936279416084,
+      "final_stand_speed_m_s": 0.014127759262919426,
+      "hand_return_error_m_per_hand": [
+        0.004860583692789078,
+        0.003477309597656131
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008418777957558632,
+        0.006022877059876919
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 6.943430718243801,
+      "chest_tilt_peak_deg": 15.08559805563892,
+      "pelvis_tilt_rms_deg": 4.521633468759454,
+      "waist_tilt_rms_deg": 3.2447287496519244,
+      "chest_angular_speed_rms_rad_s": 0.511574923992157,
+      "arm_reference_rmse_rad": 0.052878450602293015,
+      "arm_drive_tracking_rmse_rad": 0.06066726893186569,
+      "waist_reference_rmse_rad": 0.03435803949832916,
+      "final_stand_speed_m_s": 0.013543173670768738,
+      "hand_return_error_m_per_hand": [
+        0.004788673482835293,
+        0.003980086650699377
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008294225670397282,
+        0.006893712095916271
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.055693551898002625,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05971262603998184,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 5.792459746392496,
+      "chest_tilt_peak_deg": 13.878974275543529,
+      "pelvis_tilt_rms_deg": 3.3723591585866637,
+      "waist_tilt_rms_deg": 3.0689179728685034,
+      "chest_angular_speed_rms_rad_s": 0.4509980380535126,
+      "arm_reference_rmse_rad": 0.051809169352054596,
+      "arm_drive_tracking_rmse_rad": 0.0618324801325798,
+      "waist_reference_rmse_rad": 0.031416330486536026,
+      "final_stand_speed_m_s": 0.014343815855681896,
+      "hand_return_error_m_per_hand": [
+        0.004992074333131313,
+        0.002952366601675749
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008646526373922825,
+        0.005113649182021618
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.061007484793663025,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06579405069351196,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.04,
+      "chest_tilt_rms_deg": 11.3885233796168,
+      "chest_tilt_peak_deg": 21.63498448849411,
+      "pelvis_tilt_rms_deg": 6.572758059534501,
+      "waist_tilt_rms_deg": 5.350016740545172,
+      "chest_angular_speed_rms_rad_s": 0.7443365454673767,
+      "arm_reference_rmse_rad": 0.07171717286109924,
+      "arm_drive_tracking_rmse_rad": 0.07672916352748871,
+      "waist_reference_rmse_rad": 0.052284520119428635,
+      "final_stand_speed_m_s": null,
+      "hand_return_error_m_per_hand": null,
+      "hand_return_distance_rms_m_per_hand": null,
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05481008440256119,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.059879615902900696,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.026167042553424835,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.15384615384615385,
+          "trailing_unloaded_peak_m": 0.02291097491979599,
+          "trailing_high_swing_samples": 0,
+          "trailing_lift_rate": null
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.6337364263506218,
+      "chest_tilt_peak_deg": 1.9812978593427137,
+      "pelvis_tilt_rms_deg": 1.5703841806429322,
+      "waist_tilt_rms_deg": 0.10489693803535835,
+      "chest_angular_speed_rms_rad_s": 0.07030943036079407,
+      "arm_reference_rmse_rad": 0.014608028344810009,
+      "arm_drive_tracking_rmse_rad": 0.03714855760335922,
+      "waist_reference_rmse_rad": 0.00931131187826395,
+      "final_stand_speed_m_s": 0.014234248548746109,
+      "hand_return_error_m_per_hand": [
+        0.004765650257468224,
+        0.0037532623391598463
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008254348300397396,
+        0.0065008411183953285
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 5.962348749165516,
+      "chest_tilt_peak_deg": 14.627353834033595,
+      "pelvis_tilt_rms_deg": 3.617431255205187,
+      "waist_tilt_rms_deg": 3.1134823958818982,
+      "chest_angular_speed_rms_rad_s": 0.5221537351608276,
+      "arm_reference_rmse_rad": 0.05206999182701111,
+      "arm_drive_tracking_rmse_rad": 0.06256189942359924,
+      "waist_reference_rmse_rad": 0.03338742256164551,
+      "final_stand_speed_m_s": 0.009346838109195232,
+      "hand_return_error_m_per_hand": [
+        0.0050849514082074165,
+        0.003457364859059453
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008807393722236156,
+        0.005988331511616707
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.056736208498477936,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05982176959514618,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 5.528625333567359,
+      "chest_tilt_peak_deg": 12.80690949096562,
+      "pelvis_tilt_rms_deg": 3.2201844648694835,
+      "waist_tilt_rms_deg": 2.9727081416631154,
+      "chest_angular_speed_rms_rad_s": 0.45866960287094116,
+      "arm_reference_rmse_rad": 0.051305126398801804,
+      "arm_drive_tracking_rmse_rad": 0.06165159121155739,
+      "waist_reference_rmse_rad": 0.030352039262652397,
+      "final_stand_speed_m_s": 0.014064728282392025,
+      "hand_return_error_m_per_hand": [
+        0.004986451007425785,
+        0.0029178718104958534
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008636786602437496,
+        0.005053902044892311
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.062033601105213165,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06458821892738342,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.055482418430726,
+      "chest_tilt_peak_deg": 17.317586055635903,
+      "pelvis_tilt_rms_deg": 4.917879636381751,
+      "waist_tilt_rms_deg": 3.927980319971803,
+      "chest_angular_speed_rms_rad_s": 0.5764941573143005,
+      "arm_reference_rmse_rad": 0.06052696332335472,
+      "arm_drive_tracking_rmse_rad": 0.06846406310796738,
+      "waist_reference_rmse_rad": 0.040389638394117355,
+      "final_stand_speed_m_s": 0.013914057984948158,
+      "hand_return_error_m_per_hand": [
+        0.005051770713180304,
+        0.0030032701324671507
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008749923668801785,
+        0.005201816558837891
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.057616833597421646,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05805681645870209,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.045016661286354065,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.06882207095623016,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 1.735134533282575,
+      "chest_tilt_peak_deg": 2.0409516643365473,
+      "pelvis_tilt_rms_deg": 1.6684700727142523,
+      "waist_tilt_rms_deg": 0.10885332511208823,
+      "chest_angular_speed_rms_rad_s": 0.0711015984416008,
+      "arm_reference_rmse_rad": 0.01449248380959034,
+      "arm_drive_tracking_rmse_rad": 0.03713316097855568,
+      "waist_reference_rmse_rad": 0.009421829134225845,
+      "final_stand_speed_m_s": 0.014021356590092182,
+      "hand_return_error_m_per_hand": [
+        0.004816130269318819,
+        0.003768082708120346
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008341782726347446,
+        0.006526510696858168
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {}
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 7.608272367429556,
+      "chest_tilt_peak_deg": 15.369206292998067,
+      "pelvis_tilt_rms_deg": 5.184530221579049,
+      "waist_tilt_rms_deg": 3.317120217117597,
+      "chest_angular_speed_rms_rad_s": 0.5137172341346741,
+      "arm_reference_rmse_rad": 0.05312790721654892,
+      "arm_drive_tracking_rmse_rad": 0.06063579395413399,
+      "waist_reference_rmse_rad": 0.03485088050365448,
+      "final_stand_speed_m_s": 0.013950631022453308,
+      "hand_return_error_m_per_hand": [
+        0.004831422120332718,
+        0.003706324379891157
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008368268609046936,
+        0.006419542245566845
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.055336132645606995,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05944018065929413,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "right",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 5.753084559601019,
+      "chest_tilt_peak_deg": 13.679371388560014,
+      "pelvis_tilt_rms_deg": 3.3257749205696494,
+      "waist_tilt_rms_deg": 3.094514747113361,
+      "chest_angular_speed_rms_rad_s": 0.4610450863838196,
+      "arm_reference_rmse_rad": 0.05145994946360588,
+      "arm_drive_tracking_rmse_rad": 0.06167974695563316,
+      "waist_reference_rmse_rad": 0.03149060159921646,
+      "final_stand_speed_m_s": 0.014219120144844055,
+      "hand_return_error_m_per_hand": [
+        0.0049900878220796585,
+        0.002904376946389675
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008643086068332195,
+        0.005030528176575899
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "right": {
+          "lead_unloaded_peak_m": 0.06186765432357788,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.8461538461538461,
+          "trailing_unloaded_peak_m": 0.06461292505264282,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        }
+      }
+    },
+    {
+      "variant": "upper_pd_guard",
+      "case": "pair",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_tilt_rms_deg": 8.524526022887487,
+      "chest_tilt_peak_deg": 17.844794697290848,
+      "pelvis_tilt_rms_deg": 5.328774852226433,
+      "waist_tilt_rms_deg": 3.996398751774644,
+      "chest_angular_speed_rms_rad_s": 0.5747510194778442,
+      "arm_reference_rmse_rad": 0.06072703376412392,
+      "arm_drive_tracking_rmse_rad": 0.06833162903785706,
+      "waist_reference_rmse_rad": 0.040937699377536774,
+      "final_stand_speed_m_s": 0.013222928158938885,
+      "hand_return_error_m_per_hand": [
+        0.005069850478321314,
+        0.0029563193675130606
+      ],
+      "hand_return_distance_rms_m_per_hand": [
+        0.008781238459050655,
+        0.005120495334267616
+      ],
+      "upper_near_100nm_fraction": 0.0,
+      "directions": {
+        "left": {
+          "lead_unloaded_peak_m": 0.05720052868127823,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6923076923076923,
+          "trailing_unloaded_peak_m": 0.05767734348773956,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 0.9166666666666666
+        },
+        "right": {
+          "lead_unloaded_peak_m": 0.0419415608048439,
+          "lead_high_swing_samples": 13,
+          "lead_lift_rate": 0.6153846153846154,
+          "trailing_unloaded_peak_m": 0.07068176567554474,
+          "trailing_high_swing_samples": 12,
+          "trailing_lift_rate": 1.0
+        }
+      }
+    }
+  ],
+  "first_terminations": [
+    {
+      "index": 119,
+      "time_s": 4.0600000000000005,
+      "terminated": true,
+      "truncated": false,
+      "nonfoot_contacts_over_25n": [
+        {
+          "body": "right_ankle_pitch_link",
+          "force_n": 103.89550018310547
+        }
+      ]
+    },
+    {
+      "index": 103,
+      "time_s": 4.1,
+      "terminated": true,
+      "truncated": false,
+      "nonfoot_contacts_over_25n": [
+        {
+          "body": "right_ankle_pitch_link",
+          "force_n": 125.04352569580078
+        }
+      ]
+    },
+    {
+      "index": 99,
+      "time_s": 5.68,
+      "terminated": true,
+      "truncated": false,
+      "nonfoot_contacts_over_25n": []
+    }
+  ],
+  "motor_effort_limit_nm": 100.0,
+  "motor_velocity_limit_rad_s": 10.0,
+  "root_forces_or_constraints": false,
+  "rendered_pose_filtering": false,
+  "torso_measurement": "center_torso_link world inclination and angular velocity; root upright alone does not measure chest stability",
+  "hand_measurement": "hand_return_error is per-coordinate RMS; hand_return_distance_rms is Euclidean distance RMS, both versus native reference FK in pelvis coordinates",
+  "torque_measurement": "Implicit actuator applied-torque estimate, not an independent sensor"
+}

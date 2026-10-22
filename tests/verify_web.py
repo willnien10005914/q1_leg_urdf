@@ -54,6 +54,19 @@ def main():
         assert 'pose_overlay' in page.locator('video').get_attribute('src')
         page.locator('[data-video-source="original"]').click()
         page.wait_for_function("document.querySelector('video').readyState>=1")
+        for replay in ('v5_13115','upper_body'):
+            page.locator('#source').select_option(replay)
+            page.wait_for_function("document.querySelector('#status').textContent.includes('7.20 秒原生')")
+            assert page.locator('#keyboard-toggle').is_disabled()
+            assert page.locator('#sidestep-sequence').is_disabled()
+            assert page.locator('[data-skill="walk"]').is_disabled()
+            page.locator('#timeline').evaluate("e=>{e.value='3.8';e.dispatchEvent(new Event('input',{bubbles:true}));}")
+            assert page.locator('#time').inner_text()=='3.80 s'
+        page.locator('[data-video-source="upper_body"]').click()
+        page.wait_for_function("document.querySelector('video').readyState>=1")
+        assert page.locator('video').evaluate('v=>v.duration')==7.2
+        assert '未重訓' in page.locator('#policy-version').inner_text()
+        page.locator('#source').select_option('reference')
         page.reload()
         page.wait_for_function("document.querySelector('#status').textContent.includes('已擷取')")
         assert abs(page.locator('aside').bounding_box()['width']-420)<2

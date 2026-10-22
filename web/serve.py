@@ -24,6 +24,9 @@ class Handler(SimpleHTTPRequestHandler):
             return
         if path=="/api/status":
             result={"robot":json.loads((ROOT/"config/robot_contract.json").read_text()),"skills":{}}
+            policy_status=ROOT/"config/web_policy_status.json"
+            if policy_status.exists():
+                result["policy_status"]=json.loads(policy_status.read_text())
             for skill in ("stand","walk","sidestep"):
                 file=ROOT/"checkpoints"/skill/"evaluation.json"
                 native=ROOT/"checkpoints/isaac"/skill/"evaluation.json"
@@ -47,7 +50,7 @@ class Handler(SimpleHTTPRequestHandler):
         allowed={"web","meshes","urdf","docs","config","outputs"}
         parts=Path(path.lstrip("/")).parts
         resolved=(ROOT/path.lstrip("/")).resolve()
-        if not parts or parts[0] not in allowed or any(p.startswith(".") or p==".." for p in parts) or not resolved.is_relative_to(ROOT) or (resolved.is_dir() and path!="/web/"):
+        if not parts or parts[0] not in allowed or any(p.startswith(".") or p==".." or p.endswith(('.gofile.json','.private.json')) for p in parts) or not resolved.is_relative_to(ROOT) or (resolved.is_dir() and path!="/web/"):
             self.send_error(404)
             return
         super().do_GET()

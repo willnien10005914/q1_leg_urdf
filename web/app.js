@@ -27,9 +27,16 @@ splitter.addEventListener('dblclick',()=>{setPanelWidth(420);expandedState(false
 splitter.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home'].includes(event.key))return;event.preventDefault();expandedState(false);setPanelWidth(event.key==='Home'?420:panelWidth+(event.key==='ArrowLeft'?1:-1)*(event.shiftKey?100:30));});
 $('expand-video').onclick=()=>{if(!videoExpanded){previousPanelWidth=panelWidth;setPanelWidth(layout.clientWidth*.68);expandedState(true);}else{setPanelWidth(previousPanelWidth);expandedState(false);}};
 addEventListener('resize',()=>setPanelWidth(panelWidth,false));
+const videoSources={
+ original:['/docs/reference/sidestep_0_7.mp4','YouTube 示範 · 前 7 秒','原片 0–7 秒 · MediaPipe Pose · 原生關節軸 IK；單鏡頭側移尺度為近似值。'],
+ overlay:['/docs/reference/sidestep_pose_overlay.mp4','YouTube 示範 · 姿態骨架','MediaPipe 擷取結果，屬於動作參考。'],
+ v5_13115:['/docs/results/q1_leg_v5_pair_13115_diagnostic.mp4','13115 PPO · 原生診斷','原生 PhysX 錄影；完整鍵盤策略尚未通過驗收。'],
+ upper_body:['/docs/results/q1_leg_upper_body_13115_experimental.mp4','13115 PPO · 腰臂修正實驗','相同 PPO 權重，實驗腰臂控制；尚未重訓或通過完整驗收。']
+};
 document.querySelectorAll('[data-video-source]').forEach(button=>button.addEventListener('click',()=>{
  const video=$('reference-video'),time=video.currentTime,wasPlaying=!video.paused;
- video.src=button.dataset.videoSource==='overlay'?'/docs/reference/sidestep_pose_overlay.mp4':'/docs/reference/sidestep_0_7.mp4';
+ const [url,title,caption]=videoSources[button.dataset.videoSource];
+ video.src=url;$('video-title').textContent=title;$('video-caption').textContent=caption;
  video.addEventListener('loadedmetadata',()=>{video.currentTime=Math.min(time,video.duration);if(wasPlaying)video.play().catch(()=>{});},{once:true});
  document.querySelectorAll('[data-video-source]').forEach(other=>{other.classList.toggle('active',other===button);other.setAttribute('aria-pressed',String(other===button));});
 }));
@@ -50,6 +57,10 @@ const floor=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.MeshStandard
 new ResizeObserver(()=>{camera.aspect=canvas.clientWidth/canvas.clientHeight;camera.updateProjectionMatrix();renderer.setSize(canvas.clientWidth,canvas.clientHeight);}).observe(canvas);
 let robot,contract,motion,rollout,status,liveState,liveError,livePending=false,skill='sidestep',source='reference',t=0,playing=true,previous=performance.now(),duration=6.95,loadVersion=0;
 let keyboardArmed=false,sequencePending=false,commandQueue=Promise.resolve();
+const replaySources={v5_13115:'/docs/results/upper_body_13115_baseline_replay.json',upper_body:'/docs/results/upper_body_13115_experimental_replay.json'};
+const isReplay=()=>Object.hasOwn(replaySources,source);
+const requestedSource=new URLSearchParams(location.search).get('source');
+if(Object.hasOwn(replaySources,requestedSource)){source=requestedSource;$('source').value=source;}
 const heldKeys=new Set(),movementKeys=new Set(['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE']);
 const isInteractive=()=>['q1_leg_v4','q1_leg_v5'].includes(liveState?.controller_version);
 const controllerLabel=()=>liveState?.controller_version==='q1_leg_v5'?'v5':'v4';
@@ -73,6 +84,7 @@ function refFrame(){
 }
 function showStatus(){
  const e=status?.skills[skill];
+ $('policy-version').textContent=status?.policy_status?.notice??'參考動作與物理記錄均非即時控制；即時控制器版本須連線確認。';
  $('mode-label').textContent=source==='live'?'即時 PPO · Isaac / PhysX':source==='reference'?(skill==='sidestep'?'MediaPipe → 原生關節 IK':'程序化參考姿態'):`PPO → ${e?.backend??'模擬'} 物理評估記錄`;
  $('status').textContent=source==='reference'?(skill==='sidestep'?'已擷取原片 0–7 秒；關節映射預覽，尚非 PPO 成果。':'程序化參考姿態；用於訓練目標與動作檢查。'):(rollout?`PPO 評估記錄 · ${rollout.proxy?'簡化模型':'原生 CAD'} · ${rollout.passed?'通過門檻':'尚未通過門檻'} · ${rollout.frames.at(-1).time.toFixed(2)} 秒`:'此動作尚無 PPO 評估記錄，請先執行訓練。');
  if(source==='live'){
@@ -80,7 +92,12 @@ function showStatus(){
   $('status').textContent=liveError??liveState?.error??`原生 CAD 即時模擬 · ${labels[liveState?.status]??'連線中'}。${isInteractive()?`${controllerLabel()} 方向控制與閃身步連續執行；「回到起點」會重置模擬。`:'切換動作會重置模擬。'}`;
   $('play').textContent=liveState?.status==='running'?'暫停':liveState?.status==='finished'?'重播':'播放';
  }
- const metrics=source==='reference'&&skill==='sidestep'?[[`${(motion.quality.coverage*100).toFixed(0)}%`,'MediaPipe 有效影格'],[String(motion.quality.accepted_frames),'擷取影格']]:[[e?.survival_rate!==undefined?`${(e.survival_rate*100).toFixed(0)}%`:'—','PPO 回合存活率'],[e?.pose_rmse!==undefined?`${e.pose_rmse.toFixed(3)}`:'—','關節 RMSE / rad']];
+ if(source==='policy')$('status').textContent+=' 此為舊版獨立動作策略，並非 V5 13115 或 15000。';
+ if(isReplay()){
+  $('mode-label').textContent=source==='upper_body'?'13115 PPO · 實驗腰臂控制 · 原生記錄':'13115 PPO · 原設定 · 原生記錄';
+  $('status').textContent=rollout?`${rollout.label}。${rollout.frames.at(-1).time.toFixed(2)} 秒原生 PhysX 記錄；相同 13115 權重，未重訓、未通過完整驗收，非即時控制。`:'實驗記錄載入失敗，請檢查檔案。';
+ }
+ const metrics=source==='live'?[[isInteractive()?controllerLabel():liveState?.controller_version??'—','即時服務控制器'],[Number.isFinite(liveState?.frame?.time)?liveState.frame.time.toFixed(2):'—','即時物理時間 / s']]:isReplay()?[[rollout?.metrics?.chest_tilt_peak_deg?.toFixed(1)??'—','本片胸口傾角峰值 / °'],[rollout?.metrics?.arm_reference_rmse_rad?.toFixed(3)??'—','本片腰臂揮動期間手臂 RMSE / rad']]:source==='reference'&&skill==='sidestep'?[[`${(motion.quality.coverage*100).toFixed(0)}%`,'MediaPipe 有效影格'],[String(motion.quality.accepted_frames),'擷取影格']]:source==='reference'?[[String(contract.joint_names.length),'參考關節數'],['—','參考姿態，無 PPO 評估']]:[[e?.survival_rate!==undefined?`${(e.survival_rate*100).toFixed(0)}%`:'—','舊版 PPO 回合存活率'],[e?.pose_rmse!==undefined?`${e.pose_rmse.toFixed(3)}`:'—','舊版關節 RMSE / rad']];
  $('metrics').replaceChildren(...metrics.map(([value,label])=>{const div=document.createElement('div');div.className='metric';const strong=document.createElement('strong'),span=document.createElement('span');strong.textContent=value;span.textContent=label;div.append(strong,span);return div;}));
  const training=status?.training;
  $('training').textContent=training?`訓練：${training.skill} · ${training.state}${training.max_iterations?` · ${training.live_iteration_estimate??training.completed_iterations??0} / ${training.max_iterations} iterations · ${training.num_envs} envs`:''}`:'PPO 尚未開始';
@@ -92,8 +109,9 @@ async function select(){
  $('timeline').disabled=source==='live';$('speed').disabled=source==='live';
  if(source==='live'){liveError=null;setTime(0);try{liveState=await json('/api/live');if(version!==loadVersion)return;if(!isInteractive())await liveCommand('restart');}catch(e){liveError=e.message;}showStatus();return;}
  if(source==='policy')try{const data=await json(status?.skills[skill]?.rollout??`/outputs/${skill}_policy_rollout.json`);if(version!==loadVersion)return;rollout=data;}catch(e){if(version!==loadVersion)return;}
+ if(isReplay())try{const data=await json(replaySources[source]);if(version!==loadVersion)return;rollout=data;}catch(e){if(version!==loadVersion)return;}
  if(version!==loadVersion)return;
- duration=source==='policy'?(rollout?.frames.at(-1).time??0):(skill==='sidestep'?motion.time.at(-1):10);
+ duration=source==='policy'||isReplay()?(rollout?.frames.at(-1).time??0):(skill==='sidestep'?motion.time.at(-1):10);
  $('timeline').max=duration;$('duration').textContent=`${duration.toFixed(2)} s`;setTime(0);showStatus();
  if(source==='reference'||rollout){playing=true;$('play').textContent='暫停';}
 }
@@ -126,7 +144,7 @@ function updateKeyboardControls(){
  $('reset').disabled=source==='live'&&isInteractive()&&liveState.status!=='failed';
  $('sidestep-sequence').textContent=sequence?'閃身步執行中 · 完成後回站立':'閃身步 · 左右各一次 → 站立';
  document.querySelectorAll('[data-control-key]').forEach(b=>{b.disabled=!ready||sequence;b.classList.toggle('held',heldKeys.has(b.dataset.controlKey));});
- document.querySelectorAll('[data-skill]').forEach(b=>{b.disabled=source==='live'&&isInteractive();});
+ document.querySelectorAll('[data-skill]').forEach(b=>{b.disabled=isReplay()||(source==='live'&&isInteractive());});
  $('keyboard-status').textContent=source!=='live'?'切換至「即時 PPO / Isaac PhysX」才能控制移動。':!isInteractive()?'目前為舊版播放服務；WASD 與一鍵閃身需通過完整驗證的 v4 或 v5 控制器。':!ready?`${controllerLabel()} 控制器尚未就緒，方向控制已鎖定；請等待載入或通過訓練驗證。`:sequence?'正在左右閃身，方向輸入暫時鎖定；Space 可停止。':keyboardArmed?'鍵盤已啟用。放開按鍵、切換視窗或離開即時模式會停止移動。':`${controllerLabel()} 控制器已就緒。點「啟用鍵盤」，或按住方向按鈕移動。`;
  const modes={stand:'站立',walk:'方向行走',sidestep_left:'向左閃身',sidestep_right:'向右閃身',recover:'回復站姿'};
  $('controller-mode').textContent=source==='live'&&isInteractive()?`即時狀態：${modes[liveState.mode]??liveState.mode??'等待控制器'}`:'控制器尚未就緒';
