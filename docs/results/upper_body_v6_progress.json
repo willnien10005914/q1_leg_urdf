@@ -2,11 +2,11 @@
   "schema": 1,
   "robot": "q1_leg_upper_body_v6",
   "run_id": "v6r1_stable_contact_20261024",
-  "as_of": "2026-10-24T13:27:36.739801+00:00",
-  "state": "training",
-  "saved_updates": 18605,
+  "as_of": "2026-10-24T13:28:16.868891+00:00",
+  "state": "validating",
+  "saved_updates": 18705,
   "max_new_updates": 20000,
-  "saved_progress_percent": 93.03,
+  "saved_progress_percent": 93.53,
   "num_envs": 10240,
   "curriculum_stage": 0,
   "stage_name": "inplace_upper_recovery",
@@ -16,8 +16,8 @@
   "training_service_active": true,
   "startup_watchdog_active": true,
   "source_verified": true,
-  "checkpoint_verified": false,
-  "checkpoint_sha256": null,
+  "checkpoint_verified": true,
+  "checkpoint_sha256": "defa5201c7fc1e8a38b8033867991074188dd1f0f78d06c43ec5fb1aa62e6dec",
   "latest_validation": {
     "saved_updates": 18605,
     "stage": 0,
@@ -55,7 +55,6 @@
     }
   },
   "alerts": [
-    "saved_checkpoint_not_verified",
     "plateau_requires_review"
   ],
   "error_code": null,
