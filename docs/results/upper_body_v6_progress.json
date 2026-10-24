@@ -2,11 +2,11 @@
   "schema": 1,
   "robot": "q1_leg_upper_body_v6",
   "run_id": "v6r1_stable_contact_20261024",
-  "as_of": "2026-10-24T11:18:44.285659+00:00",
+  "as_of": "2026-10-24T11:22:39.887574+00:00",
   "state": "training",
-  "saved_updates": 17105,
+  "saved_updates": 17205,
   "max_new_updates": 20000,
-  "saved_progress_percent": 85.53,
+  "saved_progress_percent": 86.03,
   "num_envs": 10240,
   "curriculum_stage": 0,
   "stage_name": "inplace_upper_recovery",
@@ -17,9 +17,9 @@
   "startup_watchdog_active": true,
   "source_verified": true,
   "checkpoint_verified": true,
-  "checkpoint_sha256": "5c91fbc667109b1c26c5b1d004633b0b8a946f6a5bdbbf7fdb2baae016d8d8e2",
+  "checkpoint_sha256": "34bfec0c80eaf4d0bd78318f452b82e4882d56c5690bdceef780105762f1d662",
   "latest_validation": {
-    "saved_updates": 17105,
+    "saved_updates": 17205,
     "stage": 0,
     "episodes": 32,
     "passed": false,
@@ -36,23 +36,23 @@
     "lower_body_passed": true,
     "upper_body_cases": {
       "stand": {
-        "chest_peak_deg": 4.705054759979248,
-        "chest_rms_deg": 4.244068032150784,
+        "chest_peak_deg": 5.098489761352539,
+        "chest_rms_deg": 4.33905415243338,
         "dynamic_chest_angular_xy_rms_rad_s": null,
-        "tail_arm_speed_rms_rad_s": 0.005268083887367957,
+        "tail_arm_speed_rms_rad_s": 0.004436153316339427,
         "tail_hand_distance_rms_m_per_hand": [
-          0.037281635695596206,
-          0.038007735074874906
+          0.040795826465924535,
+          0.04236463761293151
         ]
       },
       "inplace": {
-        "chest_peak_deg": 14.092629432678223,
-        "chest_rms_deg": 5.477239589271977,
-        "dynamic_chest_angular_xy_rms_rad_s": 0.8319781437204868,
-        "tail_arm_speed_rms_rad_s": 0.05212951363151734,
+        "chest_peak_deg": 14.472488403320312,
+        "chest_rms_deg": 5.340115906773291,
+        "dynamic_chest_angular_xy_rms_rad_s": 0.8261330702139941,
+        "tail_arm_speed_rms_rad_s": 0.021237676124337076,
         "tail_hand_distance_rms_m_per_hand": [
-          0.022913677501464193,
-          0.028511969771493097
+          0.022384226384966035,
+          0.02675070780513283
         ]
       }
     }
