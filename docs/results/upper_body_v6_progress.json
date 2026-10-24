@@ -2,11 +2,11 @@
   "schema": 1,
   "robot": "q1_leg_upper_body_v6",
   "run_id": "v6r1_stable_contact_20261024",
-  "as_of": "2026-10-24T12:32:24.198364+00:00",
-  "state": "validating",
-  "saved_updates": 18005,
+  "as_of": "2026-10-24T13:27:36.739801+00:00",
+  "state": "training",
+  "saved_updates": 18605,
   "max_new_updates": 20000,
-  "saved_progress_percent": 90.03,
+  "saved_progress_percent": 93.03,
   "num_envs": 10240,
   "curriculum_stage": 0,
   "stage_name": "inplace_upper_recovery",
@@ -16,46 +16,46 @@
   "training_service_active": true,
   "startup_watchdog_active": true,
   "source_verified": true,
-  "checkpoint_verified": true,
-  "checkpoint_sha256": "27ed23b56367c6b0d55d677f8a6741b89a892a038bff5a086c16a55999fafb29",
+  "checkpoint_verified": false,
+  "checkpoint_sha256": null,
   "latest_validation": {
-    "saved_updates": 17905,
+    "saved_updates": 18605,
     "stage": 0,
     "episodes": 32,
     "passed": false,
     "artifact_verified": true,
-    "failed_gate_count": 3,
+    "failed_gate_count": 2,
     "failed_gates": [
       "upper_body.stand.tail.hand_0",
-      "upper_body.stand.tail.hand_1",
       "upper_body.inplace.tail.hand_0"
     ],
     "survival_rate": 1.0,
     "lower_body_passed": true,
     "upper_body_cases": {
       "stand": {
-        "chest_peak_deg": 5.866276741027832,
-        "chest_rms_deg": 4.515055930063463,
+        "chest_peak_deg": 5.422749042510986,
+        "chest_rms_deg": 4.277337972725552,
         "dynamic_chest_angular_xy_rms_rad_s": null,
-        "tail_arm_speed_rms_rad_s": 0.005875424848667537,
+        "tail_arm_speed_rms_rad_s": 0.003904426904151155,
         "tail_hand_distance_rms_m_per_hand": [
-          0.026312193801888435,
-          0.025472979083816013
+          0.019266436687072418,
+          0.009973169836461604
         ]
       },
       "inplace": {
-        "chest_peak_deg": 10.628827095031738,
-        "chest_rms_deg": 4.157918082609388,
-        "dynamic_chest_angular_xy_rms_rad_s": 0.665970858129304,
-        "tail_arm_speed_rms_rad_s": 0.28195668408639596,
+        "chest_peak_deg": 10.972634315490723,
+        "chest_rms_deg": 3.9958049507456277,
+        "dynamic_chest_angular_xy_rms_rad_s": 0.6509379560604742,
+        "tail_arm_speed_rms_rad_s": 0.01723076588198726,
         "tail_hand_distance_rms_m_per_hand": [
-          0.02100018422690138,
-          0.011047851264493744
+          0.021296607080224888,
+          0.009366904696094126
         ]
       }
     }
   },
   "alerts": [
+    "saved_checkpoint_not_verified",
     "plateau_requires_review"
   ],
   "error_code": null,
