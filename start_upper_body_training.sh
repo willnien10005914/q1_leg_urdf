@@ -12,8 +12,16 @@ for unit in q1-leg-training q1-leg-lift-training q1-leg-live; do
   fi
 done
 mkdir -p "$ROOT/outputs"
-exec systemd-run --user --unit=q1-leg-upper-training --collect \
+systemd-run --user --unit=q1-leg-upper-training --collect \
   --description='Q1 upper-body v6 native PPO: 10240 envs, max 20000 NEW updates' \
   --property=KillMode=control-group --property=TimeoutStopSec=30 \
   --property="StandardOutput=append:$ROOT/outputs/upper_body_training.log" --property=StandardError=inherit \
   --working-directory="$ROOT" "$ROOT/.venv/bin/python" -u "$ROOT/tools/run_upper_body_training.py" "$@"
+if ! systemctl --user is-active --quiet q1-leg-upper-startup-watchdog; then
+  systemd-run --user --unit=q1-leg-upper-startup-watchdog --collect \
+    --description='Q1 V6 pre-PPO startup-only bounded recovery' \
+    --property=Restart=on-failure --property=RestartSec=10 \
+    --property="StandardOutput=append:$ROOT/outputs/upper_body_startup_watchdog.log" \
+    --property=StandardError=inherit --working-directory="$ROOT" \
+    "$ROOT/.venv/bin/python" -u "$ROOT/tools/watch_upper_body_startup.py" --enforce
+fi

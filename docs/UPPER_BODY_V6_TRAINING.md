@@ -22,6 +22,8 @@
 
 達上限而未通過即保留未合格候選。只有全部門檻通過的獨立確認才可發布到 `checkpoints/isaac/upper_body_v6`；訓練中記錄不會解鎖正式鍵盤控制。上半身 XY 與 XYZ 角速度分開記錄，不將兩種口徑混用作改善宣稱。
 
+2026-10-24 增加獨立的 `q1-leg-upper-startup-watchdog`，不修改已凍結的 PPO、控制或驗收來源。只有確認最後一個 worker 尚未建立 actor、沒有新模型快照、checkpoint 與來源皆一致，才可從保存點恢復原生啟動崩潰，或處理超過 600 秒的初始化停滯。每個保存點最多兩次、UTC 每日最多四次；已進入學習、來源變動、驗收失敗及手動暫停均不會因此重跑。防護記錄位於 `outputs/upper_body_startup_watchdog.log`，實際重試另存 `outputs/upper_body_startup_recovery.json`。
+
 ## 指令
 
 ```bash
