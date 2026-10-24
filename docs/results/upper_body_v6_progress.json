@@ -2,8 +2,8 @@
   "schema": 1,
   "robot": "q1_leg_upper_body_v6",
   "run_id": "v6r1_stable_contact_20261024",
-  "as_of": "2026-10-24T11:30:51.061817+00:00",
-  "state": "interrupted",
+  "as_of": "2026-10-24T11:31:37.255432+00:00",
+  "state": "training",
   "saved_updates": 17205,
   "max_new_updates": 20000,
   "saved_progress_percent": 86.03,
@@ -13,7 +13,7 @@
   "reward_revision": 2,
   "trained_and_validated": false,
   "confirmation_episodes": null,
-  "training_service_active": false,
+  "training_service_active": true,
   "startup_watchdog_active": true,
   "source_verified": true,
   "checkpoint_verified": true,
@@ -58,9 +58,8 @@
     }
   },
   "alerts": [
-    "plateau_requires_review",
-    "interrupted"
+    "plateau_requires_review"
   ],
-  "error_code": "runtime_error",
+  "error_code": null,
   "scope": "Saved updates are not acceptance; only independent full-gate V6 confirmation enables trained_and_validated."
 }
