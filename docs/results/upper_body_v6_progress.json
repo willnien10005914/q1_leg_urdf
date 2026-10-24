@@ -2,24 +2,24 @@
   "schema": 1,
   "robot": "q1_leg_upper_body_v6",
   "run_id": "v6r1_stable_contact_20261024",
-  "as_of": "2026-10-24T13:28:16.868891+00:00",
-  "state": "validating",
-  "saved_updates": 18705,
+  "as_of": "2026-10-24T16:35:25.061937+00:00",
+  "state": "runtime_error",
+  "saved_updates": 18805,
   "max_new_updates": 20000,
-  "saved_progress_percent": 93.53,
+  "saved_progress_percent": 94.03,
   "num_envs": 10240,
   "curriculum_stage": 0,
   "stage_name": "inplace_upper_recovery",
   "reward_revision": 2,
   "trained_and_validated": false,
   "confirmation_episodes": null,
-  "training_service_active": true,
+  "training_service_active": false,
   "startup_watchdog_active": true,
   "source_verified": true,
   "checkpoint_verified": true,
-  "checkpoint_sha256": "defa5201c7fc1e8a38b8033867991074188dd1f0f78d06c43ec5fb1aa62e6dec",
+  "checkpoint_sha256": "5b6ad6472fecbc07bdb50078a07164f0e5c13cb909b2248d007153773a15c92c",
   "latest_validation": {
-    "saved_updates": 18605,
+    "saved_updates": 18805,
     "stage": 0,
     "episodes": 32,
     "passed": false,
@@ -33,30 +33,31 @@
     "lower_body_passed": true,
     "upper_body_cases": {
       "stand": {
-        "chest_peak_deg": 5.422749042510986,
-        "chest_rms_deg": 4.277337972725552,
+        "chest_peak_deg": 4.066191673278809,
+        "chest_rms_deg": 2.661716807625821,
         "dynamic_chest_angular_xy_rms_rad_s": null,
-        "tail_arm_speed_rms_rad_s": 0.003904426904151155,
+        "tail_arm_speed_rms_rad_s": 0.00687351870516686,
         "tail_hand_distance_rms_m_per_hand": [
-          0.019266436687072418,
-          0.009973169836461604
+          0.019735683906989078,
+          0.006423385757732406
         ]
       },
       "inplace": {
-        "chest_peak_deg": 10.972634315490723,
-        "chest_rms_deg": 3.9958049507456277,
-        "dynamic_chest_angular_xy_rms_rad_s": 0.6509379560604742,
-        "tail_arm_speed_rms_rad_s": 0.01723076588198726,
+        "chest_peak_deg": 11.45561408996582,
+        "chest_rms_deg": 4.213777260137514,
+        "dynamic_chest_angular_xy_rms_rad_s": 0.6531762634259158,
+        "tail_arm_speed_rms_rad_s": 0.015255854245075801,
         "tail_hand_distance_rms_m_per_hand": [
-          0.021296607080224888,
-          0.009366904696094126
+          0.021347258942388446,
+          0.011965066097602903
         ]
       }
     }
   },
   "alerts": [
-    "plateau_requires_review"
+    "plateau_requires_review",
+    "runtime_error"
   ],
-  "error_code": null,
+  "error_code": "worker_timeout",
   "scope": "Saved updates are not acceptance; only independent full-gate V6 confirmation enables trained_and_validated."
 }
