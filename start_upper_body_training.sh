@@ -11,6 +11,24 @@ for unit in q1-leg-training q1-leg-lift-training q1-leg-live; do
     exit 1
   fi
 done
+if (( $# == 0 )); then
+  UPPER_RESUME_RUN="$("$ROOT/.venv/bin/python" - "$ROOT" <<'PY'
+import json,sys
+from pathlib import Path
+root=Path(sys.argv[1]);profile=json.loads((root/'config/upper_body_v6.json').read_text())
+if profile.get('control_fork'):
+    status=root/'outputs/upper_body_training_status.json'
+    if not status.exists():raise SystemExit('A budgeted fork needs its initialized --resume-run; refusing a new zero-counter run')
+    state=json.loads(status.read_text());run=Path(state['run']).resolve()
+    if state.get('profile')!=profile or not run.is_relative_to((root/'checkpoints/isaac/upper_body_v6/runs').resolve()):
+        raise SystemExit('No matching fork run is available; specify its verified --resume-run')
+    if state.get('ready') is True:print('COMPLETE')
+    else:print(run)
+PY
+)"
+  if [[ "$UPPER_RESUME_RUN" == COMPLETE ]]; then printf 'V6 has completed validation; no extra training started.\n'; exit 0; fi
+  if [[ -n "$UPPER_RESUME_RUN" ]]; then set -- --resume-run "$UPPER_RESUME_RUN"; fi
+fi
 mkdir -p "$ROOT/outputs"
 systemd-run --user --unit=q1-leg-upper-training --collect \
   --description='Q1 upper-body v6 native PPO: 10240 envs, max 20000 NEW updates' \

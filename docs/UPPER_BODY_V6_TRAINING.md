@@ -1,12 +1,12 @@
 # V6：上半身穩定與受控回手的 20,000 次新訓練
 
-使用一個 command-conditioned **Isaac Lab DirectRLEnv + RSL-RL PPO**，共同處理站立、WASD／QE、左右閃身與恢復站姿。依 2026-10-23 的新授權，建立獨立 V6 run，最多 **20,000 次新 PPO 更新**，**10,240 envs × 24 steps/update**。13115 actor 只作初始化來源，另記 lineage；新 run 計數從 0 開始，舊 15000 run 不覆寫。
+使用一個 command-conditioned **Isaac Lab DirectRLEnv + RSL-RL PPO**，共同處理站立、WASD／QE、左右閃身與恢復站姿。依 2026-10-23 的新授權，建立獨立 V6 run，最多 **20,000 次新 PPO 更新**，**10,240 envs × 24 steps/update**。13115 actor 只作初始化來源，另記 lineage；第一輪 V6 從0開始；目前 V6r1 分支繼承已花的12800次，剩餘預算不重置，舊run與來源快照均保留。[V6r1證據與調整](V6_R1_STABILITY.md)。
 
 ## 控制與學習目標
 
-- 保留原生模型、23 actions／110 observations、腿部 PD 800／32 與上半身 PD 70／4。
+- 保留原生模型、23 actions／110 observations、腿部 PD 800／32 與上半身剛性70、手臂阻尼4、腰部阻尼8。
 - 使用[原生對照中 80／80 回合存活的腰臂幅度限制](UPPER_BODY_13115_REVIEW.md)，不採用造成腳踝碰地的加硬 PD。
-- 完整保留 13115 actor MLP，包括輸出層；critic、Adam、探索 std 0.04 與課程驗收重新建立。
+- 完整保留 13115 actor MLP，包括輸出層；critic、Adam、探索 std 0.03 與課程驗收重新建立。
 - 新增胸口傾角、胸口 roll／pitch 角速度、腰臂追蹤，以及揮手收回時的參考速度追蹤。胸口容許 4° 的原動作傾斜，yaw 不列入晃動懲罰。
 - 保留所有原有腳底高度、卸載接觸、支撐滑動、速度、轉向與停止目標。沒有根部外力、固定機身或呈現姿態濾波。
 
@@ -18,7 +18,7 @@
 
 ## 保存、停滯與來源
 
-前期及前置課程每 100 次驗證一次，整合後每 500 次；每段保留 immutable checkpoint、控制契約、來源 SHA256 及評估。模型停滯不等於成功：四次同階段驗證改善不足 1%，最多套用兩次預先宣告的 reward 加權修訂，增強胸口與受控回手目標，同時保留既有抬腳修訂，並降低 learning rate。上半身新增 reward 最大值依序為除數前 **5.75／6.75／7.5**。碰撞、控制、驗收門檻保持不變。
+前期及前置課程每 100 次驗證一次，整合後每 500 次；每段保留 immutable checkpoint、控制契約、來源 SHA256 及評估。模型停滯不等於成功：四次同階段驗證改善不足 1%，最多套用兩次預先宣告的 reward 加權修訂，增強胸口與受控回手目標，同時保留既有抬腳修訂，並降低 learning rate。上半身新增 reward 最大值依序為除數前 **6.25／7.25／8.25**。碰撞、控制、驗收門檻保持不變。
 
 達上限而未通過即保留未合格候選。只有全部門檻通過的獨立確認才可發布到 `checkpoints/isaac/upper_body_v6`；訓練中記錄不會解鎖正式鍵盤控制。上半身 XY 與 XYZ 角速度分開記錄，不將兩種口徑混用作改善宣稱。
 
@@ -39,6 +39,8 @@ tail -n 40 outputs/upper_body_training.log
 systemctl --user stop q1-leg-upper-training
 bash start_upper_body_training.sh --resume-run checkpoints/isaac/upper_body_v6/runs/<run-id>
 ```
+
+持續監看、GitHub進度同步及驗收後GoFile管線可用 `bash start_upper_body_monitor.sh --publish` 啟動；各服務在電腦重啟後需重新啟動。
 
 原版與保守控制的物理回放仍可透過 `bash start_web.sh` 在本機檢視，不需要同時啟動 Isaac Sim。訓練期間不要另啟即時 Isaac player 搶占 GPU。
 

@@ -1,0 +1,1940 @@
+{
+  "experimental": true,
+  "accepted": false,
+  "retrained": false,
+  "checkpoint_sha256": "770a0a10b439166f6c1b93c9c58a5cb656c3a0e79afab48505c23b6420765162",
+  "control_sha256": "169bfb74bd63a1c1f1c4ca92c3d22098a625c64a75bf29f694c0baecfac5494f",
+  "script_sha256": "12415d509e3c2312cdd2c90cd9bf1961178cdd48198660cb581bd4efd634bdb3",
+  "seed": 241,
+  "duration_s": 20.0,
+  "variants": [
+    [
+      "original_kd4",
+      4.0
+    ],
+    [
+      "waist_kd8",
+      8.0
+    ],
+    [
+      "waist_kd12",
+      12.0
+    ]
+  ],
+  "rows": [
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.02866213582456112,
+      "chest_dynamic_xyz_rms_rad_s": 0.033555563539266586,
+      "chest_peak_deg": 3.0583462715148926,
+      "waist_dynamic_speed_rms_rad_s": 0.04819576442241669,
+      "tail_arm_speed_rms_rad_s": 0.010085659101605415,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.0027978988364338875,
+        0.007882924750447273
+      ],
+      "tail_root_speed_m_s": 0.006876728963106871,
+      "stance_slip_rms_m_s": 0.03250588407422177,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.8846594095230103,
+      "chest_dynamic_xyz_rms_rad_s": 1.496388554573059,
+      "chest_peak_deg": 13.174965858459473,
+      "waist_dynamic_speed_rms_rad_s": 0.7431521415710449,
+      "tail_arm_speed_rms_rad_s": 0.010301433503627777,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.011580195277929306,
+        0.009831223636865616
+      ],
+      "tail_root_speed_m_s": 0.006340336054563522,
+      "stance_slip_rms_m_s": 0.1021278728449403,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.056962840259075165,
+        0.07307597994804382
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        1.0,
+        0.9090909090909091
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.8770438432693481,
+      "chest_dynamic_xyz_rms_rad_s": 1.1548349857330322,
+      "chest_peak_deg": 25.036911010742188,
+      "waist_dynamic_speed_rms_rad_s": 0.6159796714782715,
+      "tail_arm_speed_rms_rad_s": 0.02313353307545185,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.005182616878300905,
+        0.010987609624862671
+      ],
+      "tail_root_speed_m_s": 0.006282980553805828,
+      "stance_slip_rms_m_s": 0.08401544666457642,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.08106911182403564,
+        0.07404781132936478
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.8461538461538461,
+        1.0
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 3.04,
+      "chest_dynamic_xy_rms_rad_s": 1.1817607879638672,
+      "chest_dynamic_xyz_rms_rad_s": 1.3969359397888184,
+      "chest_peak_deg": 51.15567398071289,
+      "waist_dynamic_speed_rms_rad_s": 0.6012774705886841,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.15765178795918525,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.048117563128471375,
+        0.04544088989496231
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6666666666666666,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.7,
+      "chest_dynamic_xy_rms_rad_s": 1.224826693534851,
+      "chest_dynamic_xyz_rms_rad_s": 1.5197550058364868,
+      "chest_peak_deg": 51.91023635864258,
+      "waist_dynamic_speed_rms_rad_s": 0.7548100352287292,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.14550756794342365,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07017690688371658,
+        0.09769833087921143
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.72,
+        0.48
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.02870878018438816,
+      "chest_dynamic_xyz_rms_rad_s": 0.03361919894814491,
+      "chest_peak_deg": 3.258049726486206,
+      "waist_dynamic_speed_rms_rad_s": 0.04209015890955925,
+      "tail_arm_speed_rms_rad_s": 0.0062968675047159195,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.003288157982751727,
+        0.0087894881144166
+      ],
+      "tail_root_speed_m_s": 0.0044992766343057156,
+      "stance_slip_rms_m_s": 0.03700990065571647,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.8727464079856873,
+      "chest_dynamic_xyz_rms_rad_s": 1.5120000839233398,
+      "chest_peak_deg": 12.964788436889648,
+      "waist_dynamic_speed_rms_rad_s": 0.7455732822418213,
+      "tail_arm_speed_rms_rad_s": 0.014121918939054012,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.01177278533577919,
+        0.01009276695549488
+      ],
+      "tail_root_speed_m_s": 0.008641572669148445,
+      "stance_slip_rms_m_s": 0.0980735665453862,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.05619773268699646,
+        0.07367850840091705
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        1.0,
+        0.8863636363636364
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.8799561858177185,
+      "chest_dynamic_xyz_rms_rad_s": 1.1175169944763184,
+      "chest_peak_deg": 25.397085189819336,
+      "waist_dynamic_speed_rms_rad_s": 0.5847665667533875,
+      "tail_arm_speed_rms_rad_s": 0.006565154064446688,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.004071725998073816,
+        0.009111231192946434
+      ],
+      "tail_root_speed_m_s": 0.001630699262022972,
+      "stance_slip_rms_m_s": 0.06688707871654068,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07872931659221649,
+        0.06607191264629364
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.8461538461538461,
+        0.8333333333333334
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 3.04,
+      "chest_dynamic_xy_rms_rad_s": 1.144062876701355,
+      "chest_dynamic_xyz_rms_rad_s": 1.3652658462524414,
+      "chest_peak_deg": 49.671241760253906,
+      "waist_dynamic_speed_rms_rad_s": 0.5776129364967346,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.17191294584105024,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.045684680342674255,
+        0.04546632990241051
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6666666666666666,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.64,
+      "chest_dynamic_xy_rms_rad_s": 1.209181308746338,
+      "chest_dynamic_xyz_rms_rad_s": 1.5102213621139526,
+      "chest_peak_deg": 49.48280334472656,
+      "waist_dynamic_speed_rms_rad_s": 0.7674849629402161,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.13669531982119082,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06756850332021713,
+        0.09949764609336853
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.68,
+        0.48
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.029697299003601074,
+      "chest_dynamic_xyz_rms_rad_s": 0.03299494460225105,
+      "chest_peak_deg": 3.305062770843506,
+      "waist_dynamic_speed_rms_rad_s": 0.04928545281291008,
+      "tail_arm_speed_rms_rad_s": 0.00570704834535718,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.0031321982387453318,
+        0.008414233103394508
+      ],
+      "tail_root_speed_m_s": 0.00508658355101943,
+      "stance_slip_rms_m_s": 0.0323592737510346,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.9039236903190613,
+      "chest_dynamic_xyz_rms_rad_s": 1.5255616903305054,
+      "chest_peak_deg": 13.0695219039917,
+      "waist_dynamic_speed_rms_rad_s": 0.7457340955734253,
+      "tail_arm_speed_rms_rad_s": 0.010729801841080189,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.012494285590946674,
+        0.010664861649274826
+      ],
+      "tail_root_speed_m_s": 0.008157909847795963,
+      "stance_slip_rms_m_s": 0.109462806713294,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.059987496584653854,
+        0.0741637647151947
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        1.0,
+        0.9090909090909091
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.9068730473518372,
+      "chest_dynamic_xyz_rms_rad_s": 1.1724185943603516,
+      "chest_peak_deg": 25.819217681884766,
+      "waist_dynamic_speed_rms_rad_s": 0.6415112614631653,
+      "tail_arm_speed_rms_rad_s": 0.017598360776901245,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.004346574656665325,
+        0.008782033808529377
+      ],
+      "tail_root_speed_m_s": 0.0044431560672819614,
+      "stance_slip_rms_m_s": 0.07124930240450947,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0750877857208252,
+        0.08952818810939789
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.8461538461538461,
+        1.0
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 3.02,
+      "chest_dynamic_xy_rms_rad_s": 1.2404630184173584,
+      "chest_dynamic_xyz_rms_rad_s": 1.4491533041000366,
+      "chest_peak_deg": 49.52854537963867,
+      "waist_dynamic_speed_rms_rad_s": 0.6337682008743286,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.1666302720705099,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.054536089301109314,
+        0.048360664397478104
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6666666666666666,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.74,
+      "chest_dynamic_xy_rms_rad_s": 1.206862449645996,
+      "chest_dynamic_xyz_rms_rad_s": 1.5039576292037964,
+      "chest_peak_deg": 51.706703186035156,
+      "waist_dynamic_speed_rms_rad_s": 0.7478435635566711,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.15433296759404685,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07537337392568588,
+        0.09128282964229584
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.68,
+        0.68
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.028876999393105507,
+      "chest_dynamic_xyz_rms_rad_s": 0.03421446681022644,
+      "chest_peak_deg": 3.0944766998291016,
+      "waist_dynamic_speed_rms_rad_s": 0.04357079416513443,
+      "tail_arm_speed_rms_rad_s": 0.0057935263030231,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.002893290016800165,
+        0.008364160545170307
+      ],
+      "tail_root_speed_m_s": 0.005046247038990259,
+      "stance_slip_rms_m_s": 0.03097994561018827,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.8885591626167297,
+      "chest_dynamic_xyz_rms_rad_s": 1.5013028383255005,
+      "chest_peak_deg": 13.224777221679688,
+      "waist_dynamic_speed_rms_rad_s": 0.7405530214309692,
+      "tail_arm_speed_rms_rad_s": 0.010942856781184673,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.012459496036171913,
+        0.01061864010989666
+      ],
+      "tail_root_speed_m_s": 0.00800846517086029,
+      "stance_slip_rms_m_s": 0.1036572573234222,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06067829206585884,
+        0.07178308069705963
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        1.0,
+        0.9090909090909091
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.901077151298523,
+      "chest_dynamic_xyz_rms_rad_s": 1.1598150730133057,
+      "chest_peak_deg": 25.613649368286133,
+      "waist_dynamic_speed_rms_rad_s": 0.6296544075012207,
+      "tail_arm_speed_rms_rad_s": 0.014457808807492256,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.004351003095507622,
+        0.009740096516907215
+      ],
+      "tail_root_speed_m_s": 0.004056690260767937,
+      "stance_slip_rms_m_s": 0.08019273310504485,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07865121960639954,
+        0.07674118131399155
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.8461538461538461,
+        1.0
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 3.04,
+      "chest_dynamic_xy_rms_rad_s": 1.153715968132019,
+      "chest_dynamic_xyz_rms_rad_s": 1.3698413372039795,
+      "chest_peak_deg": 50.67082595825195,
+      "waist_dynamic_speed_rms_rad_s": 0.577772319316864,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.1674956656111796,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.04717414081096649,
+        0.045551180839538574
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6666666666666666,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "original_kd4",
+      "waist_kp": 70.0,
+      "waist_kd": 4.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 5.1000000000000005,
+      "chest_dynamic_xy_rms_rad_s": 1.1361079216003418,
+      "chest_dynamic_xyz_rms_rad_s": 1.420289397239685,
+      "chest_peak_deg": 48.076377868652344,
+      "waist_dynamic_speed_rms_rad_s": 0.7331843972206116,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.17007143348330767,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07290765643119812,
+        0.08712941408157349
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.44,
+        0.72
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.02131488360464573,
+      "chest_dynamic_xyz_rms_rad_s": 0.023752499371767044,
+      "chest_peak_deg": 3.2559452056884766,
+      "waist_dynamic_speed_rms_rad_s": 0.04064484313130379,
+      "tail_arm_speed_rms_rad_s": 0.005015865433961153,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.0032167681492865086,
+        0.008804041892290115
+      ],
+      "tail_root_speed_m_s": 0.00466600526124239,
+      "stance_slip_rms_m_s": 0.041280027593252284,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.72417151927948,
+      "chest_dynamic_xyz_rms_rad_s": 1.2225923538208008,
+      "chest_peak_deg": 11.317048072814941,
+      "waist_dynamic_speed_rms_rad_s": 0.5555266737937927,
+      "tail_arm_speed_rms_rad_s": 0.005743513815104961,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.012512941844761372,
+        0.010601942427456379
+      ],
+      "tail_root_speed_m_s": 0.0044251782819628716,
+      "stance_slip_rms_m_s": 0.11774327906576731,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06471224129199982,
+        0.07518506795167923
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.9864864864864865,
+        0.8977272727272727
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.780530571937561,
+      "chest_dynamic_xyz_rms_rad_s": 0.9863609671592712,
+      "chest_peak_deg": 23.305295944213867,
+      "waist_dynamic_speed_rms_rad_s": 0.5113744139671326,
+      "tail_arm_speed_rms_rad_s": 0.013832091353833675,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.004588722251355648,
+        0.008974053896963596
+      ],
+      "tail_root_speed_m_s": 0.004401097074151039,
+      "stance_slip_rms_m_s": 0.07102518420257038,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07110332697629929,
+        0.07992973923683167
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.8461538461538461,
+        1.0
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 3.0,
+      "chest_dynamic_xy_rms_rad_s": 1.1110692024230957,
+      "chest_dynamic_xyz_rms_rad_s": 1.3176573514938354,
+      "chest_peak_deg": 52.17706298828125,
+      "waist_dynamic_speed_rms_rad_s": 0.49395960569381714,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.17502083668951393,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.050123944878578186,
+        0.046924442052841187
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6666666666666666,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.8,
+      "chest_dynamic_xy_rms_rad_s": 1.002277135848999,
+      "chest_dynamic_xyz_rms_rad_s": 1.2763102054595947,
+      "chest_peak_deg": 50.085243225097656,
+      "waist_dynamic_speed_rms_rad_s": 0.5660671591758728,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.19612813331679985,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07646609097719193,
+        0.07074356079101562
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.56,
+        0.68
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.029527518898248672,
+      "chest_dynamic_xyz_rms_rad_s": 0.032026853412389755,
+      "chest_peak_deg": 3.058246374130249,
+      "waist_dynamic_speed_rms_rad_s": 0.035632871091365814,
+      "tail_arm_speed_rms_rad_s": 0.012760793790221214,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.0030102375894784927,
+        0.008022996596992016
+      ],
+      "tail_root_speed_m_s": 0.0073052067309618,
+      "stance_slip_rms_m_s": 0.028636805754322477,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.7237175107002258,
+      "chest_dynamic_xyz_rms_rad_s": 1.217020034790039,
+      "chest_peak_deg": 10.036382675170898,
+      "waist_dynamic_speed_rms_rad_s": 0.5549944639205933,
+      "tail_arm_speed_rms_rad_s": 0.010278933681547642,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.012226998805999756,
+        0.010489381849765778
+      ],
+      "tail_root_speed_m_s": 0.006654601078480482,
+      "stance_slip_rms_m_s": 0.11420676609229531,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06037016212940216,
+        0.07472358644008636
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        1.0,
+        0.8977272727272727
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.7718122601509094,
+      "chest_dynamic_xyz_rms_rad_s": 0.9829205870628357,
+      "chest_peak_deg": 23.191457748413086,
+      "waist_dynamic_speed_rms_rad_s": 0.4971010088920593,
+      "tail_arm_speed_rms_rad_s": 0.019291095435619354,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.004242826718837023,
+        0.009116370230913162
+      ],
+      "tail_root_speed_m_s": 0.005625281482934952,
+      "stance_slip_rms_m_s": 0.07412937417631175,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07619743049144745,
+        0.07425718009471893
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.8461538461538461,
+        1.0
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 2.98,
+      "chest_dynamic_xy_rms_rad_s": 1.1140133142471313,
+      "chest_dynamic_xyz_rms_rad_s": 1.316725254058838,
+      "chest_peak_deg": 51.21787643432617,
+      "waist_dynamic_speed_rms_rad_s": 0.4961007833480835,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.17346612481362544,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0519639253616333,
+        0.045988623052835464
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6666666666666666,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.7,
+      "chest_dynamic_xy_rms_rad_s": 1.0518611669540405,
+      "chest_dynamic_xyz_rms_rad_s": 1.2988595962524414,
+      "chest_peak_deg": 51.066162109375,
+      "waist_dynamic_speed_rms_rad_s": 0.569982647895813,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.15635598979320975,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0721098929643631,
+        0.07923635095357895
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6,
+        0.64
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.026284772902727127,
+      "chest_dynamic_xyz_rms_rad_s": 0.028945693746209145,
+      "chest_peak_deg": 3.268963098526001,
+      "waist_dynamic_speed_rms_rad_s": 0.038954757153987885,
+      "tail_arm_speed_rms_rad_s": 0.005390043370425701,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.0033908213954418898,
+        0.008867022581398487
+      ],
+      "tail_root_speed_m_s": 0.004553467966616154,
+      "stance_slip_rms_m_s": 0.03980681292235727,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.704377293586731,
+      "chest_dynamic_xyz_rms_rad_s": 1.2071597576141357,
+      "chest_peak_deg": 10.09093952178955,
+      "waist_dynamic_speed_rms_rad_s": 0.5453100800514221,
+      "tail_arm_speed_rms_rad_s": 0.012072131969034672,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.01162758655846119,
+        0.009945694357156754
+      ],
+      "tail_root_speed_m_s": 0.006020014639943838,
+      "stance_slip_rms_m_s": 0.1089667870446851,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06492884457111359,
+        0.07335859537124634
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        1.0,
+        0.8863636363636364
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.7768912315368652,
+      "chest_dynamic_xyz_rms_rad_s": 0.9791257381439209,
+      "chest_peak_deg": 23.213674545288086,
+      "waist_dynamic_speed_rms_rad_s": 0.4978386163711548,
+      "tail_arm_speed_rms_rad_s": 0.011783304624259472,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.004462206736207008,
+        0.00894764345139265
+      ],
+      "tail_root_speed_m_s": 0.0035262429155409336,
+      "stance_slip_rms_m_s": 0.07409314664905052,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07528652995824814,
+        0.07247976958751678
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.8461538461538461,
+        1.0
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 2.98,
+      "chest_dynamic_xy_rms_rad_s": 1.0615156888961792,
+      "chest_dynamic_xyz_rms_rad_s": 1.2756836414337158,
+      "chest_peak_deg": 51.14036560058594,
+      "waist_dynamic_speed_rms_rad_s": 0.4630276560783386,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.17223881955128736,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.04706493020057678,
+        0.04491003230214119
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6666666666666666,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.84,
+      "chest_dynamic_xy_rms_rad_s": 1.0119439363479614,
+      "chest_dynamic_xyz_rms_rad_s": 1.2583954334259033,
+      "chest_peak_deg": 49.66612243652344,
+      "waist_dynamic_speed_rms_rad_s": 0.551318347454071,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.18786847943966778,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06934602558612823,
+        0.07557693868875504
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.4,
+        0.64
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.026986844837665558,
+      "chest_dynamic_xyz_rms_rad_s": 0.03226036578416824,
+      "chest_peak_deg": 3.1962242126464844,
+      "waist_dynamic_speed_rms_rad_s": 0.04139998182654381,
+      "tail_arm_speed_rms_rad_s": 0.005764578469097614,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.00303272670134902,
+        0.00855323951691389
+      ],
+      "tail_root_speed_m_s": 0.004803492221981287,
+      "stance_slip_rms_m_s": 0.036858362226814836,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.7008666396141052,
+      "chest_dynamic_xyz_rms_rad_s": 1.2168411016464233,
+      "chest_peak_deg": 10.116043090820312,
+      "waist_dynamic_speed_rms_rad_s": 0.5429803729057312,
+      "tail_arm_speed_rms_rad_s": 0.01196221262216568,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.012237672694027424,
+        0.010533430613577366
+      ],
+      "tail_root_speed_m_s": 0.0090554878115654,
+      "stance_slip_rms_m_s": 0.12498785185132343,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06533554196357727,
+        0.07263417541980743
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        1.0,
+        0.8863636363636364
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.7725580930709839,
+      "chest_dynamic_xyz_rms_rad_s": 0.9729092717170715,
+      "chest_peak_deg": 23.218374252319336,
+      "waist_dynamic_speed_rms_rad_s": 0.4982609152793884,
+      "tail_arm_speed_rms_rad_s": 0.024537790566682816,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.004879026673734188,
+        0.010554728098213673
+      ],
+      "tail_root_speed_m_s": 0.0071509056724607944,
+      "stance_slip_rms_m_s": 0.08634683264872199,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07597405463457108,
+        0.07113087922334671
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.8461538461538461,
+        0.9166666666666666
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 3.02,
+      "chest_dynamic_xy_rms_rad_s": 1.0717366933822632,
+      "chest_dynamic_xyz_rms_rad_s": 1.2808105945587158,
+      "chest_peak_deg": 51.45001983642578,
+      "waist_dynamic_speed_rms_rad_s": 0.4822840690612793,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.16978273357243773,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.04952460527420044,
+        0.04920559003949165
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6666666666666666,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "waist_kd8",
+      "waist_kp": 70.0,
+      "waist_kd": 8.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 5.0600000000000005,
+      "chest_dynamic_xy_rms_rad_s": 0.9836902618408203,
+      "chest_dynamic_xyz_rms_rad_s": 1.223802924156189,
+      "chest_peak_deg": 50.550445556640625,
+      "waist_dynamic_speed_rms_rad_s": 0.5691846609115601,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.1871355142628759,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07640634477138519,
+        0.07128921151161194
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6,
+        0.72
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.02123127691447735,
+      "chest_dynamic_xyz_rms_rad_s": 0.024125516414642334,
+      "chest_peak_deg": 3.2015738487243652,
+      "waist_dynamic_speed_rms_rad_s": 0.039015769958496094,
+      "tail_arm_speed_rms_rad_s": 0.0050454274751245975,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.0031136509496718645,
+        0.008698065765202045
+      ],
+      "tail_root_speed_m_s": 0.004959890153259039,
+      "stance_slip_rms_m_s": 0.040909632128130285,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.646779477596283,
+      "chest_dynamic_xyz_rms_rad_s": 1.0755062103271484,
+      "chest_peak_deg": 9.455660820007324,
+      "waist_dynamic_speed_rms_rad_s": 0.4394937753677368,
+      "tail_arm_speed_rms_rad_s": 0.012025196105241776,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.012020383030176163,
+        0.010405691340565681
+      ],
+      "tail_root_speed_m_s": 0.009181145578622818,
+      "stance_slip_rms_m_s": 0.12357607688601724,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06159820780158043,
+        0.0730760395526886
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        1.0,
+        0.8863636363636364
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.6948633790016174,
+      "chest_dynamic_xyz_rms_rad_s": 0.878463864326477,
+      "chest_peak_deg": 21.472412109375,
+      "waist_dynamic_speed_rms_rad_s": 0.40857943892478943,
+      "tail_arm_speed_rms_rad_s": 0.013169685378670692,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.004331596661359072,
+        0.008975662291049957
+      ],
+      "tail_root_speed_m_s": 0.003994435537606478,
+      "stance_slip_rms_m_s": 0.07184240228785835,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07451546937227249,
+        0.07338124513626099
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.8461538461538461,
+        1.0
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 2.9,
+      "chest_dynamic_xy_rms_rad_s": 1.0212490558624268,
+      "chest_dynamic_xyz_rms_rad_s": 1.2386163473129272,
+      "chest_peak_deg": 49.927066802978516,
+      "waist_dynamic_speed_rms_rad_s": 0.42340561747550964,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.1755415879418699,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.05025683343410492,
+        0.045825034379959106
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.5833333333333334,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.76,
+      "chest_dynamic_xy_rms_rad_s": 0.9662801623344421,
+      "chest_dynamic_xyz_rms_rad_s": 1.2184303998947144,
+      "chest_peak_deg": 51.98859786987305,
+      "waist_dynamic_speed_rms_rad_s": 0.45996108651161194,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.17552501609519403,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07518474012613297,
+        0.0683138370513916
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.44,
+        0.52
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.021827027201652527,
+      "chest_dynamic_xyz_rms_rad_s": 0.025206463411450386,
+      "chest_peak_deg": 3.2826764583587646,
+      "waist_dynamic_speed_rms_rad_s": 0.03403833508491516,
+      "tail_arm_speed_rms_rad_s": 0.006944542750716209,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.003284187288954854,
+        0.008728553541004658
+      ],
+      "tail_root_speed_m_s": 0.0041633304208517075,
+      "stance_slip_rms_m_s": 0.033431772472373215,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.6512454152107239,
+      "chest_dynamic_xyz_rms_rad_s": 1.0798015594482422,
+      "chest_peak_deg": 10.900357246398926,
+      "waist_dynamic_speed_rms_rad_s": 0.43790343403816223,
+      "tail_arm_speed_rms_rad_s": 0.01128351129591465,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.012484315782785416,
+        0.010689199902117252
+      ],
+      "tail_root_speed_m_s": 0.00880183931440115,
+      "stance_slip_rms_m_s": 0.1201900829898454,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06171620637178421,
+        0.0733812153339386
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.9864864864864865,
+        0.875
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.6801390051841736,
+      "chest_dynamic_xyz_rms_rad_s": 0.8535045981407166,
+      "chest_peak_deg": 21.12863540649414,
+      "waist_dynamic_speed_rms_rad_s": 0.4082638919353485,
+      "tail_arm_speed_rms_rad_s": 0.013943519443273544,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.004413955844938755,
+        0.008995852433145046
+      ],
+      "tail_root_speed_m_s": 0.0038558817468583584,
+      "stance_slip_rms_m_s": 0.07284520282252038,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06687530875205994,
+        0.07675325125455856
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.7692307692307693,
+        1.0
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 3.02,
+      "chest_dynamic_xy_rms_rad_s": 0.9923050999641418,
+      "chest_dynamic_xyz_rms_rad_s": 1.1882264614105225,
+      "chest_peak_deg": 52.05126953125,
+      "waist_dynamic_speed_rms_rad_s": 0.38179895281791687,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.16770573535611172,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.04498504102230072,
+        0.04658479243516922
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6666666666666666,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.82,
+      "chest_dynamic_xy_rms_rad_s": 0.9469909071922302,
+      "chest_dynamic_xyz_rms_rad_s": 1.169577956199646,
+      "chest_peak_deg": 51.397064208984375,
+      "waist_dynamic_speed_rms_rad_s": 0.4630279541015625,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.20171178439386647,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06807564198970795,
+        0.07224231958389282
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.4,
+        0.72
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.019280804321169853,
+      "chest_dynamic_xyz_rms_rad_s": 0.022550638765096664,
+      "chest_peak_deg": 3.2308313846588135,
+      "waist_dynamic_speed_rms_rad_s": 0.04260127618908882,
+      "tail_arm_speed_rms_rad_s": 0.00466929329559207,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.0030538076534867287,
+        0.008332282304763794
+      ],
+      "tail_root_speed_m_s": 0.0052225603722035885,
+      "stance_slip_rms_m_s": 0.030431865328572137,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.6179511547088623,
+      "chest_dynamic_xyz_rms_rad_s": 1.042635202407837,
+      "chest_peak_deg": 10.892218589782715,
+      "waist_dynamic_speed_rms_rad_s": 0.4314174950122833,
+      "tail_arm_speed_rms_rad_s": 0.012124958448112011,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.012264679186046124,
+        0.010607663542032242
+      ],
+      "tail_root_speed_m_s": 0.009420713409781456,
+      "stance_slip_rms_m_s": 0.1251252290806091,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06372276693582535,
+        0.07155425101518631
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.972972972972973,
+        0.8409090909090909
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.6849793791770935,
+      "chest_dynamic_xyz_rms_rad_s": 0.8614331483840942,
+      "chest_peak_deg": 20.99213218688965,
+      "waist_dynamic_speed_rms_rad_s": 0.410030722618103,
+      "tail_arm_speed_rms_rad_s": 0.023630470037460327,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.004669078625738621,
+        0.010157130658626556
+      ],
+      "tail_root_speed_m_s": 0.006927926559001207,
+      "stance_slip_rms_m_s": 0.0844583829848309,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0675109475851059,
+        0.07521045207977295
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.7692307692307693,
+        1.0
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 2.98,
+      "chest_dynamic_xy_rms_rad_s": 1.0010374784469604,
+      "chest_dynamic_xyz_rms_rad_s": 1.2131249904632568,
+      "chest_peak_deg": 50.8388671875,
+      "waist_dynamic_speed_rms_rad_s": 0.40278324484825134,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.1704559478603694,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.04845355451107025,
+        0.04883686453104019
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6666666666666666,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 4.94,
+      "chest_dynamic_xy_rms_rad_s": 0.9050817489624023,
+      "chest_dynamic_xyz_rms_rad_s": 1.1163270473480225,
+      "chest_peak_deg": 49.44933319091797,
+      "waist_dynamic_speed_rms_rad_s": 0.46562081575393677,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.1878644036128459,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06873844563961029,
+        0.07398073375225067
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.56,
+        0.76
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "stand",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.02343916706740856,
+      "chest_dynamic_xyz_rms_rad_s": 0.027082400396466255,
+      "chest_peak_deg": 3.330850124359131,
+      "waist_dynamic_speed_rms_rad_s": 0.030859872698783875,
+      "tail_arm_speed_rms_rad_s": 0.005402145441621542,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.003268388332799077,
+        0.008789418265223503
+      ],
+      "tail_root_speed_m_s": 0.003489757189527154,
+      "stance_slip_rms_m_s": 0.03596601930223656,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0,
+        0
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "inplace",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.6392473578453064,
+      "chest_dynamic_xyz_rms_rad_s": 1.0825625658035278,
+      "chest_peak_deg": 11.380488395690918,
+      "waist_dynamic_speed_rms_rad_s": 0.4335009455680847,
+      "tail_arm_speed_rms_rad_s": 0.0064230733551084995,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.01264159381389618,
+        0.010716695338487625
+      ],
+      "tail_root_speed_m_s": 0.004993090406060219,
+      "stance_slip_rms_m_s": 0.12355811484642709,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06654457747936249,
+        0.07185234129428864
+      ],
+      "high_swing_samples_per_foot": [
+        74,
+        88
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.9864864864864865,
+        0.8522727272727273
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "left",
+      "survived": true,
+      "valid_duration_s": 20.0,
+      "chest_dynamic_xy_rms_rad_s": 0.663622260093689,
+      "chest_dynamic_xyz_rms_rad_s": 0.8671867251396179,
+      "chest_peak_deg": 20.466197967529297,
+      "waist_dynamic_speed_rms_rad_s": 0.4099441468715668,
+      "tail_arm_speed_rms_rad_s": 0.011963175609707832,
+      "tail_hand_distance_rms_m_per_hand": [
+        0.003947836346924305,
+        0.00912601687014103
+      ],
+      "tail_root_speed_m_s": 0.0032576811499893665,
+      "stance_slip_rms_m_s": 0.0542615582647229,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.07691746950149536,
+        0.06376008689403534
+      ],
+      "high_swing_samples_per_foot": [
+        13,
+        12
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.8461538461538461,
+        0.6666666666666666
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "right",
+      "survived": false,
+      "valid_duration_s": 2.92,
+      "chest_dynamic_xy_rms_rad_s": 1.0291192531585693,
+      "chest_dynamic_xyz_rms_rad_s": 1.2423419952392578,
+      "chest_peak_deg": 50.49049758911133,
+      "waist_dynamic_speed_rms_rad_s": 0.4207749366760254,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.16951407335387048,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.05054961144924164,
+        0.04672875255346298
+      ],
+      "high_swing_samples_per_foot": [
+        12,
+        13
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.6666666666666666,
+        0.6153846153846154
+      ]
+    },
+    {
+      "variant": "waist_kd12",
+      "waist_kp": 70.0,
+      "waist_kd": 12.0,
+      "case": "pair",
+      "survived": false,
+      "valid_duration_s": 5.38,
+      "chest_dynamic_xy_rms_rad_s": 0.8874260187149048,
+      "chest_dynamic_xyz_rms_rad_s": 1.0644786357879639,
+      "chest_peak_deg": 49.87492752075195,
+      "waist_dynamic_speed_rms_rad_s": 0.4431644380092621,
+      "tail_arm_speed_rms_rad_s": null,
+      "tail_hand_distance_rms_m_per_hand": null,
+      "tail_root_speed_m_s": null,
+      "stance_slip_rms_m_s": 0.18704674907254012,
+      "unloaded_peak_clearance_m_per_foot": [
+        0.06588462740182877,
+        0.0718885138630867
+      ],
+      "high_swing_samples_per_foot": [
+        25,
+        25
+      ],
+      "unloaded_lift_rate_per_foot": [
+        0.68,
+        0.72
+      ]
+    }
+  ],
+  "first_terminations": [
+    {
+      "index": 43,
+      "time_s": 2.92,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 58,
+      "time_s": 2.94,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 28,
+      "time_s": 3.0,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 33,
+      "time_s": 3.0,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 53,
+      "time_s": 3.0,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 23,
+      "time_s": 3.02,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 13,
+      "time_s": 3.04,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 38,
+      "time_s": 3.04,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 48,
+      "time_s": 3.04,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 3,
+      "time_s": 3.06,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 8,
+      "time_s": 3.06,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 18,
+      "time_s": 3.06,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 9,
+      "time_s": 4.66,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 4,
+      "time_s": 4.72,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 29,
+      "time_s": 4.72,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 14,
+      "time_s": 4.76,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 44,
+      "time_s": 4.78,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 24,
+      "time_s": 4.82,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 49,
+      "time_s": 4.84,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 34,
+      "time_s": 4.86,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 54,
+      "time_s": 4.96,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 39,
+      "time_s": 5.08,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 19,
+      "time_s": 5.12,
+      "nonfoot_contacts_over_25n": []
+    },
+    {
+      "index": 59,
+      "time_s": 5.4,
+      "nonfoot_contacts_over_25n": []
+    }
+  ],
+  "root_forces_or_constraints": false,
+  "rendered_pose_filtering": false,
+  "motor_effort_limit_nm": 100.0,
+  "scope": "Frozen actor physical damping comparison, no policy promotion"
+}

@@ -3,7 +3,7 @@
   "v5_completed_updates": 15000,
   "v5_live_accepted": false,
   "diagnostic_checkpoint_updates": 13115,
-  "notice": "V6 上半身穩定重訓已啟動：10240 envs、最多 20000 次新更新。13115 腰臂回放使用同權重、未重訓；V6 尚未驗收或套用即時控制。",
+  "notice": "V6r1 穩定修正分支訓練中，累計上限20000次（含原分支12800次）。13115回放未重訓，保留作舊版比較；新策略須完整驗收後才啟用。",
   "v6_max_new_updates": 20000,
   "v6_num_envs": 10240,
   "v6_live_accepted": false

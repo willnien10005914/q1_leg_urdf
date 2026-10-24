@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "robot": "q1_leg_upper_body_v6",
+  "run_id": "v6r1_stable_contact_20261024",
+  "as_of": "2026-10-24T11:18:44.285659+00:00",
+  "state": "training",
+  "saved_updates": 17105,
+  "max_new_updates": 20000,
+  "saved_progress_percent": 85.53,
+  "num_envs": 10240,
+  "curriculum_stage": 0,
+  "stage_name": "inplace_upper_recovery",
+  "reward_revision": 2,
+  "trained_and_validated": false,
+  "confirmation_episodes": null,
+  "training_service_active": true,
+  "startup_watchdog_active": true,
+  "source_verified": true,
+  "checkpoint_verified": true,
+  "checkpoint_sha256": "5c91fbc667109b1c26c5b1d004633b0b8a946f6a5bdbbf7fdb2baae016d8d8e2",
+  "latest_validation": {
+    "saved_updates": 17105,
+    "stage": 0,
+    "episodes": 32,
+    "passed": false,
+    "artifact_verified": true,
+    "failed_gate_count": 5,
+    "failed_gates": [
+      "upper_body.stand.tail.hand_0",
+      "upper_body.stand.tail.hand_1",
+      "upper_body.inplace.tail.hand_0",
+      "upper_body.inplace.tail.hand_1",
+      "upper_body.inplace.dynamic.angular_xy"
+    ],
+    "survival_rate": 1.0,
+    "lower_body_passed": true,
+    "upper_body_cases": {
+      "stand": {
+        "chest_peak_deg": 4.705054759979248,
+        "chest_rms_deg": 4.244068032150784,
+        "dynamic_chest_angular_xy_rms_rad_s": null,
+        "tail_arm_speed_rms_rad_s": 0.005268083887367957,
+        "tail_hand_distance_rms_m_per_hand": [
+          0.037281635695596206,
+          0.038007735074874906
+        ]
+      },
+      "inplace": {
+        "chest_peak_deg": 14.092629432678223,
+        "chest_rms_deg": 5.477239589271977,
+        "dynamic_chest_angular_xy_rms_rad_s": 0.8319781437204868,
+        "tail_arm_speed_rms_rad_s": 0.05212951363151734,
+        "tail_hand_distance_rms_m_per_hand": [
+          0.022913677501464193,
+          0.028511969771493097
+        ]
+      }
+    }
+  },
+  "alerts": [
+    "plateau_requires_review"
+  ],
+  "error_code": null,
+  "scope": "Saved updates are not acceptance; only independent full-gate V6 confirmation enables trained_and_validated."
+}

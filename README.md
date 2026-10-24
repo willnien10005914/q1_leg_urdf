@@ -2,7 +2,13 @@
 
 以 BU10 原生雙足 CAD 建立的機器人動作專案，沿用 `q1_wheel_urdf` 的資產目錄與啟動方式。包含 URDF、MediaPipe 前七秒動作映射、Isaac Lab **DirectRLEnv + RSL-RL PPO**、MuJoCo 驗證，以及 Three.js 網頁。
 
+<!-- V6_STATUS_START -->
 ## V6 上半身穩定重訓：10,240 envs × 20,000 次上限
+
+**2026-10-24：已建立 V6r1 穩定與接觸修正分支。** 原分支已花的 **12,800 次更新照算**，總上限仍為 **20,000**。原地訓練長期未改善胸口角速度，且遺忘右閃；新分支恢復已知會左右閃身的 13115 actor，採原生對照選出的腰部阻尼8（剛性70、手臂阻尼4不變），加入角速度能量、抬腳過高與滑動成本，並保留30%閃身演練。48／48原生短測存活20秒，但尚未完成新訓練或完整驗收。[分支證據與架構](docs/V6_R1_STABILITY.md)。
+
+**[持續監看與最新保存進度](docs/UPPER_BODY_V6_PROGRESS.md)** 由背景服務更新；每1,000次保存、階段變動或異常會經SSH同步。完整驗收通過後，另一管線才錄製原生影片、核對逐腳與上半身量測、上傳GoFile及更新README／GIF；尚未合格不會上傳為完成影片。
+
 
 **2026-10-23 台北 04:47 已啟動新的 V6 PPO 訓練**，使用 **10,240 envs、最多 20,000 次新更新**。以 13115 完整 actor 初始化，critic／Adam／探索與更新計數重新建立；舊 15000 run 保留。新增胸口姿態、roll／pitch 晃動、腰臂追蹤與受控回手目標，保留原生 PD、抬腳、接觸、滑動及完整 WASD／QE 驗收。
 
@@ -19,6 +25,8 @@ systemctl --user status q1-leg-upper-training --no-pager
 .venv/bin/python tools/run_upper_body_training.py --status
 tail -n 40 outputs/upper_body_training.log
 ```
+
+<!-- V6_STATUS_END -->
 
 ## 2026-10-23：腰臂回位與胸口晃動修正實驗
 

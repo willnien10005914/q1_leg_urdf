@@ -5,7 +5,7 @@ import torch
 
 from leg_humanoid_lab.robot import JOINTS, LOWER, UPPER
 from leg_humanoid_lab.upper_body_objective import (
-    guarded_upper_targets, nominal_upper_velocity, upper_reward_terms)
+    guarded_upper_targets, nominal_upper_velocity, upper_reward_terms, stability_costs)
 
 
 PROFILE = json.loads((Path(__file__).resolve().parents[1] / 'config/upper_body_control_v6.json').read_text())
@@ -37,7 +37,7 @@ def test_reference_rate_rewards_controlled_return_instead_of_freezing():
             'arm_velocity_error_mse_rad2_s2': torch.tensor([0., .25])}
     terms = upper_reward_terms(base, torch.tensor([2, 2]), torch.tensor([.8, .8]), PROFILE['reward'])
     assert terms['arm_rate'][0] > terms['arm_rate'][1]
-    assert sum(t.max() for t in terms.values()) <= 5.75
+    assert sum(t.max() for t in terms.values()) <= 6.25
 
 
 def test_torso_wobble_and_arm_sag_are_independently_penalized():
@@ -58,8 +58,30 @@ def test_predeclared_plateau_revisions_are_bounded_and_keep_motion_targets():
     measurements = {'chest_tilt_rad': torch.zeros(1), 'chest_angular_xy_rad_s': torch.zeros(1),
                     'arm_reference_mse_rad2': torch.zeros(1), 'waist_reference_mse_rad2': torch.zeros(1),
                     'arm_velocity_error_mse_rad2_s2': torch.zeros(1)}
-    for revision, bound in [('0', 5.75), ('1', 6.75), ('2', 7.5)]:
+    for revision, bound in [('0', 6.25), ('1', 7.25), ('2', 8.25)]:
         cfg = {**PROFILE['reward'], **PROFILE['reward_revisions'][revision]}
         terms = upper_reward_terms(measurements, torch.tensor([4]), torch.tensor([0.]), cfg)
         assert sum(terms.values()).item() <= bound
         assert cfg['arm_sigma_rad'] == .08 and cfg['tilt_deadband_deg'] == 4.
+
+
+def test_energy_cost_remains_graded_when_exponential_reward_is_saturated():
+    rate = torch.tensor([1., 2., 4.], requires_grad=True)
+    height = torch.full((3, 2), .05)
+    cost = stability_costs(rate, height, height, torch.zeros(3, 2, dtype=torch.bool),
+        torch.zeros(3, 2, dtype=torch.bool), torch.zeros(3, 2), PROFILE['stability_cost'])
+    assert cost['chest_energy'][0] > cost['chest_energy'][1] > cost['chest_energy'][2]
+    gradient, = torch.autograd.grad(cost['chest_energy'].sum(), rate)
+    assert (gradient < -1.).all()
+
+
+def test_overshoot_cost_does_not_punish_target_lift_or_unloaded_swing_motion():
+    target = torch.tensor([[.05, 0.], [.05, 0.]])
+    actual = torch.tensor([[.055, 0.], [.10, 0.]])
+    loaded = torch.tensor([[False, True], [False, True]])
+    reference_contact = loaded.clone()
+    speed = torch.tensor([[.5, 0.], [.5, .2]])
+    costs = stability_costs(torch.zeros(2), actual, target, loaded, reference_contact,
+                            speed, PROFILE['stability_cost'])
+    assert costs['swing_overshoot'][0] == 0 and costs['swing_overshoot'][1] < 0
+    assert costs['stance_sliding'][0] == 0 and costs['stance_sliding'][1] < 0

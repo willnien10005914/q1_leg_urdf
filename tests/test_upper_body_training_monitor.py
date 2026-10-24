@@ -46,7 +46,7 @@ def supervisor(tmp_path, monkeypatch, resume=False):
 def worker_functions():
     tree=ast.parse((ROOT/'scripts/reinforcement_learning/rsl_rl/train_upper_body.py').read_text())
     selected=ast.Module(body=[node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name in
-                             ('digest','validate_checkpoint_contract','validate_update_budget','initialize_complete_actor')],type_ignores=[])
+                             ('digest','validate_checkpoint_contract','validate_update_budget','initialize_complete_actor','initialize_budgeted_fork')],type_ignores=[])
     namespace={'torch':torch,'hashlib':hashlib,'Path':Path,'json':json,
                'policy_module':lambda runner:runner.actor,
                'checkpoint_for_runtime':lambda path:str(path),
@@ -206,7 +206,7 @@ def test_complete_actor_preserves_output_but_resets_counter_critic_adam_and_std(
     result=functions['initialize_complete_actor'](runner,source,expected,plan)
     for key,value in old.mlp.state_dict().items():assert torch.equal(value,actor.mlp.state_dict()[key])
     assert torch.all(actor.mlp[-1].weight==.3) and torch.all(actor.mlp[-1].bias==.3)
-    assert torch.all(actor.distribution.std_param==.04)
+    assert torch.all(actor.distribution.std_param==plan['exploration_std'])
     assert all(torch.equal(value,critic_before[key]) for key,value in critic.state_dict().items())
     assert not optimizer.state and runner.current_learning_iteration==0
     assert result['source_iteration']==13115 and result['completed_iterations']==0

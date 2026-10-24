@@ -6,7 +6,7 @@ import torch
 
 from .robot import JOINTS
 
-CONTROL_PROFILE = 'upper_v6_guard_original_pd_chest_return_v1'
+CONTROL_PROFILE = 'upper_v6r1_waist_damping_contact_energy_rehearsal'
 ARM_IDS = tuple(i for i, n in enumerate(JOINTS) if 'shoulder_' in n or 'elbow_' in n)
 WAIST_IDS = tuple(i for i, n in enumerate(JOINTS) if 'waist_' in n)
 
@@ -43,3 +43,19 @@ def upper_reward_terms(measurements, mode, phase, cfg):
         'arm_rate': rate_weight * torch.exp(-measurements['arm_velocity_error_mse_rad2_s2'] / cfg['arm_rate_sigma_rad_s'] ** 2),
         'waist_posture': cfg['waist_weight'] * torch.exp(-measurements['waist_reference_mse_rad2'] / cfg['waist_sigma_rad'] ** 2),
     }
+
+
+def stability_costs(chest_rate, clearance, height_target, loaded, reference_contact, foot_speed, cfg):
+    """Graded motion/contact costs retain pressure beyond an exponential tail."""
+    normalized = (chest_rate / cfg['angular_scale_rad_s']).clamp(max=cfg['angular_clip'])
+    huber = torch.where(normalized <= 1., .5 * normalized.square(), normalized - .5)
+    swing = ~reference_contact & (height_target > .022)
+    excess = ((clearance - height_target - cfg['height_tolerance_m']).clamp_min(0.)
+              / cfg['height_scale_m']).clamp(max=cfg['height_clip'])
+    overshoot = (excess.square() * swing).sum(-1) / swing.sum(-1).clamp_min(1)
+    stance = loaded & reference_contact
+    sliding = ((foot_speed / cfg['slip_scale_m_s']).clamp(max=cfg['slip_clip']).square()
+               * stance).sum(-1) / stance.sum(-1).clamp_min(1)
+    return {'chest_energy': -cfg['angular_weight'] * huber,
+            'swing_overshoot': -cfg['height_weight'] * overshoot,
+            'stance_sliding': -cfg['slip_weight'] * sliding}

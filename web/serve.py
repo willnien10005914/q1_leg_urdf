@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Local read-only viewer; never exposes checkpoint, environment, or .git files."""
 import argparse
+import importlib.util
 import json
 from pathlib import Path
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -27,6 +28,13 @@ class Handler(SimpleHTTPRequestHandler):
             policy_status=ROOT/"config/web_policy_status.json"
             if policy_status.exists():
                 result["policy_status"]=json.loads(policy_status.read_text())
+            accepted=ROOT/'checkpoints/isaac/upper_body_v6/evaluation.json'
+            if accepted.exists():
+                spec=importlib.util.spec_from_file_location('web_v6_policy_gate',ROOT/'tools/v6_policy_gate.py')
+                gate_module=importlib.util.module_from_spec(spec);spec.loader.exec_module(gate_module)
+                if gate_module.v6_policy_gate(ROOT).get('ready') is True:
+                    result.setdefault('policy_status',{}).update(v6_live_accepted=True,
+                        notice='本機 V6 已通過完整上／下半身驗收與獨立128回合確認，可啟動即時控制。13115回放保留作舊版比較。')
             for skill in ("stand","walk","sidestep"):
                 file=ROOT/"checkpoints"/skill/"evaluation.json"
                 native=ROOT/"checkpoints/isaac"/skill/"evaluation.json"

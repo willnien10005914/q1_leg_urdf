@@ -6,7 +6,9 @@
   "upper_pd": {
     "stiffness": 70.0,
     "damping": 4.0,
-    "changed": false
+    "changed": true,
+    "waist_damping": 8.0,
+    "scope": "Upper Kp70 retained, arms damping4; waist-only damping8, selected by two-seed native comparison."
   },
   "residual_rad": {
     "waist_Yaw": 0.08,
@@ -22,8 +24,8 @@
     "chest_rate_sigma_rad_s": 0.7,
     "arm_weight": 1.5,
     "arm_sigma_rad": 0.08,
-    "velocity_weight": 0.5,
-    "return_velocity_weight": 1.0,
+    "velocity_weight": 1.0,
+    "return_velocity_weight": 1.5,
     "arm_rate_sigma_rad_s": 0.6,
     "waist_weight": 0.5,
     "waist_sigma_rad": 0.06
@@ -45,19 +47,34 @@
     "prep_chest_peak_max_deg": 15.0,
     "prep_chest_peak_p95_max_deg": 15.0
   },
-  "scope": "Fresh V6 PPO run; all V5 foot, contact, termination and direction gates retained. Original upper PD, guarded residuals, no base forces or pose filtering.",
+  "scope": "V6r1 frozen control fork: Kp70 unchanged; waist damping8; contact/overshoot/angular energy costs and stage0 gesture rehearsal. All acceptance gates unchanged.",
   "reward_revisions": {
     "0": {},
     "1": {
       "chest_weight": 2.5,
       "chest_rate_weight": 1.0,
-      "return_velocity_weight": 1.25
+      "velocity_weight": 1.25,
+      "return_velocity_weight": 1.75
     },
     "2": {
       "chest_weight": 3.0,
       "chest_rate_weight": 1.0,
       "arm_weight": 1.75,
-      "return_velocity_weight": 1.25
+      "velocity_weight": 1.5,
+      "return_velocity_weight": 2.0
     }
+  },
+  "stage0_gesture_rehearsal_probability": 0.3,
+  "stability_cost": {
+    "angular_scale_rad_s": 0.7,
+    "angular_clip": 6.0,
+    "angular_weight": 1.5,
+    "height_tolerance_m": 0.01,
+    "height_scale_m": 0.02,
+    "height_clip": 3.0,
+    "height_weight": 1.5,
+    "slip_scale_m_s": 0.1,
+    "slip_clip": 4.0,
+    "slip_weight": 0.5
   }
 }

@@ -16,6 +16,8 @@ initialization_mode=p.add_mutually_exclusive_group()
 initialization_mode.add_argument('--initialize-policy',action='store_true',
     help='New V6 run: preserve full 13115 actor MLP; fresh critic/Adam/std, new update counter zero')
 initialization_mode.add_argument('--evaluate',action='store_true')
+initialization_mode.add_argument('--budgeted-fork',action='store_true',
+    help='Restore reviewed actor into a new control run; inherit verified V6 spent-update budget, fresh critic/Adam/std')
 p.add_argument('--episodes',type=int,default=32)
 p.add_argument('--seed',type=int,default=42)
 p.add_argument('--reward-revision',type=int,choices=(0,1,2),default=0)
@@ -26,9 +28,11 @@ if args.completed<0 or args.iterations<1 or args.smoke_steps<0:
     p.error('Iteration counts must be nonnegative and iterations positive')
 if args.initialize_policy and (not args.checkpoint or args.completed or args.curriculum_stage != 0):
     p.error('New V6 initialization needs source checkpoint, completed=0 and stage=0')
+if args.budgeted_fork and (not args.checkpoint or args.completed <= 0 or args.curriculum_stage != 0):
+    p.error('A budgeted control fork requires actor checkpoint, inherited V6 counter and stage zero')
 if args.completed and not args.checkpoint:
     p.error('V6 resume needs its saved checkpoint')
-if args.initialize_policy and (args.output_dir/'resume.pt').resolve()==args.checkpoint.resolve():
+if (args.initialize_policy or args.budgeted_fork) and (args.output_dir/'resume.pt').resolve()==args.checkpoint.resolve():
     p.error('V6 initialization must preserve its source checkpoint')
 if args.evaluate and not args.checkpoint:
     p.error('Evaluation requires a saved V6 checkpoint')
@@ -138,6 +142,35 @@ def initialize_complete_actor(runner, path, expected, profile):
             'curriculum_restarts_at':0,'acceptance_inherited':False}
 
 
+def initialize_budgeted_fork(runner, path, expected, profile, completed):
+    """Charge every prior V6 update even when recovering the original actor."""
+    lineage = profile.get('control_fork', {})
+    if type(completed) is not int or completed <= 0 or completed != lineage.get('inherited_v6_updates'):
+        raise ValueError('Control fork must inherit the exact recorded V6 update budget')
+    budget = (ROOT / lineage['budget_checkpoint']).resolve()
+    if digest(budget) != lineage['budget_checkpoint_sha256']:
+        raise ValueError('Budget-parent checkpoint SHA256 changed')
+    contract = json.loads((budget.parent / 'contract.json').read_text())
+    if (contract.get('robot') != 'q1_leg_upper_body_v6' or contract.get('proxy') is not False
+            or contract.get('control_sha256') != lineage['budget_control_sha256']
+            or any(contract.get(k) != expected.get(k) for k in ('urdf_sha256', 'gait_sha256', 'joint_names', 'action_size', 'observation_size'))):
+        raise ValueError('Budget parent is not the declared compatible native V6 control')
+    payload = torch.load(budget, map_location='cpu', weights_only=False)
+    infos = payload.get('infos') or {}
+    initial = infos.get('initialization') or {}
+    if (type(payload.get('iter')) is not int or payload['iter'] != completed
+            or infos.get('completed_iterations') != completed or infos.get('budget_mode') != 'new_updates'
+            or initial.get('source_sha256') != profile['source_checkpoint_sha256']):
+        raise ValueError('Budget parent serialized update count or actor lineage is inconsistent')
+    result = initialize_complete_actor(runner, path, expected, profile)
+    result.update(policy='budgeted_v6_control_recovery', completed_iterations=completed,
+        inherited_v6_updates=completed, budget_parent=str(budget),
+        budget_parent_sha256=digest(budget), budget_parent_control_sha256=contract['control_sha256'],
+        budget_parent_payload_iteration=payload['iter'], acceptance_inherited=False)
+    runner.current_learning_iteration = completed
+    return result
+
+
 env=None
 try:
     args.output_dir.mkdir(parents=True,exist_ok=True)
@@ -175,9 +208,11 @@ try:
     initialization=None
     if args.checkpoint:
         saved=json.loads((args.checkpoint.parent/'contract.json').read_text())
-        validate_checkpoint_contract(saved,expected,initialize_policy=args.initialize_policy)
+        validate_checkpoint_contract(saved,expected,initialize_policy=args.initialize_policy or args.budgeted_fork)
         if args.initialize_policy:
             initialization=initialize_complete_actor(runner,args.checkpoint,expected,profile)
+        elif args.budgeted_fork:
+            initialization=initialize_budgeted_fork(runner,args.checkpoint,expected,profile,args.completed)
         else:
             compatible=checkpoint_for_runtime(args.checkpoint)
             if not args.evaluate and Path(compatible).resolve()!=args.checkpoint.resolve():
@@ -206,7 +241,7 @@ try:
     elif args.smoke_steps:
         wrapped.reset();seen_modes=set();peak=0.
         policy=runner.get_inference_policy(device=env.device) if args.checkpoint else None
-        action_source=('frozen_initialized_actor' if args.initialize_policy else 'saved_v6_actor') if policy else 'zero_residual'
+        action_source=('frozen_initialized_actor' if args.initialize_policy or args.budgeted_fork else 'saved_v6_actor') if policy else 'zero_residual'
         upper_peaks={};upper_sums={};upper_counts={}
         active=torch.ones(env.num_envs,device=env.device,dtype=torch.bool)
         failed=torch.zeros_like(active)

@@ -1,6 +1,6 @@
 {
   "robot": "q1_leg_upper_body_v6",
-  "experiment": "upper_body_v6_guard_caps_native_retraining",
+  "experiment": "upper_body_v6r1_damping_energy_rehearsal",
   "num_envs": 10240,
   "max_iterations": 20000,
   "budget_mode": "new_updates",
@@ -10,9 +10,9 @@
   "early_chunk_iterations": 100,
   "early_chunk_until": 2000,
   "num_steps_per_env": 24,
-  "learning_rate": 0.00015,
-  "exploration_std": 0.04,
-  "entropy_coef": 0.001,
+  "learning_rate": 8e-05,
+  "exploration_std": 0.03,
+  "entropy_coef": 0.0005,
   "num_mini_batches": 8,
   "validation_episodes": 32,
   "confirmation_episodes": 128,
@@ -27,7 +27,7 @@
   "gait_file": "config/v5_gaits_lift6.json",
   "control_file": "config/upper_body_control_v6.json",
   "bootstrap": "checkpoints/isaac/lift_v5/runs/20261022_0338_recovery20/chunks/0013115_s2_r2/resume.pt",
-  "bootstrap_policy": "Preserve complete frozen 13115 actor MLP including output; fresh critic, Adam, std and V6 counter zero. No source acceptance inherited.",
+  "bootstrap_policy": "Budgeted recovery fork: preserve original13115 fullactor, inherit12800 V6 update budget, freshcritic/Adam/std; native damping verified, no acceptance inherited.",
   "stages": [
     "inplace",
     "finite_gesture",
@@ -40,9 +40,9 @@
   ],
   "early_stop": "Only three consecutive stage-2 full validations plus independent 128-episode confirmation can publish. Plateau cannot mark success.",
   "reward_revisions": {
-    "0": "Base native lift objective plus initial declared upper-body pose, chest angular rate and controlled-return tracking rewards.",
-    "1": "Base lift revision 1; upper chest_weight=2.5, chest_rate_weight=1.0 and return_velocity_weight=1.25; native PD, residual caps and acceptance gates unchanged.",
-    "2": "Base lift revision 2; upper chest_weight=3.0, chest_rate_weight=1.0, arm_weight=1.75 and return_velocity_weight=1.25; native PD, residual caps and acceptance gates unchanged."
+    "0": "V6r1 baseline chest/arm return plus continuous angular energy, overshoot and stance slip costs.",
+    "1": "Predeclared stronger chest and controlled return rewards; same physical control, stability costs and gates.",
+    "2": "Second predeclared chest/return revision; same physical control, stability costs and gates."
   },
   "validation_worker_timeout_s": 420,
   "training_worker_timeout_s": 10800,
@@ -53,5 +53,13 @@
     "mirror_loss_coeff": 0.02,
     "data_augmentation_func": "leg_humanoid_lab.lift_symmetry:augment_policy",
     "scope": "Weak mirror consistency on feasible samples; native asymmetry retained."
+  },
+  "control_fork": {
+    "inherited_v6_updates": 12800,
+    "budget_checkpoint": "checkpoints/isaac/upper_body_v6/runs/20261022T204705_454380Z/chunks/0012800_s0_r2/resume.pt",
+    "budget_checkpoint_sha256": "770a0a10b439166f6c1b93c9c58a5cb656c3a0e79afab48505c23b6420765162",
+    "budget_control_sha256": "169bfb74bd63a1c1f1c4ca92c3d22098a625c64a75bf29f694c0baecfac5494f",
+    "actor_source": "reviewed_original_13115",
+    "reason": "Original V6 stalled and forgot right gesture. Preserve all12800chargedupdates, restore reviewed actor under tested damping and rehearse gestures during stage0. No acceptance inherited."
   }
 }
