@@ -2,11 +2,11 @@
   "schema": 1,
   "robot": "q1_leg_upper_body_v6",
   "run_id": "v6r1_stable_contact_20261024",
-  "as_of": "2026-10-24T23:40:07.269119+00:00",
-  "state": "validating",
-  "saved_updates": 19205,
+  "as_of": "2026-10-24T23:59:45.808731+00:00",
+  "state": "training",
+  "saved_updates": 19405,
   "max_new_updates": 20000,
-  "saved_progress_percent": 96.03,
+  "saved_progress_percent": 97.03,
   "num_envs": 10240,
   "curriculum_stage": 0,
   "stage_name": "inplace_upper_recovery",
@@ -16,10 +16,10 @@
   "training_service_active": true,
   "startup_watchdog_active": true,
   "source_verified": true,
-  "checkpoint_verified": true,
-  "checkpoint_sha256": "a7d9058684d87eb6cf01750eb2d38b6e53235bc45e427f0f60648f9ad1d544f6",
+  "checkpoint_verified": false,
+  "checkpoint_sha256": null,
   "latest_validation": {
-    "saved_updates": 19105,
+    "saved_updates": 19405,
     "stage": 0,
     "episodes": 32,
     "passed": false,
@@ -34,28 +34,29 @@
     "lower_body_passed": true,
     "upper_body_cases": {
       "stand": {
-        "chest_peak_deg": 3.117330312728882,
-        "chest_rms_deg": 1.5400065994659449,
+        "chest_peak_deg": 2.8387868404388428,
+        "chest_rms_deg": 0.8859371133722033,
         "dynamic_chest_angular_xy_rms_rad_s": null,
-        "tail_arm_speed_rms_rad_s": 0.010926756698758262,
+        "tail_arm_speed_rms_rad_s": 0.006625960667285118,
         "tail_hand_distance_rms_m_per_hand": [
-          0.021274379690412383,
-          0.004026157005459989
+          0.019359021851660906,
+          0.0025287097351396315
         ]
       },
       "inplace": {
-        "chest_peak_deg": 9.930400848388672,
-        "chest_rms_deg": 3.7985632316920985,
-        "dynamic_chest_angular_xy_rms_rad_s": 0.6694412411525892,
-        "tail_arm_speed_rms_rad_s": 0.019000023214882093,
+        "chest_peak_deg": 11.050594329833984,
+        "chest_rms_deg": 4.044555276091043,
+        "dynamic_chest_angular_xy_rms_rad_s": 0.6687532941759803,
+        "tail_arm_speed_rms_rad_s": 0.019362333833845374,
         "tail_hand_distance_rms_m_per_hand": [
-          0.020505647615027336,
-          0.01664366891856083
+          0.021037196144977417,
+          0.020581720045181603
         ]
       }
     }
   },
   "alerts": [
+    "saved_checkpoint_not_verified",
     "plateau_requires_review"
   ],
   "error_code": null,
