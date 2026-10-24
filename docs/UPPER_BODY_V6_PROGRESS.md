@@ -1,6 +1,6 @@
 # V6 訓練監看
 
-更新時間（UTC）：2026-10-24T23:33:53.129482+00:00。
+更新時間（UTC）：2026-10-24T23:39:29.109352+00:00。
 
 已保存 **19105／20,000 次新 PPO 更新**，10,240 envs。
 目前階段：**原地抬腳與回穩**；狀態：`training`；**尚未完成完整驗收**。
@@ -19,6 +19,7 @@
 
 監看旗標：
 
+- `saved_checkpoint_not_verified`
 - `plateau_requires_review`
 
 [機器可讀進度](results/upper_body_v6_progress.json) · [訓練架構與指令](UPPER_BODY_V6_TRAINING.md)
