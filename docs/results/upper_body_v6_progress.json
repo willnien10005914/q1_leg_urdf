@@ -2,8 +2,8 @@
   "schema": 1,
   "robot": "q1_leg_upper_body_v6",
   "run_id": "v6r1_stable_contact_20261024",
-  "as_of": "2026-10-24T23:29:05.250034+00:00",
-  "state": "validating",
+  "as_of": "2026-10-24T23:29:20.343467+00:00",
+  "state": "runtime_error",
   "saved_updates": 19105,
   "max_new_updates": 20000,
   "saved_progress_percent": 95.53,
@@ -13,13 +13,13 @@
   "reward_revision": 2,
   "trained_and_validated": false,
   "confirmation_episodes": null,
-  "training_service_active": true,
+  "training_service_active": false,
   "startup_watchdog_active": true,
   "source_verified": true,
   "checkpoint_verified": true,
   "checkpoint_sha256": "546c6b7ba1f05fe358b5423d74253a36196ce7e1a3632cae413ec404aa913a4e",
   "latest_validation": {
-    "saved_updates": 19005,
+    "saved_updates": 19105,
     "stage": 0,
     "episodes": 32,
     "passed": false,
@@ -34,30 +34,31 @@
     "lower_body_passed": true,
     "upper_body_cases": {
       "stand": {
-        "chest_peak_deg": 3.258580207824707,
-        "chest_rms_deg": 1.5570005546519778,
+        "chest_peak_deg": 3.117330312728882,
+        "chest_rms_deg": 1.5400065994659449,
         "dynamic_chest_angular_xy_rms_rad_s": null,
-        "tail_arm_speed_rms_rad_s": 0.00975998011811399,
+        "tail_arm_speed_rms_rad_s": 0.010926756698758262,
         "tail_hand_distance_rms_m_per_hand": [
-          0.0213865299409934,
-          0.004673256195740683
+          0.021274379690412383,
+          0.004026157005459989
         ]
       },
       "inplace": {
-        "chest_peak_deg": 10.534269332885742,
-        "chest_rms_deg": 4.145598670953977,
-        "dynamic_chest_angular_xy_rms_rad_s": 0.6771837912719155,
-        "tail_arm_speed_rms_rad_s": 0.01767264159227841,
+        "chest_peak_deg": 9.930400848388672,
+        "chest_rms_deg": 3.7985632316920985,
+        "dynamic_chest_angular_xy_rms_rad_s": 0.6694412411525892,
+        "tail_arm_speed_rms_rad_s": 0.019000023214882093,
         "tail_hand_distance_rms_m_per_hand": [
-          0.0207630185783392,
-          0.015263961625801757
+          0.020505647615027336,
+          0.01664366891856083
         ]
       }
     }
   },
   "alerts": [
-    "plateau_requires_review"
+    "plateau_requires_review",
+    "runtime_error"
   ],
-  "error_code": null,
+  "error_code": "worker_crash",
   "scope": "Saved updates are not acceptance; only independent full-gate V6 confirmation enables trained_and_validated."
 }
