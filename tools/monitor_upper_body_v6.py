@@ -152,7 +152,7 @@ def public_summary(state, audit, report=None, now=None):
         alerts.append('training_source_not_verified')
     if audit.get('checkpoint_verified') is False:
         alerts.append('saved_checkpoint_not_verified')
-    if state.get('plateau_unresolved') is True:
+    if state.get('plateau_unresolved') is True and not accepted:
         alerts.append('plateau_requires_review')
     if phase in TERMINAL_STATES:
         alerts.append(phase)
@@ -219,6 +219,13 @@ def event_key(summary, previous):
         return f'{run}:terminal:{phase}:{completed}:{summary.get("error_code")}'
     if not previous or previous.get('run_id') != run:
         return f'{run}:baseline:{completed // 1000}:{stage}'
+    health={'training_heartbeat_stale','training_service_inactive','training_source_not_verified',
+            'saved_checkpoint_not_verified','accepted_publication_not_verified'}
+    current_health=set(summary.get('alerts',[])) & health
+    previous_health=set(previous.get('alerts',[])) & health
+    if current_health != previous_health:
+        identity=hashlib.sha256(','.join(sorted(current_health)).encode()).hexdigest()[:12]
+        return f'{run}:health:{identity}:{completed}'
     if previous.get('state') in TERMINAL_STATES and phase in ACTIVE_STATES:
         return f'{run}:resumed:{completed}:{stage}'
     if previous.get('curriculum_stage') != stage:

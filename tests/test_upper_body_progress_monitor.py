@@ -38,3 +38,11 @@ def test_same_delivered_terminal_event_does_not_touch_git_or_network(tmp_path, m
     ledger = {'published_event': event}
     result, label = MONITOR.publish_progress(tmp_path, value, ledger)
     assert result is ledger and label == 'publication_event_already_delivered'
+
+
+def test_worker_stall_and_recovery_publish_without_waiting_for_another_milestone():
+    previous = summary()
+    stale = {**previous, 'alerts': [*previous['alerts'], 'training_service_inactive']}
+    assert ':health:' in MONITOR.event_key(stale, previous)
+    assert ':health:' in MONITOR.event_key(previous, stale)
+    assert MONITOR.event_key(stale, stale) is None
