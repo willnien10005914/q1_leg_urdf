@@ -2,7 +2,7 @@
   "schema": 1,
   "robot": "q1_leg_upper_body_v6",
   "run_id": "v6r1_stable_contact_20261024",
-  "as_of": "2026-10-24T23:09:21.969311+00:00",
+  "as_of": "2026-10-24T23:15:02.823258+00:00",
   "state": "training",
   "saved_updates": 18805,
   "max_new_updates": 20000,
@@ -16,8 +16,8 @@
   "training_service_active": true,
   "startup_watchdog_active": true,
   "source_verified": true,
-  "checkpoint_verified": true,
-  "checkpoint_sha256": "5b6ad6472fecbc07bdb50078a07164f0e5c13cb909b2248d007153773a15c92c",
+  "checkpoint_verified": false,
+  "checkpoint_sha256": null,
   "latest_validation": {
     "saved_updates": 18805,
     "stage": 0,
@@ -55,6 +55,7 @@
     }
   },
   "alerts": [
+    "saved_checkpoint_not_verified",
     "plateau_requires_review"
   ],
   "error_code": null,
