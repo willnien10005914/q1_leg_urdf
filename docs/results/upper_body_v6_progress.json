@@ -2,8 +2,8 @@
   "schema": 1,
   "robot": "q1_leg_upper_body_v6",
   "run_id": "v6r1_stable_contact_20261024",
-  "as_of": "2026-10-24T11:44:39.164401+00:00",
-  "state": "validating",
+  "as_of": "2026-10-24T11:50:50.064967+00:00",
+  "state": "training",
   "saved_updates": 17405,
   "max_new_updates": 20000,
   "saved_progress_percent": 87.03,
@@ -16,10 +16,10 @@
   "training_service_active": true,
   "startup_watchdog_active": true,
   "source_verified": true,
-  "checkpoint_verified": true,
-  "checkpoint_sha256": "709454b2358257a617fdb360e5ef8522a85a35583b9a0bc9b2c2503bf009029b",
+  "checkpoint_verified": false,
+  "checkpoint_sha256": null,
   "latest_validation": {
-    "saved_updates": 17305,
+    "saved_updates": 17405,
     "stage": 0,
     "episodes": 32,
     "passed": false,
@@ -36,28 +36,29 @@
     "lower_body_passed": true,
     "upper_body_cases": {
       "stand": {
-        "chest_peak_deg": 5.470566749572754,
-        "chest_rms_deg": 4.684676351137398,
+        "chest_peak_deg": 5.20939826965332,
+        "chest_rms_deg": 4.215904390797471,
         "dynamic_chest_angular_xy_rms_rad_s": null,
-        "tail_arm_speed_rms_rad_s": 0.005756229376926388,
+        "tail_arm_speed_rms_rad_s": 0.004941930961308426,
         "tail_hand_distance_rms_m_per_hand": [
-          0.03952820520284651,
-          0.041076318691572085
+          0.035484524395575485,
+          0.03620941164805879
         ]
       },
       "inplace": {
-        "chest_peak_deg": 13.162991523742676,
-        "chest_rms_deg": 5.132266818377669,
-        "dynamic_chest_angular_xy_rms_rad_s": 0.7953367173540845,
-        "tail_arm_speed_rms_rad_s": 0.045673275310056514,
+        "chest_peak_deg": 12.065786361694336,
+        "chest_rms_deg": 4.94003412411279,
+        "dynamic_chest_angular_xy_rms_rad_s": 0.7572995149037004,
+        "tail_arm_speed_rms_rad_s": 0.08081821541517761,
         "tail_hand_distance_rms_m_per_hand": [
-          0.021385158120713815,
-          0.023635991186533742
+          0.019388198635170016,
+          0.017392663761082002
         ]
       }
     }
   },
   "alerts": [
+    "saved_checkpoint_not_verified",
     "plateau_requires_review"
   ],
   "error_code": null,
