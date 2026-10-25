@@ -35,8 +35,8 @@ def main():
         dest=ROOT/'checkpoints/isaac/upper_body_v6_20000';dest.mkdir(exist_ok=True)
         for src,name in [('resume.pt','latest.pt'),('contract.json','contract.json'),('training_result.json','training_result.json')]:shutil.copyfile(folder/src,dest/name)
         video=ROOT/'docs/results/q1_leg_v6_20000_diagnostic.mp4'
-        if run(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader']):raise RuntimeError('GPU compute process active; refusing overlapping recording')
         if not video.with_suffix('.json').exists():
+            if run(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader']):raise RuntimeError('GPU compute process active; refusing overlapping recording')
             s.update(phase='recording');save(s)
             cmd='source scripts/isaac_env.sh\n"$ISAAC_PYTHON" -u scripts/reinforcement_learning/rsl_rl/record_terminal_v6_diagnostic.py --checkpoint checkpoints/isaac/upper_body_v6_20000/latest.pt --video docs/results/q1_leg_v6_20000_diagnostic.mp4 --sequence-only --headless'
             # Full native episode, no fallback checkpoint, no hidden reset.

@@ -1,0 +1,11 @@
+{
+  "iterations": 20000,
+  "num_envs": 10240,
+  "accepted": false,
+  "scope": "Training budget completed; this snapshot and video are diagnostic, not a qualified controller.",
+  "checkpoint_sha256": "a87f196047bb58cfbb662cca2a0b27cac0d0317b8fdf9da77285e8f657ba5d8f",
+  "video_sha256": "5c0659bc3c22175da946a0b46deaf8b17dfeac7a329450c1a6fa18e5a4667a82",
+  "gofile": "https://gofile.io/d/74QTLdVi",
+  "latest_validation": null,
+  "failure_in_video": true
+}

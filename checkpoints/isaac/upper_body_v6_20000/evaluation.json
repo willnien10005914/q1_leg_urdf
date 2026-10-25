@@ -1,0 +1,4668 @@
+{
+  "schema": 6,
+  "skill": "lift_foundation",
+  "backend": "isaaclab",
+  "proxy": false,
+  "stage": 0,
+  "episodes": 32,
+  "evaluation_seed": 291000,
+  "duration_s": 20.0,
+  "contract": "q1_leg_command_v5",
+  "source": "native_physx_ppo_first_episode_lift_suite",
+  "scope": "Native CAD simulated lift foundation only; keyboard and full directional acceptance require stage 2.",
+  "urdf_sha256": "2a9a5fce0cd4cf116ba22fcc5c2dfc90747e16c7c1c1ccd0914beec61ce7b3ac",
+  "gait_sha256": "624d0c61630c87d94622ce46eaf2a482b064d0d2461f73533f0eabdd0dc9f137",
+  "gait_sha_source": "/home/will/projects/q1_leg_urdf/config/v5_gaits_lift6.json",
+  "environment_sha256": "08d1f7fdaa6855272a4514a830b3321c7fd1aa617d40a5eb0f28c7f606ad270e",
+  "evaluator_sha256": "906c9ad332ab10d0a890ccefa6aefc606b81aae1833a465c46a97c9dc5d3dc9a",
+  "measurement": {
+    "clearance": "minimum native source-CAD sole world height minus environment origin",
+    "unloaded": "vertical foot force <=5 N, from native foot_step_metrics",
+    "high_swing": "reference_height >.022 m and reference_contact is false",
+    "slip": "RMS horizontal speed of loaded feet during planned stance",
+    "stop": "Mean speed over observed 18\u201320 s windows only; each counted episode must cover the window except at most one excluded terminal frame; missing coverage fails a separate rate gate"
+  },
+  "explicit_initial_resets": 1,
+  "reset_between_transitions": false,
+  "exclude_done_and_all_post_reset_samples": true,
+  "timeline": {
+    "stand": "stand 0\u201320 s",
+    "inplace": "stand 0\u20131; walk with zero command 1\u20138; stand 8\u201320",
+    "left_right": "stand 0\u20131; maneuver 1\u20132.6; recover 2.6\u20133.6; stand 3.6\u201320",
+    "pair": "stand 0\u20131; left 1\u20132.6; right 2.6\u20134.2; recover 4.2\u20135.2; stand 5.2\u201320"
+  },
+  "gates": {
+    "survival_rate_min": 0.875,
+    "upright_min": 0.97,
+    "stop_speed_m_s_max": 0.07,
+    "stop_observed_rate_min": 0.875,
+    "stance_slip_rms_m_s_max": 0.1,
+    "foot_clearance_m_min": 0.025,
+    "high_swing_target_height_m_min": 0.022,
+    "unloaded_lift_success_rate_min": 0.4,
+    "unloaded_force_threshold_n": 5.0
+  },
+  "cases": {
+    "stand": {
+      "episodes": 16,
+      "completed_episodes": 16,
+      "survival_rate": 1.0,
+      "duration_s": 20.0,
+      "upright": 0.9999361038208008,
+      "stop_observed_rate": 1.0,
+      "stop_observed_episodes": 16,
+      "final_stand_speed_m_s": 0.0028187138959765434,
+      "stance_slip_m_s": 0.02494306117296219,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    "inplace": {
+      "episodes": 16,
+      "completed_episodes": 16,
+      "survival_rate": 1.0,
+      "duration_s": 20.0,
+      "upright": 0.999150276184082,
+      "stop_observed_rate": 1.0,
+      "stop_observed_episodes": 16,
+      "final_stand_speed_m_s": 0.010249811224639416,
+      "stance_slip_m_s": 0.0498308427631855,
+      "foot_peak_clearance_m_per_foot": [
+        0.06057676672935486,
+        0.059114180505275726
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9915540814399719,
+        0.9573863744735718
+      ],
+      "high_swing_samples_per_foot": [
+        1184.0,
+        1408.0
+      ]
+    }
+  },
+  "per_episode": [
+    {
+      "env_index": 0,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.999900221824646,
+      "final_stand_speed_m_s": 0.003442115383222699,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.029875850304961205,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 1,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991453289985657,
+      "final_stand_speed_m_s": 0.010976375080645084,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.049158863723278046,
+      "foot_peak_clearance_m_per_foot": [
+        0.06075247377157211,
+        0.06035769730806351
+      ],
+      "foot_lift_success_rate_per_foot": [
+        1.0,
+        0.9659090638160706
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 2,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999487400054932,
+      "final_stand_speed_m_s": 0.0026881126686930656,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.02433733455836773,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 3,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991553425788879,
+      "final_stand_speed_m_s": 0.009929808788001537,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.04864303395152092,
+      "foot_peak_clearance_m_per_foot": [
+        0.060772161930799484,
+        0.06010054796934128
+      ],
+      "foot_lift_success_rate_per_foot": [
+        1.0,
+        0.9545454382896423
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 4,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999525547027588,
+      "final_stand_speed_m_s": 0.002978211734443903,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.02287687547504902,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 5,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991312623023987,
+      "final_stand_speed_m_s": 0.011118564754724503,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.05232379585504532,
+      "foot_peak_clearance_m_per_foot": [
+        0.06043393537402153,
+        0.062406450510025024
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9864864945411682,
+        0.9659090638160706
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 6,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999077320098877,
+      "final_stand_speed_m_s": 0.0034968089312314987,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.030161850154399872,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 7,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991602897644043,
+      "final_stand_speed_m_s": 0.010412991978228092,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.05156496912240982,
+      "foot_peak_clearance_m_per_foot": [
+        0.06034695729613304,
+        0.05863188952207565
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9864864945411682,
+        0.9772727489471436
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 8,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999407529830933,
+      "final_stand_speed_m_s": 0.0025536653120070696,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.025284333154559135,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 9,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991329312324524,
+      "final_stand_speed_m_s": 0.00945380236953497,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.049156852066516876,
+      "foot_peak_clearance_m_per_foot": [
+        0.0606195405125618,
+        0.059094130992889404
+      ],
+      "foot_lift_success_rate_per_foot": [
+        1.0,
+        0.9431818127632141
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 10,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999476075172424,
+      "final_stand_speed_m_s": 0.0025417900178581476,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.022612402215600014,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 11,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991551637649536,
+      "final_stand_speed_m_s": 0.009640571661293507,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.049623727798461914,
+      "foot_peak_clearance_m_per_foot": [
+        0.06068040430545807,
+        0.058600351214408875
+      ],
+      "foot_lift_success_rate_per_foot": [
+        1.0,
+        0.9545454382896423
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 12,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999520182609558,
+      "final_stand_speed_m_s": 0.002054379088804126,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.020627198740839958,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 13,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991576671600342,
+      "final_stand_speed_m_s": 0.00986030139029026,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.04783249273896217,
+      "foot_peak_clearance_m_per_foot": [
+        0.060635507106781006,
+        0.05820894241333008
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9864864945411682,
+        0.9545454382896423
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 14,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999461770057678,
+      "final_stand_speed_m_s": 0.0022282341960817575,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.024570602923631668,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 15,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.999147891998291,
+      "final_stand_speed_m_s": 0.011053490452468395,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.05275845155119896,
+      "foot_peak_clearance_m_per_foot": [
+        0.05982225388288498,
+        0.06294582784175873
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9864864945411682,
+        0.9545454382896423
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 16,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999445080757141,
+      "final_stand_speed_m_s": 0.0023644419852644205,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.02028409205377102,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 17,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991375803947449,
+      "final_stand_speed_m_s": 0.009980736300349236,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.048336684703826904,
+      "foot_peak_clearance_m_per_foot": [
+        0.060753513127565384,
+        0.05837453156709671
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9864864945411682,
+        0.9545454382896423
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 18,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.999945878982544,
+      "final_stand_speed_m_s": 0.0026998037938028574,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.024678541347384453,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 19,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991583824157715,
+      "final_stand_speed_m_s": 0.00979041401296854,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.05056077614426613,
+      "foot_peak_clearance_m_per_foot": [
+        0.06122150272130966,
+        0.05848567187786102
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9864864945411682,
+        0.9431818127632141
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 20,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.999942421913147,
+      "final_stand_speed_m_s": 0.002474146895110607,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.024935411289334297,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 21,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991528987884521,
+      "final_stand_speed_m_s": 0.010468331165611744,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.050678905099630356,
+      "foot_peak_clearance_m_per_foot": [
+        0.06008560210466385,
+        0.058762628585100174
+      ],
+      "foot_lift_success_rate_per_foot": [
+        1.0,
+        0.9545454382896423
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 22,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999054670333862,
+      "final_stand_speed_m_s": 0.004350797738879919,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.0308701004832983,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 23,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991875886917114,
+      "final_stand_speed_m_s": 0.010605795308947563,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.050194334238767624,
+      "foot_peak_clearance_m_per_foot": [
+        0.06134290248155594,
+        0.05727064609527588
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9864864945411682,
+        0.9545454382896423
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 24,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999548196792603,
+      "final_stand_speed_m_s": 0.002864252543076873,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.017925722524523735,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 25,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991472363471985,
+      "final_stand_speed_m_s": 0.009952675551176071,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.051507990807294846,
+      "foot_peak_clearance_m_per_foot": [
+        0.05993228778243065,
+        0.05824531987309456
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9864864945411682,
+        0.9659090638160706
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 26,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9998965859413147,
+      "final_stand_speed_m_s": 0.003882914548739791,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.031047672033309937,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 27,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991490840911865,
+      "final_stand_speed_m_s": 0.009869243018329144,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.048977963626384735,
+      "foot_peak_clearance_m_per_foot": [
+        0.06051034852862358,
+        0.0576959103345871
+      ],
+      "foot_lift_success_rate_per_foot": [
+        1.0,
+        0.9659090638160706
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 28,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999470710754395,
+      "final_stand_speed_m_s": 0.0021189653780311346,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.024000274017453194,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 29,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991511106491089,
+      "final_stand_speed_m_s": 0.009981544688344002,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.04850931465625763,
+      "foot_peak_clearance_m_per_foot": [
+        0.060748159885406494,
+        0.057599037885665894
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9864864945411682,
+        0.9545454382896423
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    },
+    {
+      "env_index": 30,
+      "case": "stand",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9999448657035828,
+      "final_stand_speed_m_s": 0.0023607865441590548,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.025000708177685738,
+      "foot_peak_clearance_m_per_foot": [
+        0.0,
+        0.0
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.0,
+        0.0
+      ],
+      "high_swing_samples_per_foot": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "env_index": 31,
+      "case": "inplace",
+      "survived": true,
+      "duration_s": 20.0,
+      "upright": 0.9991341233253479,
+      "final_stand_speed_m_s": 0.010902335867285728,
+      "stop_observed": true,
+      "stop_window_samples": 100.0,
+      "stance_slip_m_s": 0.047465354204177856,
+      "foot_peak_clearance_m_per_foot": [
+        0.06057075411081314,
+        0.05904733017086983
+      ],
+      "foot_lift_success_rate_per_foot": [
+        0.9864864945411682,
+        0.9545454382896423
+      ],
+      "high_swing_samples_per_foot": [
+        74.0,
+        88.0
+      ]
+    }
+  ],
+  "survival_rate": 1.0,
+  "checks": {
+    "stage.valid": true,
+    "stand.sample_count": true,
+    "stand.survival": true,
+    "stand.upright": true,
+    "stand.stop_observed": true,
+    "stand.stop": true,
+    "stand.stance_slip": true,
+    "inplace.sample_count": true,
+    "inplace.survival": true,
+    "inplace.upright": true,
+    "inplace.stop_observed": true,
+    "inplace.stop": true,
+    "inplace.stance_slip": true,
+    "inplace.foot_0.foot_peak_clearance_m_per_foot": true,
+    "inplace.foot_0.foot_lift_success_rate_per_foot": true,
+    "inplace.foot_0.high_swing_samples_per_foot": true,
+    "inplace.foot_1.foot_peak_clearance_m_per_foot": true,
+    "inplace.foot_1.foot_lift_success_rate_per_foot": true,
+    "inplace.foot_1.high_swing_samples_per_foot": true,
+    "upper_body.stage.valid": true,
+    "upper_body.measurement_schema": true,
+    "upper_body.stand.finite_measurements": true,
+    "upper_body.stand.sample_count": true,
+    "upper_body.stand.all.coverage": true,
+    "upper_body.stand.tail.coverage": true,
+    "upper_body.stand.chest_peak": true,
+    "upper_body.stand.chest_peak_p95": true,
+    "upper_body.stand.chest_rms": true,
+    "upper_body.stand.tail.angular_xy": true,
+    "upper_body.stand.tail.arm_speed": true,
+    "upper_body.stand.tail.hand_0": false,
+    "upper_body.stand.tail.hand_1": true,
+    "upper_body.inplace.finite_measurements": true,
+    "upper_body.inplace.sample_count": true,
+    "upper_body.inplace.all.coverage": true,
+    "upper_body.inplace.tail.coverage": true,
+    "upper_body.inplace.chest_peak": true,
+    "upper_body.inplace.chest_peak_p95": true,
+    "upper_body.inplace.chest_rms": true,
+    "upper_body.inplace.tail.angular_xy": true,
+    "upper_body.inplace.tail.arm_speed": true,
+    "upper_body.inplace.tail.hand_0": false,
+    "upper_body.inplace.tail.hand_1": false,
+    "upper_body.inplace.dynamic.coverage": true,
+    "upper_body.inplace.dynamic.angular_xy": true
+  },
+  "failed_gates": [
+    "upper_body.stand.tail.hand_0",
+    "upper_body.inplace.tail.hand_0",
+    "upper_body.inplace.tail.hand_1"
+  ],
+  "passed": false,
+  "score": 0.9333333333333333,
+  "upper_body": {
+    "cases": {
+      "stand": {
+        "episodes": 16,
+        "finite_measurements": true,
+        "directions": {},
+        "all": {
+          "episodes": 16,
+          "observed_episodes": 16,
+          "observed_episode_rate": 1.0,
+          "samples": 16000,
+          "expected_samples": 16000,
+          "chest_rms_deg": 0.8343736700122953,
+          "chest_angular_xy_rms_rad_s": 0.02693258344415478,
+          "chest_angular_xyz_rms_rad_s": 0.08423332433614097,
+          "arm_reference_rmse_rad": 0.048664379522227706,
+          "arm_velocity_error_rmse_rad_s": 0.028727006310358783,
+          "waist_reference_rmse_rad": 0.04091822572184303,
+          "arm_speed_rms_rad_s": 0.028727006310358783,
+          "waist_speed_rms_rad_s": 0.04152834086784257,
+          "return_arm_reference_rmse_rad": null,
+          "chest_peak_max_deg": 1.5790157318115234,
+          "chest_peak_p95_deg": 1.5754036009311676,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01930938955770507,
+            0.008105827137418984
+          ]
+        },
+        "dynamic": {
+          "episodes": 16,
+          "observed_episodes": 0,
+          "observed_episode_rate": 0.0,
+          "samples": 0,
+          "expected_samples": 0,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "return_arm_reference_rmse_rad": null,
+          "chest_peak_max_deg": null,
+          "chest_peak_p95_deg": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "episodes": 16,
+          "observed_episodes": 0,
+          "observed_episode_rate": 0.0,
+          "samples": 0,
+          "expected_samples": 0,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "return_arm_reference_rmse_rad": null,
+          "chest_peak_max_deg": null,
+          "chest_peak_p95_deg": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "episodes": 16,
+          "observed_episodes": 0,
+          "observed_episode_rate": 0.0,
+          "samples": 0,
+          "expected_samples": 0,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "return_arm_reference_rmse_rad": null,
+          "chest_peak_max_deg": null,
+          "chest_peak_p95_deg": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "episodes": 16,
+          "observed_episodes": 16,
+          "observed_episode_rate": 1.0,
+          "samples": 1600,
+          "expected_samples": 1600,
+          "chest_rms_deg": 0.8588840383487334,
+          "chest_angular_xy_rms_rad_s": 0.006032651169249557,
+          "chest_angular_xyz_rms_rad_s": 0.0067292402252816935,
+          "arm_reference_rmse_rad": 0.04933284449266837,
+          "arm_velocity_error_rmse_rad_s": 0.00684837875606717,
+          "waist_reference_rmse_rad": 0.04170754307420088,
+          "arm_speed_rms_rad_s": 0.00684837875606717,
+          "waist_speed_rms_rad_s": 0.032717102450487506,
+          "return_arm_reference_rmse_rad": null,
+          "chest_peak_max_deg": 1.0180370807647705,
+          "chest_peak_p95_deg": 1.0180257260799408,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019428396045950484,
+            0.008237758078420013
+          ]
+        }
+      },
+      "inplace": {
+        "episodes": 16,
+        "finite_measurements": true,
+        "directions": {},
+        "all": {
+          "episodes": 16,
+          "observed_episodes": 16,
+          "observed_episode_rate": 1.0,
+          "samples": 16000,
+          "expected_samples": 16000,
+          "chest_rms_deg": 3.951195713439572,
+          "chest_angular_xy_rms_rad_s": 0.3945441068290537,
+          "chest_angular_xyz_rms_rad_s": 0.45720446060662506,
+          "arm_reference_rmse_rad": 0.05238836955401659,
+          "arm_velocity_error_rmse_rad_s": 0.20131387597476694,
+          "waist_reference_rmse_rad": 0.05457648773354745,
+          "arm_speed_rms_rad_s": 0.20131387597476694,
+          "waist_speed_rms_rad_s": 0.24618331044889155,
+          "return_arm_reference_rmse_rad": null,
+          "chest_peak_max_deg": 11.206741333007812,
+          "chest_peak_p95_deg": 11.133780241012573,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02494089949656236,
+            0.028049966998557614
+          ]
+        },
+        "dynamic": {
+          "episodes": 16,
+          "observed_episodes": 16,
+          "observed_episode_rate": 1.0,
+          "samples": 5600,
+          "expected_samples": 5600,
+          "chest_rms_deg": 6.255882409837674,
+          "chest_angular_xy_rms_rad_s": 0.6547555456652165,
+          "chest_angular_xyz_rms_rad_s": 0.7382397607460496,
+          "arm_reference_rmse_rad": 0.059360928552407224,
+          "arm_velocity_error_rmse_rad_s": 0.32811630730659747,
+          "waist_reference_rmse_rad": 0.0687498572227983,
+          "arm_speed_rms_rad_s": 0.32811630730659747,
+          "waist_speed_rms_rad_s": 0.4014693785745822,
+          "return_arm_reference_rmse_rad": null,
+          "chest_peak_max_deg": 11.206741333007812,
+          "chest_peak_p95_deg": 11.133780241012573,
+          "hands_return_distance_rms_m_per_hand": [
+            0.031320880124072574,
+            0.03590636595238308
+          ]
+        },
+        "gesture": {
+          "episodes": 16,
+          "observed_episodes": 0,
+          "observed_episode_rate": 0.0,
+          "samples": 0,
+          "expected_samples": 0,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "return_arm_reference_rmse_rad": null,
+          "chest_peak_max_deg": null,
+          "chest_peak_p95_deg": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "episodes": 16,
+          "observed_episodes": 0,
+          "observed_episode_rate": 0.0,
+          "samples": 0,
+          "expected_samples": 0,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "return_arm_reference_rmse_rad": null,
+          "chest_peak_max_deg": null,
+          "chest_peak_p95_deg": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "episodes": 16,
+          "observed_episodes": 16,
+          "observed_episode_rate": 1.0,
+          "samples": 1600,
+          "expected_samples": 1600,
+          "chest_rms_deg": 1.3485163431208926,
+          "chest_angular_xy_rms_rad_s": 0.020831707359029658,
+          "chest_angular_xyz_rms_rad_s": 0.0219386336874439,
+          "arm_reference_rmse_rad": 0.04942346367091279,
+          "arm_velocity_error_rmse_rad_s": 0.019345495971231964,
+          "waist_reference_rmse_rad": 0.04586974563836045,
+          "arm_speed_rms_rad_s": 0.019345495971231964,
+          "waist_speed_rms_rad_s": 0.02775053826140197,
+          "return_arm_reference_rmse_rad": null,
+          "chest_peak_max_deg": 1.5099711418151855,
+          "chest_peak_p95_deg": 1.498349130153656,
+          "hands_return_distance_rms_m_per_hand": [
+            0.020483149359414386,
+            0.02354423096462229
+          ]
+        }
+      }
+    },
+    "per_episode": [
+      {
+        "env_index": 0,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.5741995573043823,
+          "chest_rms_deg": 0.9387016296386719,
+          "chest_angular_xy_rms_rad_s": 0.0312683992087841,
+          "chest_angular_xyz_rms_rad_s": 0.08476061373949051,
+          "arm_reference_rmse_rad": 0.0481872521340847,
+          "arm_velocity_error_rmse_rad_s": 0.03043225221335888,
+          "waist_reference_rmse_rad": 0.04219004139304161,
+          "arm_speed_rms_rad_s": 0.03043225221335888,
+          "waist_speed_rms_rad_s": 0.03884299471974373,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01949884742498398,
+            0.00843947846442461
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.99072265625,
+          "chest_rms_deg": 0.9781615138053894,
+          "chest_angular_xy_rms_rad_s": 0.01023133285343647,
+          "chest_angular_xyz_rms_rad_s": 0.011272255331277847,
+          "arm_reference_rmse_rad": 0.04876139760017395,
+          "arm_velocity_error_rmse_rad_s": 0.01209997944533825,
+          "waist_reference_rmse_rad": 0.04316765069961548,
+          "arm_speed_rms_rad_s": 0.01209997944533825,
+          "waist_speed_rms_rad_s": 0.02723369188606739,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01966473087668419,
+            0.008612546138465405
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 1,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.990148544311523,
+          "chest_rms_deg": 3.965686082839966,
+          "chest_angular_xy_rms_rad_s": 0.3986350893974304,
+          "chest_angular_xyz_rms_rad_s": 0.46013420820236206,
+          "arm_reference_rmse_rad": 0.05242563411593437,
+          "arm_velocity_error_rmse_rad_s": 0.2006639838218689,
+          "waist_reference_rmse_rad": 0.05477854609489441,
+          "arm_speed_rms_rad_s": 0.2006639838218689,
+          "waist_speed_rms_rad_s": 0.2491706907749176,
+          "hands_return_distance_rms_m_per_hand": [
+            0.025008797645568848,
+            0.028100891038775444
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.990148544311523,
+          "chest_rms_deg": 6.287742614746094,
+          "chest_angular_xy_rms_rad_s": 0.6616426110267639,
+          "chest_angular_xyz_rms_rad_s": 0.7426379919052124,
+          "arm_reference_rmse_rad": 0.05925231799483299,
+          "arm_velocity_error_rmse_rad_s": 0.32666468620300293,
+          "waist_reference_rmse_rad": 0.06907383352518082,
+          "arm_speed_rms_rad_s": 0.32666468620300293,
+          "waist_speed_rms_rad_s": 0.40640100836753845,
+          "hands_return_distance_rms_m_per_hand": [
+            0.031422581523656845,
+            0.03598984703421593
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.4558302164077759,
+          "chest_rms_deg": 1.358256459236145,
+          "chest_angular_xy_rms_rad_s": 0.021631108596920967,
+          "chest_angular_xyz_rms_rad_s": 0.024567654356360435,
+          "arm_reference_rmse_rad": 0.04937824606895447,
+          "arm_velocity_error_rmse_rad_s": 0.02043706551194191,
+          "waist_reference_rmse_rad": 0.04590267315506935,
+          "arm_speed_rms_rad_s": 0.02043706551194191,
+          "waist_speed_rms_rad_s": 0.03034357726573944,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02048696205019951,
+            0.023500531911849976
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 2,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.4228787422180176,
+          "chest_rms_deg": 0.8248794078826904,
+          "chest_angular_xy_rms_rad_s": 0.026297153905034065,
+          "chest_angular_xyz_rms_rad_s": 0.08428102731704712,
+          "arm_reference_rmse_rad": 0.04873843118548393,
+          "arm_velocity_error_rmse_rad_s": 0.026674382388591766,
+          "waist_reference_rmse_rad": 0.04091871529817581,
+          "arm_speed_rms_rad_s": 0.026674382388591766,
+          "waist_speed_rms_rad_s": 0.041043344885110855,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01929948665201664,
+            0.00807264819741249
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.8661216497421265,
+          "chest_rms_deg": 0.8642063140869141,
+          "chest_angular_xy_rms_rad_s": 0.0022471831180155277,
+          "chest_angular_xyz_rms_rad_s": 0.0024529783986508846,
+          "arm_reference_rmse_rad": 0.04943183436989784,
+          "arm_velocity_error_rmse_rad_s": 0.0031644355040043592,
+          "waist_reference_rmse_rad": 0.041763611137866974,
+          "arm_speed_rms_rad_s": 0.0031644355040043592,
+          "waist_speed_rms_rad_s": 0.033413682132959366,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019411122426390648,
+            0.008249538950622082
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 3,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.944024085998535,
+          "chest_rms_deg": 3.9343302249908447,
+          "chest_angular_xy_rms_rad_s": 0.3956732451915741,
+          "chest_angular_xyz_rms_rad_s": 0.45707210898399353,
+          "arm_reference_rmse_rad": 0.052355892956256866,
+          "arm_velocity_error_rmse_rad_s": 0.20126846432685852,
+          "waist_reference_rmse_rad": 0.05463511869311333,
+          "arm_speed_rms_rad_s": 0.20126846432685852,
+          "waist_speed_rms_rad_s": 0.24855689704418182,
+          "hands_return_distance_rms_m_per_hand": [
+            0.024910373613238335,
+            0.0280752032995224
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.944024085998535,
+          "chest_rms_deg": 6.234181880950928,
+          "chest_angular_xy_rms_rad_s": 0.6563029289245605,
+          "chest_angular_xyz_rms_rad_s": 0.7381709218025208,
+          "arm_reference_rmse_rad": 0.05923612043261528,
+          "arm_velocity_error_rmse_rad_s": 0.32796546816825867,
+          "waist_reference_rmse_rad": 0.0689229890704155,
+          "arm_speed_rms_rad_s": 0.32796546816825867,
+          "waist_speed_rms_rad_s": 0.40542900562286377,
+          "hands_return_distance_rms_m_per_hand": [
+            0.03127679601311684,
+            0.035959918051958084
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.354229211807251,
+          "chest_rms_deg": 1.3384841680526733,
+          "chest_angular_xy_rms_rad_s": 0.020945657044649124,
+          "chest_angular_xyz_rms_rad_s": 0.021627152338624,
+          "arm_reference_rmse_rad": 0.049505025148391724,
+          "arm_velocity_error_rmse_rad_s": 0.018450424075126648,
+          "waist_reference_rmse_rad": 0.04575349763035774,
+          "arm_speed_rms_rad_s": 0.018450424075126648,
+          "waist_speed_rms_rad_s": 0.027154145762324333,
+          "hands_return_distance_rms_m_per_hand": [
+            0.020447835326194763,
+            0.023589732125401497
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 4,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.38273024559021,
+          "chest_rms_deg": 0.7004578113555908,
+          "chest_angular_xy_rms_rad_s": 0.026522547006607056,
+          "chest_angular_xyz_rms_rad_s": 0.08358122408390045,
+          "arm_reference_rmse_rad": 0.04882921278476715,
+          "arm_velocity_error_rmse_rad_s": 0.028769006952643394,
+          "waist_reference_rmse_rad": 0.03922056406736374,
+          "arm_speed_rms_rad_s": 0.028769006952643394,
+          "waist_speed_rms_rad_s": 0.03885867819190025,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01912916824221611,
+            0.007697056978940964
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.7458217144012451,
+          "chest_rms_deg": 0.7446571588516235,
+          "chest_angular_xy_rms_rad_s": 0.002998066833242774,
+          "chest_angular_xyz_rms_rad_s": 0.0032713725231587887,
+          "arm_reference_rmse_rad": 0.049600306898355484,
+          "arm_velocity_error_rmse_rad_s": 0.0038899979554116726,
+          "waist_reference_rmse_rad": 0.040226902812719345,
+          "arm_speed_rms_rad_s": 0.0038899979554116726,
+          "waist_speed_rms_rad_s": 0.03001333586871624,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01926286704838276,
+            0.007886954583227634
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 5,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 11.206741333007812,
+          "chest_rms_deg": 3.959315538406372,
+          "chest_angular_xy_rms_rad_s": 0.39276909828186035,
+          "chest_angular_xyz_rms_rad_s": 0.45657533407211304,
+          "arm_reference_rmse_rad": 0.05245398357510567,
+          "arm_velocity_error_rmse_rad_s": 0.2012421041727066,
+          "waist_reference_rmse_rad": 0.0545249879360199,
+          "arm_speed_rms_rad_s": 0.2012421041727066,
+          "waist_speed_rms_rad_s": 0.24640792608261108,
+          "hands_return_distance_rms_m_per_hand": [
+            0.024968856945633888,
+            0.02808951772749424
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 11.206741333007812,
+          "chest_rms_deg": 6.262287616729736,
+          "chest_angular_xy_rms_rad_s": 0.6511936783790588,
+          "chest_angular_xyz_rms_rad_s": 0.7368280291557312,
+          "arm_reference_rmse_rad": 0.05949130654335022,
+          "arm_velocity_error_rmse_rad_s": 0.32792672514915466,
+          "waist_reference_rmse_rad": 0.06859283149242401,
+          "arm_speed_rms_rad_s": 0.32792672514915466,
+          "waist_speed_rms_rad_s": 0.40133222937583923,
+          "hands_return_distance_rms_m_per_hand": [
+            0.03140078857541084,
+            0.03599730134010315
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.4944751262664795,
+          "chest_rms_deg": 1.3528196811676025,
+          "chest_angular_xy_rms_rad_s": 0.02065412700176239,
+          "chest_angular_xyz_rms_rad_s": 0.0215652696788311,
+          "arm_reference_rmse_rad": 0.04934791848063469,
+          "arm_velocity_error_rmse_rad_s": 0.01893867738544941,
+          "waist_reference_rmse_rad": 0.04599525406956673,
+          "arm_speed_rms_rad_s": 0.01893867738544941,
+          "waist_speed_rms_rad_s": 0.028134632855653763,
+          "hands_return_distance_rms_m_per_hand": [
+            0.020502205938100815,
+            0.023499058559536934
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 6,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.4452615976333618,
+          "chest_rms_deg": 0.9087833762168884,
+          "chest_angular_xy_rms_rad_s": 0.030334150418639183,
+          "chest_angular_xyz_rms_rad_s": 0.08512973040342331,
+          "arm_reference_rmse_rad": 0.04830745607614517,
+          "arm_velocity_error_rmse_rad_s": 0.03315705060958862,
+          "waist_reference_rmse_rad": 0.041589997708797455,
+          "arm_speed_rms_rad_s": 0.03315705060958862,
+          "waist_speed_rms_rad_s": 0.03975891321897507,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019441109150648117,
+            0.008225267753005028
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.9775161743164062,
+          "chest_rms_deg": 0.9638921022415161,
+          "chest_angular_xy_rms_rad_s": 0.010734720155596733,
+          "chest_angular_xyz_rms_rad_s": 0.011819442734122276,
+          "arm_reference_rmse_rad": 0.04885861650109291,
+          "arm_velocity_error_rmse_rad_s": 0.012656298466026783,
+          "waist_reference_rmse_rad": 0.04267861321568489,
+          "arm_speed_rms_rad_s": 0.012656298466026783,
+          "waist_speed_rms_rad_s": 0.027675924822688103,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019600601866841316,
+            0.00846168678253889
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 7,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.701192855834961,
+          "chest_rms_deg": 3.9294066429138184,
+          "chest_angular_xy_rms_rad_s": 0.38963955640792847,
+          "chest_angular_xyz_rms_rad_s": 0.4546126425266266,
+          "arm_reference_rmse_rad": 0.05258520692586899,
+          "arm_velocity_error_rmse_rad_s": 0.20119918882846832,
+          "waist_reference_rmse_rad": 0.05434184521436691,
+          "arm_speed_rms_rad_s": 0.20119918882846832,
+          "waist_speed_rms_rad_s": 0.24655574560165405,
+          "hands_return_distance_rms_m_per_hand": [
+            0.024997377768158913,
+            0.028101833537220955
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.701192855834961,
+          "chest_rms_deg": 6.2416815757751465,
+          "chest_angular_xy_rms_rad_s": 0.6461124420166016,
+          "chest_angular_xyz_rms_rad_s": 0.7334393262863159,
+          "arm_reference_rmse_rad": 0.059642303735017776,
+          "arm_velocity_error_rmse_rad_s": 0.32860127091407776,
+          "waist_reference_rmse_rad": 0.068411685526371,
+          "arm_speed_rms_rad_s": 0.32860127091407776,
+          "waist_speed_rms_rad_s": 0.40263038873672485,
+          "hands_return_distance_rms_m_per_hand": [
+            0.03145517781376839,
+            0.035969771444797516
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.360497236251831,
+          "chest_rms_deg": 1.3450534343719482,
+          "chest_angular_xy_rms_rad_s": 0.021434301510453224,
+          "chest_angular_xyz_rms_rad_s": 0.02212396077811718,
+          "arm_reference_rmse_rad": 0.04952317103743553,
+          "arm_velocity_error_rmse_rad_s": 0.01896883361041546,
+          "waist_reference_rmse_rad": 0.04556757211685181,
+          "arm_speed_rms_rad_s": 0.01896883361041546,
+          "waist_speed_rms_rad_s": 0.02677355520427227,
+          "hands_return_distance_rms_m_per_hand": [
+            0.020433420315384865,
+            0.023526577278971672
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 8,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.2575334310531616,
+          "chest_rms_deg": 0.8798807859420776,
+          "chest_angular_xy_rms_rad_s": 0.022039707750082016,
+          "chest_angular_xyz_rms_rad_s": 0.08280718326568604,
+          "arm_reference_rmse_rad": 0.04866102337837219,
+          "arm_velocity_error_rmse_rad_s": 0.02716577611863613,
+          "waist_reference_rmse_rad": 0.041523516178131104,
+          "arm_speed_rms_rad_s": 0.02716577611863613,
+          "waist_speed_rms_rad_s": 0.0416569709777832,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019350338727235794,
+            0.008249163627624512
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.9032926559448242,
+          "chest_rms_deg": 0.8994413614273071,
+          "chest_angular_xy_rms_rad_s": 0.002174828201532364,
+          "chest_angular_xyz_rms_rad_s": 0.0024393012281507254,
+          "arm_reference_rmse_rad": 0.04934436082839966,
+          "arm_velocity_error_rmse_rad_s": 0.0032106712460517883,
+          "waist_reference_rmse_rad": 0.04222084954380989,
+          "arm_speed_rms_rad_s": 0.0032106712460517883,
+          "waist_speed_rms_rad_s": 0.032897934317588806,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019460264593362808,
+            0.008404828608036041
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 9,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.839818954467773,
+          "chest_rms_deg": 3.9974164962768555,
+          "chest_angular_xy_rms_rad_s": 0.4001022279262543,
+          "chest_angular_xyz_rms_rad_s": 0.46222153306007385,
+          "arm_reference_rmse_rad": 0.05237581953406334,
+          "arm_velocity_error_rmse_rad_s": 0.2015926092863083,
+          "waist_reference_rmse_rad": 0.054806530475616455,
+          "arm_speed_rms_rad_s": 0.2015926092863083,
+          "waist_speed_rms_rad_s": 0.24795468151569366,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02500469796359539,
+            0.02805418334901333
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.839818954467773,
+          "chest_rms_deg": 6.320138454437256,
+          "chest_angular_xy_rms_rad_s": 0.6639760136604309,
+          "chest_angular_xyz_rms_rad_s": 0.7451455593109131,
+          "arm_reference_rmse_rad": 0.05926801264286041,
+          "arm_velocity_error_rmse_rad_s": 0.3287692666053772,
+          "waist_reference_rmse_rad": 0.0690721720457077,
+          "arm_speed_rms_rad_s": 0.3287692666053772,
+          "waist_speed_rms_rad_s": 0.40378808975219727,
+          "hands_return_distance_rms_m_per_hand": [
+            0.031386688351631165,
+            0.035906530916690826
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.4003161191940308,
+          "chest_rms_deg": 1.3522005081176758,
+          "chest_angular_xy_rms_rad_s": 0.021556556224822998,
+          "chest_angular_xyz_rms_rad_s": 0.022176936268806458,
+          "arm_reference_rmse_rad": 0.04949446767568588,
+          "arm_velocity_error_rmse_rad_s": 0.0188154149800539,
+          "waist_reference_rmse_rad": 0.045872580260038376,
+          "arm_speed_rms_rad_s": 0.0188154149800539,
+          "waist_speed_rms_rad_s": 0.02834181673824787,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02046012692153454,
+            0.02360052429139614
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 10,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.3969475030899048,
+          "chest_rms_deg": 0.8034648895263672,
+          "chest_angular_xy_rms_rad_s": 0.025819940492510796,
+          "chest_angular_xyz_rms_rad_s": 0.0834987536072731,
+          "arm_reference_rmse_rad": 0.048705946654081345,
+          "arm_velocity_error_rmse_rad_s": 0.02717442624270916,
+          "waist_reference_rmse_rad": 0.04057862237095833,
+          "arm_speed_rms_rad_s": 0.02717442624270916,
+          "waist_speed_rms_rad_s": 0.039410535246133804,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019254060462117195,
+            0.008078993298113346
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.8440393805503845,
+          "chest_rms_deg": 0.8432527184486389,
+          "chest_angular_xy_rms_rad_s": 0.0023719973396509886,
+          "chest_angular_xyz_rms_rad_s": 0.002586874645203352,
+          "arm_reference_rmse_rad": 0.04942559823393822,
+          "arm_velocity_error_rmse_rad_s": 0.003092332975938916,
+          "waist_reference_rmse_rad": 0.04146917909383774,
+          "arm_speed_rms_rad_s": 0.003092332975938916,
+          "waist_speed_rms_rad_s": 0.031627509742975235,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019378826022148132,
+            0.00824752263724804
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 11,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.708866119384766,
+          "chest_rms_deg": 3.945183515548706,
+          "chest_angular_xy_rms_rad_s": 0.39813265204429626,
+          "chest_angular_xyz_rms_rad_s": 0.4579065144062042,
+          "arm_reference_rmse_rad": 0.0522538423538208,
+          "arm_velocity_error_rmse_rad_s": 0.20229434967041016,
+          "waist_reference_rmse_rad": 0.054734617471694946,
+          "arm_speed_rms_rad_s": 0.20229434967041016,
+          "waist_speed_rms_rad_s": 0.24663889408111572,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02489640563726425,
+            0.027955589815974236
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.708866119384766,
+          "chest_rms_deg": 6.234188079833984,
+          "chest_angular_xy_rms_rad_s": 0.661525547504425,
+          "chest_angular_xyz_rms_rad_s": 0.7408874034881592,
+          "arm_reference_rmse_rad": 0.05914631113409996,
+          "arm_velocity_error_rmse_rad_s": 0.3295501172542572,
+          "waist_reference_rmse_rad": 0.06897357106208801,
+          "arm_speed_rms_rad_s": 0.3295501172542572,
+          "waist_speed_rms_rad_s": 0.402425616979599,
+          "hands_return_distance_rms_m_per_hand": [
+            0.031222611665725708,
+            0.0357348769903183
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.4571970701217651,
+          "chest_rms_deg": 1.4187648296356201,
+          "chest_angular_xy_rms_rad_s": 0.021512459963560104,
+          "chest_angular_xyz_rms_rad_s": 0.022177381440997124,
+          "arm_reference_rmse_rad": 0.04948081821203232,
+          "arm_velocity_error_rmse_rad_s": 0.01884317398071289,
+          "waist_reference_rmse_rad": 0.04578973725438118,
+          "arm_speed_rms_rad_s": 0.01884317398071289,
+          "waist_speed_rms_rad_s": 0.028330689296126366,
+          "hands_return_distance_rms_m_per_hand": [
+            0.020414462313055992,
+            0.023501256480813026
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 12,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.4257757663726807,
+          "chest_rms_deg": 0.6857060790061951,
+          "chest_angular_xy_rms_rad_s": 0.027209335938096046,
+          "chest_angular_xyz_rms_rad_s": 0.08427339047193527,
+          "arm_reference_rmse_rad": 0.048895932734012604,
+          "arm_velocity_error_rmse_rad_s": 0.028342971578240395,
+          "waist_reference_rmse_rad": 0.039088375866413116,
+          "arm_speed_rms_rad_s": 0.028342971578240395,
+          "waist_speed_rms_rad_s": 0.0402558371424675,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019077014178037643,
+            0.007806379348039627
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.6711598038673401,
+          "chest_rms_deg": 0.6708947420120239,
+          "chest_angular_xy_rms_rad_s": 0.0020937505178153515,
+          "chest_angular_xyz_rms_rad_s": 0.0023333255667239428,
+          "arm_reference_rmse_rad": 0.04974106326699257,
+          "arm_velocity_error_rmse_rad_s": 0.002727478975430131,
+          "waist_reference_rmse_rad": 0.03985787183046341,
+          "arm_speed_rms_rad_s": 0.002727478975430131,
+          "waist_speed_rms_rad_s": 0.03113214299082756,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01922745071351528,
+            0.007833261042833328
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 13,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.673015594482422,
+          "chest_rms_deg": 3.9391815662384033,
+          "chest_angular_xy_rms_rad_s": 0.3927386999130249,
+          "chest_angular_xyz_rms_rad_s": 0.4551834166049957,
+          "arm_reference_rmse_rad": 0.05233421549201012,
+          "arm_velocity_error_rmse_rad_s": 0.20154017210006714,
+          "waist_reference_rmse_rad": 0.054447729140520096,
+          "arm_speed_rms_rad_s": 0.20154017210006714,
+          "waist_speed_rms_rad_s": 0.24392825365066528,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02487354725599289,
+            0.02809344232082367
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.673015594482422,
+          "chest_rms_deg": 6.246084213256836,
+          "chest_angular_xy_rms_rad_s": 0.6526183485984802,
+          "chest_angular_xyz_rms_rad_s": 0.7369495630264282,
+          "arm_reference_rmse_rad": 0.059345949441194534,
+          "arm_velocity_error_rmse_rad_s": 0.3279784619808197,
+          "waist_reference_rmse_rad": 0.06878103315830231,
+          "arm_speed_rms_rad_s": 0.3279784619808197,
+          "waist_speed_rms_rad_s": 0.3986610174179077,
+          "hands_return_distance_rms_m_per_hand": [
+            0.03126799687743187,
+            0.03597579896450043
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.3927428722381592,
+          "chest_rms_deg": 1.375986933708191,
+          "chest_angular_xy_rms_rad_s": 0.020692268386483192,
+          "chest_angular_xyz_rms_rad_s": 0.021421166136860847,
+          "arm_reference_rmse_rad": 0.04951707273721695,
+          "arm_velocity_error_rmse_rad_s": 0.01849367655813694,
+          "waist_reference_rmse_rad": 0.04566694051027298,
+          "arm_speed_rms_rad_s": 0.01849367655813694,
+          "waist_speed_rms_rad_s": 0.02542651817202568,
+          "hands_return_distance_rms_m_per_hand": [
+            0.020430220291018486,
+            0.023575277999043465
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 14,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.567622184753418,
+          "chest_rms_deg": 0.8214976787567139,
+          "chest_angular_xy_rms_rad_s": 0.026570845395326614,
+          "chest_angular_xyz_rms_rad_s": 0.08378145098686218,
+          "arm_reference_rmse_rad": 0.048772942274808884,
+          "arm_velocity_error_rmse_rad_s": 0.028986776247620583,
+          "waist_reference_rmse_rad": 0.0412876196205616,
+          "arm_speed_rms_rad_s": 0.028986776247620583,
+          "waist_speed_rms_rad_s": 0.04384820908308029,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019299624487757683,
+            0.00822602491825819
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.8510773777961731,
+          "chest_rms_deg": 0.8505896329879761,
+          "chest_angular_xy_rms_rad_s": 0.0015983415069058537,
+          "chest_angular_xyz_rms_rad_s": 0.0017436138587072492,
+          "arm_reference_rmse_rad": 0.0494198240339756,
+          "arm_velocity_error_rmse_rad_s": 0.0022776436526328325,
+          "waist_reference_rmse_rad": 0.04209422320127487,
+          "arm_speed_rms_rad_s": 0.0022776436526328325,
+          "waist_speed_rms_rad_s": 0.03604280948638916,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01941499300301075,
+            0.008352995850145817
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 15,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 11.10945987701416,
+          "chest_rms_deg": 3.9481077194213867,
+          "chest_angular_xy_rms_rad_s": 0.3906266391277313,
+          "chest_angular_xyz_rms_rad_s": 0.45385411381721497,
+          "arm_reference_rmse_rad": 0.0523793064057827,
+          "arm_velocity_error_rmse_rad_s": 0.20078617334365845,
+          "waist_reference_rmse_rad": 0.054390884935855865,
+          "arm_speed_rms_rad_s": 0.20078617334365845,
+          "waist_speed_rms_rad_s": 0.2461811602115631,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02490716241300106,
+            0.02803490310907364
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 11.10945987701416,
+          "chest_rms_deg": 6.245389461517334,
+          "chest_angular_xy_rms_rad_s": 0.6482700705528259,
+          "chest_angular_xyz_rms_rad_s": 0.7332960367202759,
+          "arm_reference_rmse_rad": 0.059411175549030304,
+          "arm_velocity_error_rmse_rad_s": 0.3276684880256653,
+          "waist_reference_rmse_rad": 0.06839828938245773,
+          "arm_speed_rms_rad_s": 0.3276684880256653,
+          "waist_speed_rms_rad_s": 0.4017394483089447,
+          "hands_return_distance_rms_m_per_hand": [
+            0.03126413747668266,
+            0.03593830391764641
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.4732555150985718,
+          "chest_rms_deg": 1.4035656452178955,
+          "chest_angular_xy_rms_rad_s": 0.020839586853981018,
+          "chest_angular_xyz_rms_rad_s": 0.021837476640939713,
+          "arm_reference_rmse_rad": 0.04938583821058273,
+          "arm_velocity_error_rmse_rad_s": 0.019101198762655258,
+          "waist_reference_rmse_rad": 0.045775193721055984,
+          "arm_speed_rms_rad_s": 0.019101198762655258,
+          "waist_speed_rms_rad_s": 0.02826404944062233,
+          "hands_return_distance_rms_m_per_hand": [
+            0.020466452464461327,
+            0.023461217060685158
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 16,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.507224440574646,
+          "chest_rms_deg": 0.7925279140472412,
+          "chest_angular_xy_rms_rad_s": 0.02521391212940216,
+          "chest_angular_xyz_rms_rad_s": 0.08353222161531448,
+          "arm_reference_rmse_rad": 0.04895478114485741,
+          "arm_velocity_error_rmse_rad_s": 0.02987673506140709,
+          "waist_reference_rmse_rad": 0.040106721222400665,
+          "arm_speed_rms_rad_s": 0.02987673506140709,
+          "waist_speed_rms_rad_s": 0.04188663884997368,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01920809969305992,
+            0.007988742552697659
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.7942487597465515,
+          "chest_rms_deg": 0.7936699986457825,
+          "chest_angular_xy_rms_rad_s": 0.0018888910999521613,
+          "chest_angular_xyz_rms_rad_s": 0.002142004668712616,
+          "arm_reference_rmse_rad": 0.04964841902256012,
+          "arm_velocity_error_rmse_rad_s": 0.0027286894619464874,
+          "waist_reference_rmse_rad": 0.040740687400102615,
+          "arm_speed_rms_rad_s": 0.0027286894619464874,
+          "waist_speed_rms_rad_s": 0.03520897030830383,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01931105926632881,
+            0.008050072006881237
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 17,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.629368782043457,
+          "chest_rms_deg": 3.9704270362854004,
+          "chest_angular_xy_rms_rad_s": 0.39791610836982727,
+          "chest_angular_xyz_rms_rad_s": 0.46118322014808655,
+          "arm_reference_rmse_rad": 0.05242607370018959,
+          "arm_velocity_error_rmse_rad_s": 0.2016640603542328,
+          "waist_reference_rmse_rad": 0.05470476672053337,
+          "arm_speed_rms_rad_s": 0.2016640603542328,
+          "waist_speed_rms_rad_s": 0.24657078087329865,
+          "hands_return_distance_rms_m_per_hand": [
+            0.0250081829726696,
+            0.028080876916646957
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.629368782043457,
+          "chest_rms_deg": 6.299515247344971,
+          "chest_angular_xy_rms_rad_s": 0.6603408455848694,
+          "chest_angular_xyz_rms_rad_s": 0.7448861002922058,
+          "arm_reference_rmse_rad": 0.05948667600750923,
+          "arm_velocity_error_rmse_rad_s": 0.3289131820201874,
+          "waist_reference_rmse_rad": 0.06889774650335312,
+          "arm_speed_rms_rad_s": 0.3289131820201874,
+          "waist_speed_rms_rad_s": 0.4021741449832916,
+          "hands_return_distance_rms_m_per_hand": [
+            0.03144558519124985,
+            0.035983856767416
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.342353105545044,
+          "chest_rms_deg": 1.3281160593032837,
+          "chest_angular_xy_rms_rad_s": 0.020084647461771965,
+          "chest_angular_xyz_rms_rad_s": 0.02085237391293049,
+          "arm_reference_rmse_rad": 0.049389440566301346,
+          "arm_velocity_error_rmse_rad_s": 0.019180532544851303,
+          "waist_reference_rmse_rad": 0.04598148912191391,
+          "arm_speed_rms_rad_s": 0.019180532544851303,
+          "waist_speed_rms_rad_s": 0.027227165177464485,
+          "hands_return_distance_rms_m_per_hand": [
+            0.020515626296401024,
+            0.023540107533335686
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 18,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.2809841632843018,
+          "chest_rms_deg": 0.850884199142456,
+          "chest_angular_xy_rms_rad_s": 0.02609647996723652,
+          "chest_angular_xyz_rms_rad_s": 0.08367587625980377,
+          "arm_reference_rmse_rad": 0.04880698770284653,
+          "arm_velocity_error_rmse_rad_s": 0.029500771313905716,
+          "waist_reference_rmse_rad": 0.040901076048612595,
+          "arm_speed_rms_rad_s": 0.029500771313905716,
+          "waist_speed_rms_rad_s": 0.04221067577600479,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019294707104563713,
+            0.008081492967903614
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.882532000541687,
+          "chest_rms_deg": 0.8821555376052856,
+          "chest_angular_xy_rms_rad_s": 0.0022194546181708574,
+          "chest_angular_xyz_rms_rad_s": 0.002409165957942605,
+          "arm_reference_rmse_rad": 0.04953305050730705,
+          "arm_velocity_error_rmse_rad_s": 0.0031020627357065678,
+          "waist_reference_rmse_rad": 0.041653238236904144,
+          "arm_speed_rms_rad_s": 0.0031020627357065678,
+          "waist_speed_rms_rad_s": 0.034329548478126526,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019406532868742943,
+            0.008211844600737095
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 19,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.73198127746582,
+          "chest_rms_deg": 3.9795379638671875,
+          "chest_angular_xy_rms_rad_s": 0.3938085436820984,
+          "chest_angular_xyz_rms_rad_s": 0.45542964339256287,
+          "arm_reference_rmse_rad": 0.05226218327879906,
+          "arm_velocity_error_rmse_rad_s": 0.20077025890350342,
+          "waist_reference_rmse_rad": 0.05452932417392731,
+          "arm_speed_rms_rad_s": 0.20077025890350342,
+          "waist_speed_rms_rad_s": 0.24510933458805084,
+          "hands_return_distance_rms_m_per_hand": [
+            0.024874309077858925,
+            0.028008364140987396
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.73198127746582,
+          "chest_rms_deg": 6.301074028015137,
+          "chest_angular_xy_rms_rad_s": 0.6537771224975586,
+          "chest_angular_xyz_rms_rad_s": 0.7363128066062927,
+          "arm_reference_rmse_rad": 0.05922313779592514,
+          "arm_velocity_error_rmse_rad_s": 0.3273499608039856,
+          "waist_reference_rmse_rad": 0.06887545436620712,
+          "arm_speed_rms_rad_s": 0.3273499608039856,
+          "waist_speed_rms_rad_s": 0.3997669219970703,
+          "hands_return_distance_rms_m_per_hand": [
+            0.031308431178331375,
+            0.03585485741496086
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.3612406253814697,
+          "chest_rms_deg": 1.333439826965332,
+          "chest_angular_xy_rms_rad_s": 0.020976729691028595,
+          "chest_angular_xyz_rms_rad_s": 0.021609000861644745,
+          "arm_reference_rmse_rad": 0.04945426806807518,
+          "arm_velocity_error_rmse_rad_s": 0.018828408792614937,
+          "waist_reference_rmse_rad": 0.04589556157588959,
+          "arm_speed_rms_rad_s": 0.018828408792614937,
+          "waist_speed_rms_rad_s": 0.028855934739112854,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02046044170856476,
+            0.023535387590527534
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 20,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.3727837800979614,
+          "chest_rms_deg": 0.8766515851020813,
+          "chest_angular_xy_rms_rad_s": 0.025276457890868187,
+          "chest_angular_xyz_rms_rad_s": 0.08383158594369888,
+          "arm_reference_rmse_rad": 0.04868267476558685,
+          "arm_velocity_error_rmse_rad_s": 0.02735186740756035,
+          "waist_reference_rmse_rad": 0.04156556352972984,
+          "arm_speed_rms_rad_s": 0.02735186740756035,
+          "waist_speed_rms_rad_s": 0.04359292984008789,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019348546862602234,
+            0.008274226449429989
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.8965590000152588,
+          "chest_rms_deg": 0.8953626751899719,
+          "chest_angular_xy_rms_rad_s": 0.001867111073806882,
+          "chest_angular_xyz_rms_rad_s": 0.0020594901870936155,
+          "arm_reference_rmse_rad": 0.04935624077916145,
+          "arm_velocity_error_rmse_rad_s": 0.0027745566330850124,
+          "waist_reference_rmse_rad": 0.04226011037826538,
+          "arm_speed_rms_rad_s": 0.0027745566330850124,
+          "waist_speed_rms_rad_s": 0.03559402376413345,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019461318850517273,
+            0.008392338640987873
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 21,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.829875946044922,
+          "chest_rms_deg": 3.953453540802002,
+          "chest_angular_xy_rms_rad_s": 0.3939724564552307,
+          "chest_angular_xyz_rms_rad_s": 0.45666688680648804,
+          "arm_reference_rmse_rad": 0.052409663796424866,
+          "arm_velocity_error_rmse_rad_s": 0.20176222920417786,
+          "waist_reference_rmse_rad": 0.05449141561985016,
+          "arm_speed_rms_rad_s": 0.20176222920417786,
+          "waist_speed_rms_rad_s": 0.24551357328891754,
+          "hands_return_distance_rms_m_per_hand": [
+            0.024920225143432617,
+            0.028044546023011208
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.829875946044922,
+          "chest_rms_deg": 6.250303268432617,
+          "chest_angular_xy_rms_rad_s": 0.6532698273658752,
+          "chest_angular_xyz_rms_rad_s": 0.7362772226333618,
+          "arm_reference_rmse_rad": 0.05935453623533249,
+          "arm_velocity_error_rmse_rad_s": 0.3292540907859802,
+          "waist_reference_rmse_rad": 0.06875244528055191,
+          "arm_speed_rms_rad_s": 0.3292540907859802,
+          "waist_speed_rms_rad_s": 0.4001639485359192,
+          "hands_return_distance_rms_m_per_hand": [
+            0.031313590705394745,
+            0.03588574752211571
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.3887284994125366,
+          "chest_rms_deg": 1.3640717267990112,
+          "chest_angular_xy_rms_rad_s": 0.020794477313756943,
+          "chest_angular_xyz_rms_rad_s": 0.02158372662961483,
+          "arm_reference_rmse_rad": 0.049479350447654724,
+          "arm_velocity_error_rmse_rad_s": 0.018963096663355827,
+          "waist_reference_rmse_rad": 0.04564264416694641,
+          "arm_speed_rms_rad_s": 0.018963096663355827,
+          "waist_speed_rms_rad_s": 0.026314815506339073,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02044055424630642,
+            0.023523909971117973
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 22,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.4766887426376343,
+          "chest_rms_deg": 0.9596192836761475,
+          "chest_angular_xy_rms_rad_s": 0.03094092383980751,
+          "chest_angular_xyz_rms_rad_s": 0.08467797189950943,
+          "arm_reference_rmse_rad": 0.048310864716768265,
+          "arm_velocity_error_rmse_rad_s": 0.031530603766441345,
+          "waist_reference_rmse_rad": 0.042114146053791046,
+          "arm_speed_rms_rad_s": 0.031530603766441345,
+          "waist_speed_rms_rad_s": 0.04179844632744789,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01954599656164646,
+            0.008280410431325436
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.0180370807647705,
+          "chest_rms_deg": 0.9838120341300964,
+          "chest_angular_xy_rms_rad_s": 0.013288015499711037,
+          "chest_angular_xyz_rms_rad_s": 0.014747390523552895,
+          "arm_reference_rmse_rad": 0.048848170787096024,
+          "arm_velocity_error_rmse_rad_s": 0.013689866289496422,
+          "waist_reference_rmse_rad": 0.04275292158126831,
+          "arm_speed_rms_rad_s": 0.013689866289496422,
+          "waist_speed_rms_rad_s": 0.03074711747467518,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01962936297059059,
+            0.008431722410023212
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 23,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.558021545410156,
+          "chest_rms_deg": 3.8835666179656982,
+          "chest_angular_xy_rms_rad_s": 0.38910993933677673,
+          "chest_angular_xyz_rms_rad_s": 0.4537728428840637,
+          "arm_reference_rmse_rad": 0.05247762054204941,
+          "arm_velocity_error_rmse_rad_s": 0.2023976594209671,
+          "waist_reference_rmse_rad": 0.054402273148298264,
+          "arm_speed_rms_rad_s": 0.2023976594209671,
+          "waist_speed_rms_rad_s": 0.24404312670230865,
+          "hands_return_distance_rms_m_per_hand": [
+            0.024923596531152725,
+            0.028091298416256905
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.558021545410156,
+          "chest_rms_deg": 6.1691741943359375,
+          "chest_angular_xy_rms_rad_s": 0.6448148488998413,
+          "chest_angular_xyz_rms_rad_s": 0.7311416864395142,
+          "arm_reference_rmse_rad": 0.059413738548755646,
+          "arm_velocity_error_rmse_rad_s": 0.32991960644721985,
+          "waist_reference_rmse_rad": 0.06844176352024078,
+          "arm_speed_rms_rad_s": 0.32991960644721985,
+          "waist_speed_rms_rad_s": 0.3971388041973114,
+          "hands_return_distance_rms_m_per_hand": [
+            0.03123587928712368,
+            0.035891227424144745
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.4257360696792603,
+          "chest_rms_deg": 1.2912571430206299,
+          "chest_angular_xy_rms_rad_s": 0.02100265398621559,
+          "chest_angular_xyz_rms_rad_s": 0.022537603974342346,
+          "arm_reference_rmse_rad": 0.049414996057748795,
+          "arm_velocity_error_rmse_rad_s": 0.020327411592006683,
+          "waist_reference_rmse_rad": 0.045836061239242554,
+          "arm_speed_rms_rad_s": 0.020327411592006683,
+          "waist_speed_rms_rad_s": 0.02813689038157463,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02053987793624401,
+            0.02359713427722454
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 24,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.5790157318115234,
+          "chest_rms_deg": 0.6673412322998047,
+          "chest_angular_xy_rms_rad_s": 0.025613851845264435,
+          "chest_angular_xyz_rms_rad_s": 0.08650066703557968,
+          "arm_reference_rmse_rad": 0.048916418105363846,
+          "arm_velocity_error_rmse_rad_s": 0.027129074558615685,
+          "waist_reference_rmse_rad": 0.038899075239896774,
+          "arm_speed_rms_rad_s": 0.027129074558615685,
+          "waist_speed_rms_rad_s": 0.04392576217651367,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01911798119544983,
+            0.007490827236324549
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.6508729457855225,
+          "chest_rms_deg": 0.6492661833763123,
+          "chest_angular_xy_rms_rad_s": 0.0024884091690182686,
+          "chest_angular_xyz_rms_rad_s": 0.0030440432019531727,
+          "arm_reference_rmse_rad": 0.049548931419849396,
+          "arm_velocity_error_rmse_rad_s": 0.004330104682594538,
+          "waist_reference_rmse_rad": 0.039415162056684494,
+          "arm_speed_rms_rad_s": 0.004330104682594538,
+          "waist_speed_rms_rad_s": 0.03559878095984459,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019197510555386543,
+            0.007500973530113697
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 25,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.638102531433105,
+          "chest_rms_deg": 3.931121826171875,
+          "chest_angular_xy_rms_rad_s": 0.39065665006637573,
+          "chest_angular_xyz_rms_rad_s": 0.45562729239463806,
+          "arm_reference_rmse_rad": 0.052427567541599274,
+          "arm_velocity_error_rmse_rad_s": 0.2009381651878357,
+          "waist_reference_rmse_rad": 0.05459916964173317,
+          "arm_speed_rms_rad_s": 0.2009381651878357,
+          "waist_speed_rms_rad_s": 0.24696964025497437,
+          "hands_return_distance_rms_m_per_hand": [
+            0.024971788749098778,
+            0.028077561408281326
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.638102531433105,
+          "chest_rms_deg": 6.219823360443115,
+          "chest_angular_xy_rms_rad_s": 0.6482779383659363,
+          "chest_angular_xyz_rms_rad_s": 0.7346349358558655,
+          "arm_reference_rmse_rad": 0.05948645994067192,
+          "arm_velocity_error_rmse_rad_s": 0.32696622610092163,
+          "waist_reference_rmse_rad": 0.06846753507852554,
+          "arm_speed_rms_rad_s": 0.32696622610092163,
+          "waist_speed_rms_rad_s": 0.40268805623054504,
+          "hands_return_distance_rms_m_per_hand": [
+            0.031276360154151917,
+            0.03592512756586075
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.2994067668914795,
+          "chest_rms_deg": 1.283911943435669,
+          "chest_angular_xy_rms_rad_s": 0.020089762285351753,
+          "chest_angular_xyz_rms_rad_s": 0.020863953977823257,
+          "arm_reference_rmse_rad": 0.0493173822760582,
+          "arm_velocity_error_rmse_rad_s": 0.019171185791492462,
+          "waist_reference_rmse_rad": 0.046184245496988297,
+          "arm_speed_rms_rad_s": 0.019171185791492462,
+          "waist_speed_rms_rad_s": 0.024834899231791496,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02059021219611168,
+            0.02367403730750084
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 26,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.5610958337783813,
+          "chest_rms_deg": 0.9764853715896606,
+          "chest_angular_xy_rms_rad_s": 0.03111053630709648,
+          "chest_angular_xyz_rms_rad_s": 0.08419027179479599,
+          "arm_reference_rmse_rad": 0.04820336028933525,
+          "arm_velocity_error_rmse_rad_s": 0.02823716588318348,
+          "waist_reference_rmse_rad": 0.04268137738108635,
+          "arm_speed_rms_rad_s": 0.02823716588318348,
+          "waist_speed_rms_rad_s": 0.0395873598754406,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01957153156399727,
+            0.008479147218167782
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.0180219411849976,
+          "chest_rms_deg": 0.9894652962684631,
+          "chest_angular_xy_rms_rad_s": 0.011427052319049835,
+          "chest_angular_xyz_rms_rad_s": 0.013113496825098991,
+          "arm_reference_rmse_rad": 0.048822883516550064,
+          "arm_velocity_error_rmse_rad_s": 0.012068554759025574,
+          "waist_reference_rmse_rad": 0.04323999583721161,
+          "arm_speed_rms_rad_s": 0.012068554759025574,
+          "waist_speed_rms_rad_s": 0.02685713581740856,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019670585170388222,
+            0.008542267605662346
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 27,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.573702812194824,
+          "chest_rms_deg": 3.9573471546173096,
+          "chest_angular_xy_rms_rad_s": 0.3987776041030884,
+          "chest_angular_xyz_rms_rad_s": 0.4595493972301483,
+          "arm_reference_rmse_rad": 0.05235431343317032,
+          "arm_velocity_error_rmse_rad_s": 0.2010805308818817,
+          "waist_reference_rmse_rad": 0.05467967316508293,
+          "arm_speed_rms_rad_s": 0.2010805308818817,
+          "waist_speed_rms_rad_s": 0.24655131995677948,
+          "hands_return_distance_rms_m_per_hand": [
+            0.024957457557320595,
+            0.027974050492048264
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.573702812194824,
+          "chest_rms_deg": 6.255711555480957,
+          "chest_angular_xy_rms_rad_s": 0.6621370315551758,
+          "chest_angular_xyz_rms_rad_s": 0.7420273423194885,
+          "arm_reference_rmse_rad": 0.05926636978983879,
+          "arm_velocity_error_rmse_rad_s": 0.3272009491920471,
+          "waist_reference_rmse_rad": 0.06890193372964859,
+          "arm_speed_rms_rad_s": 0.3272009491920471,
+          "waist_speed_rms_rad_s": 0.40230312943458557,
+          "hands_return_distance_rms_m_per_hand": [
+            0.031308554112911224,
+            0.03576532378792763
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.3687827587127686,
+          "chest_rms_deg": 1.3248704671859741,
+          "chest_angular_xy_rms_rad_s": 0.02005395106971264,
+          "chest_angular_xyz_rms_rad_s": 0.02117932215332985,
+          "arm_reference_rmse_rad": 0.049399107694625854,
+          "arm_velocity_error_rmse_rad_s": 0.021468106657266617,
+          "waist_reference_rmse_rad": 0.046007513999938965,
+          "arm_speed_rms_rad_s": 0.021468106657266617,
+          "waist_speed_rms_rad_s": 0.028145693242549896,
+          "hands_return_distance_rms_m_per_hand": [
+            0.020514454692602158,
+            0.0235445536673069
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 28,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.3698670864105225,
+          "chest_rms_deg": 0.7910276651382446,
+          "chest_angular_xy_rms_rad_s": 0.024845227599143982,
+          "chest_angular_xyz_rms_rad_s": 0.08302903175354004,
+          "arm_reference_rmse_rad": 0.048699986189603806,
+          "arm_velocity_error_rmse_rad_s": 0.028708741068840027,
+          "waist_reference_rmse_rad": 0.04113347455859184,
+          "arm_speed_rms_rad_s": 0.028708741068840027,
+          "waist_speed_rms_rad_s": 0.042001593858003616,
+          "hands_return_distance_rms_m_per_hand": [
+            0.01927255094051361,
+            0.008188962005078793
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.8273059129714966,
+          "chest_rms_deg": 0.8270376324653625,
+          "chest_angular_xy_rms_rad_s": 0.0016571258893236518,
+          "chest_angular_xyz_rms_rad_s": 0.0017864983528852463,
+          "arm_reference_rmse_rad": 0.04936378449201584,
+          "arm_velocity_error_rmse_rad_s": 0.0022617436479777098,
+          "waist_reference_rmse_rad": 0.042067721486091614,
+          "arm_speed_rms_rad_s": 0.0022617436479777098,
+          "waist_speed_rms_rad_s": 0.03456346318125725,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019403759390115738,
+            0.008362802676856518
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 29,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.58713150024414,
+          "chest_rms_deg": 3.9449524879455566,
+          "chest_angular_xy_rms_rad_s": 0.3939511775970459,
+          "chest_angular_xyz_rms_rad_s": 0.4581851363182068,
+          "arm_reference_rmse_rad": 0.05242918059229851,
+          "arm_velocity_error_rmse_rad_s": 0.20136117935180664,
+          "waist_reference_rmse_rad": 0.054512955248355865,
+          "arm_speed_rms_rad_s": 0.20136117935180664,
+          "waist_speed_rms_rad_s": 0.2455754578113556,
+          "hands_return_distance_rms_m_per_hand": [
+            0.02494034916162491,
+            0.028019823133945465
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.58713150024414,
+          "chest_rms_deg": 6.24493408203125,
+          "chest_angular_xy_rms_rad_s": 0.6538745760917664,
+          "chest_angular_xyz_rms_rad_s": 0.7393918633460999,
+          "arm_reference_rmse_rad": 0.059463176876306534,
+          "arm_velocity_error_rmse_rad_s": 0.32833072543144226,
+          "waist_reference_rmse_rad": 0.06854380667209625,
+          "arm_speed_rms_rad_s": 0.32833072543144226,
+          "waist_speed_rms_rad_s": 0.4003099203109741,
+          "hands_return_distance_rms_m_per_hand": [
+            0.03130544722080231,
+            0.03587358072400093
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.3265016078948975,
+          "chest_rms_deg": 1.289001226425171,
+          "chest_angular_xy_rms_rad_s": 0.01977885328233242,
+          "chest_angular_xyz_rms_rad_s": 0.021099023520946503,
+          "arm_reference_rmse_rad": 0.04939394071698189,
+          "arm_velocity_error_rmse_rad_s": 0.019532568752765656,
+          "waist_reference_rmse_rad": 0.046038269996643066,
+          "arm_speed_rms_rad_s": 0.019532568752765656,
+          "waist_speed_rms_rad_s": 0.029274186119437218,
+          "hands_return_distance_rms_m_per_hand": [
+            0.020519137382507324,
+            0.023562854155898094
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 30,
+        "case": "stand",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 1.4985065460205078,
+          "chest_rms_deg": 0.793645977973938,
+          "chest_angular_xy_rms_rad_s": 0.023663511499762535,
+          "chest_angular_xyz_rms_rad_s": 0.08609023690223694,
+          "arm_reference_rmse_rad": 0.04894610121846199,
+          "arm_velocity_error_rmse_rad_s": 0.02562114968895912,
+          "waist_reference_rmse_rad": 0.0406639501452446,
+          "arm_speed_rms_rad_s": 0.02562114968895912,
+          "waist_speed_rms_rad_s": 0.045093290507793427,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019232748076319695,
+            0.008051509968936443
+          ]
+        },
+        "dynamic": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 0.8130677342414856,
+          "chest_rms_deg": 0.8122383952140808,
+          "chest_angular_xy_rms_rad_s": 0.0017238333821296692,
+          "chest_angular_xyz_rms_rad_s": 0.0018366441363468766,
+          "arm_reference_rmse_rad": 0.04960509017109871,
+          "arm_velocity_error_rmse_rad_s": 0.002115502953529358,
+          "waist_reference_rmse_rad": 0.04148079454898834,
+          "arm_speed_rms_rad_s": 0.002115502953529358,
+          "waist_speed_rms_rad_s": 0.037908393889665604,
+          "hands_return_distance_rms_m_per_hand": [
+            0.019344793632626534,
+            0.008185685612261295
+          ]
+        },
+        "directions": {}
+      },
+      {
+        "env_index": 31,
+        "case": "inplace",
+        "finite_measurements": true,
+        "first_episode_failed": false,
+        "first_episode_samples": 1000,
+        "all": {
+          "samples": 1000,
+          "expected_samples": 1000,
+          "observed": true,
+          "chest_peak_deg": 10.84380054473877,
+          "chest_rms_deg": 3.9787867069244385,
+          "chest_angular_xy_rms_rad_s": 0.3959618806838989,
+          "chest_angular_xyz_rms_rad_s": 0.4571913480758667,
+          "arm_reference_rmse_rad": 0.052262332290410995,
+          "arm_velocity_error_rmse_rad_s": 0.20044958591461182,
+          "waist_reference_rmse_rad": 0.054641157388687134,
+          "arm_speed_rms_rad_s": 0.20044958591461182,
+          "waist_speed_rms_rad_s": 0.24312426149845123,
+          "hands_return_distance_rms_m_per_hand": [
+            0.024890568107366562,
+            0.027996795251965523
+          ]
+        },
+        "dynamic": {
+          "samples": 350,
+          "expected_samples": 350,
+          "observed": true,
+          "chest_peak_deg": 10.84380054473877,
+          "chest_rms_deg": 6.28028678894043,
+          "chest_angular_xy_rms_rad_s": 0.6575327515602112,
+          "chest_angular_xyz_rms_rad_s": 0.7396346926689148,
+          "arm_reference_rmse_rad": 0.05928507819771767,
+          "arm_velocity_error_rmse_rad_s": 0.3267790377140045,
+          "waist_reference_rmse_rad": 0.0688844546675682,
+          "arm_speed_rms_rad_s": 0.3267790377140045,
+          "waist_speed_rms_rad_s": 0.39642325043678284,
+          "hands_return_distance_rms_m_per_hand": [
+            0.031242046505212784,
+            0.03584851324558258
+          ]
+        },
+        "gesture": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "early_return": {
+          "samples": 0,
+          "expected_samples": 0,
+          "observed": false,
+          "chest_peak_deg": null,
+          "chest_rms_deg": null,
+          "chest_angular_xy_rms_rad_s": null,
+          "chest_angular_xyz_rms_rad_s": null,
+          "arm_reference_rmse_rad": null,
+          "arm_velocity_error_rmse_rad_s": null,
+          "waist_reference_rmse_rad": null,
+          "arm_speed_rms_rad_s": null,
+          "waist_speed_rms_rad_s": null,
+          "hands_return_distance_rms_m_per_hand": null
+        },
+        "tail": {
+          "samples": 100,
+          "expected_samples": 100,
+          "observed": true,
+          "chest_peak_deg": 1.5099711418151855,
+          "chest_rms_deg": 1.4072483777999878,
+          "chest_angular_xy_rms_rad_s": 0.021139604970812798,
+          "chest_angular_xyz_rms_rad_s": 0.02347385138273239,
+          "arm_reference_rmse_rad": 0.04929358884692192,
+          "arm_velocity_error_rmse_rad_s": 0.019755830988287926,
+          "waist_reference_rmse_rad": 0.04600225016474724,
+          "arm_speed_rms_rad_s": 0.019755830988287926,
+          "waist_speed_rms_rad_s": 0.02792307548224926,
+          "hands_return_distance_rms_m_per_hand": [
+            0.020507585257291794,
+            0.023474588990211487
+          ]
+        },
+        "directions": {}
+      }
+    ],
+    "measurement_errors": [],
+    "step_calls": 1000,
+    "expected_step_calls": 1000,
+    "schema": 1,
+    "stage": 0,
+    "gates": {
+      "chest_peak_max_deg": 25.0,
+      "chest_peak_p95_max_deg": 20.0,
+      "chest_rms_max_deg": 8.0,
+      "prep_chest_peak_max_deg": 15.0,
+      "prep_chest_peak_p95_max_deg": 15.0,
+      "dynamic_chest_angular_xy_rms_max_rad_s": 0.7,
+      "gesture_arm_reference_rmse_max_rad": 0.08,
+      "early_return_chest_peak_max_deg": 8.0,
+      "early_return_arm_reference_rmse_max_rad": 0.08,
+      "early_return_hand_distance_rms_max_m": 0.02,
+      "early_return_arm_speed_rms_max_rad_s": 0.6,
+      "tail_hand_distance_rms_max_m": 0.015,
+      "tail_chest_angular_xy_rms_max_rad_s": 0.35,
+      "tail_arm_speed_rms_max_rad_s": 0.4,
+      "observed_episode_rate_min": 0.875
+    },
+    "evaluator_sha256": "5bc5f0c84a5700f42de88c67b9a60309185a43dc1967b573c6bad0a9a15acc5f",
+    "control_sha256": "a5029ca90806452e2955d95baff972a5e3a5e6f666c58865c385921de16dbc42",
+    "control_contract": {
+      "schema": 6,
+      "robot": "q1_leg_upper_body_v6",
+      "joint_names": [
+        "center_waist_Yaw_joint",
+        "center_waist_Roll_joint",
+        "center_waist_Pitch_joint",
+        "left_hip_Pitch_joint",
+        "left_hip_Roll_joint",
+        "left_hip_Yaw_joint",
+        "left_knee_Pitch_joint",
+        "left_ankle_Pitch_joint",
+        "left_ankle_Roll_joint",
+        "left_shoulder_Pitch_joint",
+        "left_shoulder_Roll_joint",
+        "left_shoulder_Yaw_joint",
+        "left_elbow_Pitch_joint",
+        "right_hip_Pitch_joint",
+        "right_hip_Roll_joint",
+        "right_hip_Yaw_joint",
+        "right_knee_Pitch_joint",
+        "right_ankle_Pitch_joint",
+        "right_ankle_Roll_joint",
+        "right_shoulder_Pitch_joint",
+        "right_shoulder_Roll_joint",
+        "right_shoulder_Yaw_joint",
+        "right_elbow_Pitch_joint"
+      ],
+      "urdf_sha256": "2a9a5fce0cd4cf116ba22fcc5c2dfc90747e16c7c1c1ccd0914beec61ce7b3ac",
+      "action_size": 23,
+      "observation_size": 110,
+      "observation_order": [
+        "body_lin_vel",
+        "body_ang_vel",
+        "projected_gravity",
+        "q-default",
+        "qvel*0.1",
+        "previous_action",
+        "velocity_command",
+        "skill_onehot",
+        "phase_sin_cos",
+        "height",
+        "reference-default"
+      ],
+      "action": "V5 leg control + guarded upper residuals; Kp70 upper, Kd8 waist only; native 100 Nm; no root wrench",
+      "ankle_feedback": "pitch/roll + 0.15 * body angular velocity, correction clipped to +/-0.15 rad; native left/right pitch signs respected",
+      "skills": [
+        "stand",
+        "command_walk",
+        "sidestep_left",
+        "sidestep_right",
+        "recover"
+      ],
+      "default": [
+        0.0,
+        0.0,
+        0.0,
+        0.2901475933752046,
+        -1.8486614441776582e-09,
+        1.5218625064582148e-09,
+        0.6227679567891641,
+        -0.3326197213915061,
+        1.3359899293816957e-09,
+        0.0,
+        0.0,
+        0.0,
+        -0.15,
+        -0.29014759337508944,
+        1.8486277077045742e-09,
+        -1.5217542873522957e-09,
+        -0.6227679567889114,
+        0.3326197213913639,
+        -1.3359885639567377e-09,
+        0.0,
+        0.0,
+        0.0,
+        0.15
+      ],
+      "root_height": 0.86,
+      "limits_lower": [
+        -3.1416,
+        -0.2,
+        0.0,
+        -1.5708,
+        -1.3,
+        -3.1416,
+        0.0,
+        -0.5,
+        -0.3,
+        -1.1345,
+        -0.4189,
+        -1.5708,
+        -2.5307,
+        -1.5708,
+        -1.5708,
+        -3.1416,
+        -1.5708,
+        -0.5,
+        -0.3,
+        -1.1345,
+        -3.5605,
+        -1.5708,
+        -0.0873
+      ],
+      "limits_upper": [
+        3.1416,
+        0.2,
+        1.2,
+        1.5708,
+        1.5708,
+        3.1416,
+        1.5708,
+        0.5,
+        0.3,
+        2.1817,
+        3.5605,
+        1.5708,
+        0.0873,
+        1.5708,
+        1.3,
+        3.1416,
+        0.0,
+        0.5,
+        0.3,
+        2.1817,
+        0.4189,
+        1.5708,
+        2.5307
+      ],
+      "locked_joints": [
+        "left_wrist_Yaw_joint",
+        "left_finger_1_Roll_joint",
+        "left_finger_2_Roll_joint",
+        "right_wrist_Yaw_joint",
+        "right_finger_1_Roll_joint",
+        "right_finger_2_Roll_joint"
+      ],
+      "wheel_checkpoints_compatible": false,
+      "gait_sha256": "624d0c61630c87d94622ce46eaf2a482b064d0d2461f73533f0eabdd0dc9f137",
+      "commands": {
+        "vx": [
+          -0.22,
+          0.22
+        ],
+        "vy": [
+          -0.18,
+          0.18
+        ],
+        "wz": [
+          -0.6,
+          0.6
+        ]
+      },
+      "observation_note": "110-D command observation retained; chest state observable from root IMU and waist q/qdot",
+      "transition": "continuous shared policy; no reset except episode failure or explicit restart",
+      "proxy": false,
+      "gait_file": "config/v5_gaits_lift6.json",
+      "control_sha256": "a5029ca90806452e2955d95baff972a5e3a5e6f666c58865c385921de16dbc42",
+      "control_profile": "upper_v6r1_waist_damping_contact_energy_rehearsal",
+      "motor": {
+        "schema": 5,
+        "robot": "q1_leg_lift_v5",
+        "gait_file": "config/v5_gaits_lift6.json",
+        "motor_type": "implicit_pd",
+        "leg_stiffness": 800.0,
+        "leg_damping": 32.0,
+        "motor_effort_limit_nm": 100.0,
+        "motor_velocity_limit_rad_s": 10.0,
+        "gravity_feedforward": false,
+        "reference_velocity_feedforward": true,
+        "height_sigma_m": 0.02,
+        "reference_height": "Actual source-CAD sole FK at every phase, not the nominal 6 cm command",
+        "root_constraints": false,
+        "scope": "Native contact-driven residual PPO; no body-aware IK override; gesture swing qdot feedforward verified in native ablation",
+        "velocity_feedforward_modes": [
+          2,
+          3
+        ],
+        "velocity_feedforward_reference": "Adjacent nominal blended reference q; swing legs only; zero at reset and mode change",
+        "experiment": "v5.1_gesture_velocity_mirror",
+        "upper_body": {
+          "schema": 6,
+          "robot": "q1_leg_upper_body_v6",
+          "base_control_file": "config/lift_control_v5.json",
+          "base_control_sha256": "b4e9c6ae242cb28e5d88ed4605b23820667648628fb66dd02702e8295fdd39f4",
+          "upper_pd": {
+            "stiffness": 70.0,
+            "damping": 4.0,
+            "changed": true,
+            "waist_damping": 8.0,
+            "scope": "Upper Kp70 retained, arms damping4; waist-only damping8, selected by two-seed native comparison."
+          },
+          "residual_rad": {
+            "waist_Yaw": 0.08,
+            "waist_Roll": 0.025,
+            "waist_Pitch": 0.04,
+            "arm": 0.08
+          },
+          "reward": {
+            "tilt_deadband_deg": 4.0,
+            "tilt_sigma_rad": 0.12,
+            "chest_weight": 2.0,
+            "chest_rate_weight": 0.75,
+            "chest_rate_sigma_rad_s": 0.7,
+            "arm_weight": 1.5,
+            "arm_sigma_rad": 0.08,
+            "velocity_weight": 1.0,
+            "return_velocity_weight": 1.5,
+            "arm_rate_sigma_rad_s": 0.6,
+            "waist_weight": 0.5,
+            "waist_sigma_rad": 0.06
+          },
+          "evaluation_gates": {
+            "chest_peak_max_deg": 25.0,
+            "chest_peak_p95_max_deg": 20.0,
+            "chest_rms_max_deg": 8.0,
+            "dynamic_chest_angular_xy_rms_max_rad_s": 0.7,
+            "gesture_arm_reference_rmse_max_rad": 0.08,
+            "early_return_chest_peak_max_deg": 8.0,
+            "early_return_arm_reference_rmse_max_rad": 0.08,
+            "early_return_hand_distance_rms_max_m": 0.02,
+            "early_return_arm_speed_rms_max_rad_s": 0.6,
+            "tail_hand_distance_rms_max_m": 0.015,
+            "tail_chest_angular_xy_rms_max_rad_s": 0.35,
+            "tail_arm_speed_rms_max_rad_s": 0.4,
+            "observed_episode_rate_min": 0.875,
+            "prep_chest_peak_max_deg": 15.0,
+            "prep_chest_peak_p95_max_deg": 15.0
+          },
+          "scope": "V6r1 frozen control fork: Kp70 unchanged; waist damping8; contact/overshoot/angular energy costs and stage0 gesture rehearsal. All acceptance gates unchanged.",
+          "reward_revisions": {
+            "0": {},
+            "1": {
+              "chest_weight": 2.5,
+              "chest_rate_weight": 1.0,
+              "velocity_weight": 1.25,
+              "return_velocity_weight": 1.75
+            },
+            "2": {
+              "chest_weight": 3.0,
+              "chest_rate_weight": 1.0,
+              "arm_weight": 1.75,
+              "velocity_weight": 1.5,
+              "return_velocity_weight": 2.0
+            }
+          },
+          "stage0_gesture_rehearsal_probability": 0.3,
+          "stability_cost": {
+            "angular_scale_rad_s": 0.7,
+            "angular_clip": 6.0,
+            "angular_weight": 1.5,
+            "height_tolerance_m": 0.01,
+            "height_scale_m": 0.02,
+            "height_clip": 3.0,
+            "height_weight": 1.5,
+            "slip_scale_m_s": 0.1,
+            "slip_clip": 4.0,
+            "slip_weight": 0.5
+          }
+        }
+      },
+      "height_target": "Per-phase actual source-CAD FK recomputed from native bounded joint reference",
+      "curriculum": [
+        "inplace_upper_recovery",
+        "finite_gesture_upper_return",
+        "interactive_upper"
+      ],
+      "base_control_sha256": "b4e9c6ae242cb28e5d88ed4605b23820667648628fb66dd02702e8295fdd39f4",
+      "upper_body_gates": {
+        "chest_peak_max_deg": 25.0,
+        "chest_peak_p95_max_deg": 20.0,
+        "chest_rms_max_deg": 8.0,
+        "dynamic_chest_angular_xy_rms_max_rad_s": 0.7,
+        "gesture_arm_reference_rmse_max_rad": 0.08,
+        "early_return_chest_peak_max_deg": 8.0,
+        "early_return_arm_reference_rmse_max_rad": 0.08,
+        "early_return_hand_distance_rms_max_m": 0.02,
+        "early_return_arm_speed_rms_max_rad_s": 0.6,
+        "tail_hand_distance_rms_max_m": 0.015,
+        "tail_chest_angular_xy_rms_max_rad_s": 0.35,
+        "tail_arm_speed_rms_max_rad_s": 0.4,
+        "observed_episode_rate_min": 0.875,
+        "prep_chest_peak_max_deg": 15.0,
+        "prep_chest_peak_p95_max_deg": 15.0
+      }
+    },
+    "measurement": {
+      "timing": "After native wrapped.step; exclude done, implicit reset and all subsequent first-episode samples",
+      "chest_tilt": "Native torso up-axis inclination from world vertical; yaw invariant",
+      "angular_speed": "Native torso local roll/pitch angular speed norm; yaw excluded; differs from older XYZ diagnostic",
+      "arm_reference": "RMS joint position error against the current moving reference; gesture and recover only",
+      "controlled_return": "Arm reference tracking during the final 250 ms of each left/right gesture; not a stand-hand comparison during the next gesture",
+      "early_return": "Both hands versus stand-FK in pelvis coordinates, gesture end +0.8 to +1.5 s, before interactive WASD resume",
+      "tail": "18\u201320 s standing; RMS Euclidean distance per hand, not per-coordinate RMS",
+      "coverage": "At least all prescribed window samples except one terminal frame per counted episode; failed first episodes cannot count as observed",
+      "aggregation": "Equal episode mean-square weighting; peaks include partial first episodes; P95 over per-episode peaks; missing values remain null"
+    }
+  },
+  "upper_body_checks": {
+    "stage.valid": true,
+    "measurement_schema": true,
+    "stand.finite_measurements": true,
+    "stand.sample_count": true,
+    "stand.all.coverage": true,
+    "stand.tail.coverage": true,
+    "stand.chest_peak": true,
+    "stand.chest_peak_p95": true,
+    "stand.chest_rms": true,
+    "stand.tail.angular_xy": true,
+    "stand.tail.arm_speed": true,
+    "stand.tail.hand_0": false,
+    "stand.tail.hand_1": true,
+    "inplace.finite_measurements": true,
+    "inplace.sample_count": true,
+    "inplace.all.coverage": true,
+    "inplace.tail.coverage": true,
+    "inplace.chest_peak": true,
+    "inplace.chest_peak_p95": true,
+    "inplace.chest_rms": true,
+    "inplace.tail.angular_xy": true,
+    "inplace.tail.arm_speed": true,
+    "inplace.tail.hand_0": false,
+    "inplace.tail.hand_1": false,
+    "inplace.dynamic.coverage": true,
+    "inplace.dynamic.angular_xy": true
+  },
+  "lower_body_passed": true,
+  "lower_body_checks": {
+    "stage.valid": true,
+    "stand.sample_count": true,
+    "stand.survival": true,
+    "stand.upright": true,
+    "stand.stop_observed": true,
+    "stand.stop": true,
+    "stand.stance_slip": true,
+    "inplace.sample_count": true,
+    "inplace.survival": true,
+    "inplace.upright": true,
+    "inplace.stop_observed": true,
+    "inplace.stop": true,
+    "inplace.stance_slip": true,
+    "inplace.foot_0.foot_peak_clearance_m_per_foot": true,
+    "inplace.foot_0.foot_lift_success_rate_per_foot": true,
+    "inplace.foot_0.high_swing_samples_per_foot": true,
+    "inplace.foot_1.foot_peak_clearance_m_per_foot": true,
+    "inplace.foot_1.foot_lift_success_rate_per_foot": true,
+    "inplace.foot_1.high_swing_samples_per_foot": true
+  },
+  "upper_body_control_contract": {
+    "schema": 6,
+    "robot": "q1_leg_upper_body_v6",
+    "joint_names": [
+      "center_waist_Yaw_joint",
+      "center_waist_Roll_joint",
+      "center_waist_Pitch_joint",
+      "left_hip_Pitch_joint",
+      "left_hip_Roll_joint",
+      "left_hip_Yaw_joint",
+      "left_knee_Pitch_joint",
+      "left_ankle_Pitch_joint",
+      "left_ankle_Roll_joint",
+      "left_shoulder_Pitch_joint",
+      "left_shoulder_Roll_joint",
+      "left_shoulder_Yaw_joint",
+      "left_elbow_Pitch_joint",
+      "right_hip_Pitch_joint",
+      "right_hip_Roll_joint",
+      "right_hip_Yaw_joint",
+      "right_knee_Pitch_joint",
+      "right_ankle_Pitch_joint",
+      "right_ankle_Roll_joint",
+      "right_shoulder_Pitch_joint",
+      "right_shoulder_Roll_joint",
+      "right_shoulder_Yaw_joint",
+      "right_elbow_Pitch_joint"
+    ],
+    "urdf_sha256": "2a9a5fce0cd4cf116ba22fcc5c2dfc90747e16c7c1c1ccd0914beec61ce7b3ac",
+    "action_size": 23,
+    "observation_size": 110,
+    "observation_order": [
+      "body_lin_vel",
+      "body_ang_vel",
+      "projected_gravity",
+      "q-default",
+      "qvel*0.1",
+      "previous_action",
+      "velocity_command",
+      "skill_onehot",
+      "phase_sin_cos",
+      "height",
+      "reference-default"
+    ],
+    "action": "V5 leg control + guarded upper residuals; Kp70 upper, Kd8 waist only; native 100 Nm; no root wrench",
+    "ankle_feedback": "pitch/roll + 0.15 * body angular velocity, correction clipped to +/-0.15 rad; native left/right pitch signs respected",
+    "skills": [
+      "stand",
+      "command_walk",
+      "sidestep_left",
+      "sidestep_right",
+      "recover"
+    ],
+    "default": [
+      0.0,
+      0.0,
+      0.0,
+      0.2901475933752046,
+      -1.8486614441776582e-09,
+      1.5218625064582148e-09,
+      0.6227679567891641,
+      -0.3326197213915061,
+      1.3359899293816957e-09,
+      0.0,
+      0.0,
+      0.0,
+      -0.15,
+      -0.29014759337508944,
+      1.8486277077045742e-09,
+      -1.5217542873522957e-09,
+      -0.6227679567889114,
+      0.3326197213913639,
+      -1.3359885639567377e-09,
+      0.0,
+      0.0,
+      0.0,
+      0.15
+    ],
+    "root_height": 0.86,
+    "limits_lower": [
+      -3.1416,
+      -0.2,
+      0.0,
+      -1.5708,
+      -1.3,
+      -3.1416,
+      0.0,
+      -0.5,
+      -0.3,
+      -1.1345,
+      -0.4189,
+      -1.5708,
+      -2.5307,
+      -1.5708,
+      -1.5708,
+      -3.1416,
+      -1.5708,
+      -0.5,
+      -0.3,
+      -1.1345,
+      -3.5605,
+      -1.5708,
+      -0.0873
+    ],
+    "limits_upper": [
+      3.1416,
+      0.2,
+      1.2,
+      1.5708,
+      1.5708,
+      3.1416,
+      1.5708,
+      0.5,
+      0.3,
+      2.1817,
+      3.5605,
+      1.5708,
+      0.0873,
+      1.5708,
+      1.3,
+      3.1416,
+      0.0,
+      0.5,
+      0.3,
+      2.1817,
+      0.4189,
+      1.5708,
+      2.5307
+    ],
+    "locked_joints": [
+      "left_wrist_Yaw_joint",
+      "left_finger_1_Roll_joint",
+      "left_finger_2_Roll_joint",
+      "right_wrist_Yaw_joint",
+      "right_finger_1_Roll_joint",
+      "right_finger_2_Roll_joint"
+    ],
+    "wheel_checkpoints_compatible": false,
+    "gait_sha256": "624d0c61630c87d94622ce46eaf2a482b064d0d2461f73533f0eabdd0dc9f137",
+    "commands": {
+      "vx": [
+        -0.22,
+        0.22
+      ],
+      "vy": [
+        -0.18,
+        0.18
+      ],
+      "wz": [
+        -0.6,
+        0.6
+      ]
+    },
+    "observation_note": "110-D command observation retained; chest state observable from root IMU and waist q/qdot",
+    "transition": "continuous shared policy; no reset except episode failure or explicit restart",
+    "proxy": false,
+    "gait_file": "config/v5_gaits_lift6.json",
+    "control_sha256": "a5029ca90806452e2955d95baff972a5e3a5e6f666c58865c385921de16dbc42",
+    "control_profile": "upper_v6r1_waist_damping_contact_energy_rehearsal",
+    "motor": {
+      "schema": 5,
+      "robot": "q1_leg_lift_v5",
+      "gait_file": "config/v5_gaits_lift6.json",
+      "motor_type": "implicit_pd",
+      "leg_stiffness": 800.0,
+      "leg_damping": 32.0,
+      "motor_effort_limit_nm": 100.0,
+      "motor_velocity_limit_rad_s": 10.0,
+      "gravity_feedforward": false,
+      "reference_velocity_feedforward": true,
+      "height_sigma_m": 0.02,
+      "reference_height": "Actual source-CAD sole FK at every phase, not the nominal 6 cm command",
+      "root_constraints": false,
+      "scope": "Native contact-driven residual PPO; no body-aware IK override; gesture swing qdot feedforward verified in native ablation",
+      "velocity_feedforward_modes": [
+        2,
+        3
+      ],
+      "velocity_feedforward_reference": "Adjacent nominal blended reference q; swing legs only; zero at reset and mode change",
+      "experiment": "v5.1_gesture_velocity_mirror",
+      "upper_body": {
+        "schema": 6,
+        "robot": "q1_leg_upper_body_v6",
+        "base_control_file": "config/lift_control_v5.json",
+        "base_control_sha256": "b4e9c6ae242cb28e5d88ed4605b23820667648628fb66dd02702e8295fdd39f4",
+        "upper_pd": {
+          "stiffness": 70.0,
+          "damping": 4.0,
+          "changed": true,
+          "waist_damping": 8.0,
+          "scope": "Upper Kp70 retained, arms damping4; waist-only damping8, selected by two-seed native comparison."
+        },
+        "residual_rad": {
+          "waist_Yaw": 0.08,
+          "waist_Roll": 0.025,
+          "waist_Pitch": 0.04,
+          "arm": 0.08
+        },
+        "reward": {
+          "tilt_deadband_deg": 4.0,
+          "tilt_sigma_rad": 0.12,
+          "chest_weight": 2.0,
+          "chest_rate_weight": 0.75,
+          "chest_rate_sigma_rad_s": 0.7,
+          "arm_weight": 1.5,
+          "arm_sigma_rad": 0.08,
+          "velocity_weight": 1.0,
+          "return_velocity_weight": 1.5,
+          "arm_rate_sigma_rad_s": 0.6,
+          "waist_weight": 0.5,
+          "waist_sigma_rad": 0.06
+        },
+        "evaluation_gates": {
+          "chest_peak_max_deg": 25.0,
+          "chest_peak_p95_max_deg": 20.0,
+          "chest_rms_max_deg": 8.0,
+          "dynamic_chest_angular_xy_rms_max_rad_s": 0.7,
+          "gesture_arm_reference_rmse_max_rad": 0.08,
+          "early_return_chest_peak_max_deg": 8.0,
+          "early_return_arm_reference_rmse_max_rad": 0.08,
+          "early_return_hand_distance_rms_max_m": 0.02,
+          "early_return_arm_speed_rms_max_rad_s": 0.6,
+          "tail_hand_distance_rms_max_m": 0.015,
+          "tail_chest_angular_xy_rms_max_rad_s": 0.35,
+          "tail_arm_speed_rms_max_rad_s": 0.4,
+          "observed_episode_rate_min": 0.875,
+          "prep_chest_peak_max_deg": 15.0,
+          "prep_chest_peak_p95_max_deg": 15.0
+        },
+        "scope": "V6r1 frozen control fork: Kp70 unchanged; waist damping8; contact/overshoot/angular energy costs and stage0 gesture rehearsal. All acceptance gates unchanged.",
+        "reward_revisions": {
+          "0": {},
+          "1": {
+            "chest_weight": 2.5,
+            "chest_rate_weight": 1.0,
+            "velocity_weight": 1.25,
+            "return_velocity_weight": 1.75
+          },
+          "2": {
+            "chest_weight": 3.0,
+            "chest_rate_weight": 1.0,
+            "arm_weight": 1.75,
+            "velocity_weight": 1.5,
+            "return_velocity_weight": 2.0
+          }
+        },
+        "stage0_gesture_rehearsal_probability": 0.3,
+        "stability_cost": {
+          "angular_scale_rad_s": 0.7,
+          "angular_clip": 6.0,
+          "angular_weight": 1.5,
+          "height_tolerance_m": 0.01,
+          "height_scale_m": 0.02,
+          "height_clip": 3.0,
+          "height_weight": 1.5,
+          "slip_scale_m_s": 0.1,
+          "slip_clip": 4.0,
+          "slip_weight": 0.5
+        }
+      }
+    },
+    "height_target": "Per-phase actual source-CAD FK recomputed from native bounded joint reference",
+    "curriculum": [
+      "inplace_upper_recovery",
+      "finite_gesture_upper_return",
+      "interactive_upper"
+    ],
+    "base_control_sha256": "b4e9c6ae242cb28e5d88ed4605b23820667648628fb66dd02702e8295fdd39f4",
+    "upper_body_gates": {
+      "chest_peak_max_deg": 25.0,
+      "chest_peak_p95_max_deg": 20.0,
+      "chest_rms_max_deg": 8.0,
+      "dynamic_chest_angular_xy_rms_max_rad_s": 0.7,
+      "gesture_arm_reference_rmse_max_rad": 0.08,
+      "early_return_chest_peak_max_deg": 8.0,
+      "early_return_arm_reference_rmse_max_rad": 0.08,
+      "early_return_hand_distance_rms_max_m": 0.02,
+      "early_return_arm_speed_rms_max_rad_s": 0.6,
+      "tail_hand_distance_rms_max_m": 0.015,
+      "tail_chest_angular_xy_rms_max_rad_s": 0.35,
+      "tail_arm_speed_rms_max_rad_s": 0.4,
+      "observed_episode_rate_min": 0.875,
+      "prep_chest_peak_max_deg": 15.0,
+      "prep_chest_peak_p95_max_deg": 15.0
+    }
+  },
+  "upper_body_control_sha256": "a5029ca90806452e2955d95baff972a5e3a5e6f666c58865c385921de16dbc42",
+  "upper_body_evaluator_sha256": "5bc5f0c84a5700f42de88c67b9a60309185a43dc1967b573c6bad0a9a15acc5f",
+  "checkpoint_sha256": "a87f196047bb58cfbb662cca2a0b27cac0d0317b8fdf9da77285e8f657ba5d8f",
+  "checkpoint": "/home/will/projects/q1_leg_urdf/checkpoints/isaac/upper_body_v6/runs/v6r1_stable_contact_20261024/resume.pt",
+  "completed_iterations": 20000,
+  "robot": "q1_leg_upper_body_v6",
+  "control_sha256": "a5029ca90806452e2955d95baff972a5e3a5e6f666c58865c385921de16dbc42",
+  "base_environment_sha256": "e24bd4c037c1240d4a3f67f22fb4666e8e870da21206356089342a278798ee11"
+}

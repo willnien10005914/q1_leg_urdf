@@ -318,3 +318,11 @@ Python 檢查涵蓋原生資產、關節契約、訓練預算與續訓、雙腳�
 - [播放與錄製](docs/PLAYBACK.md)
 - [抬腳診斷及改善準備](docs/FOOT_LIFT_REVIEW.md)
 - [第三方來源與授權說明](THIRD_PARTY.md)
+
+<!-- V6_20000_DIAGNOSTIC -->
+
+### V6 累計 20,000 次 PPO 終點紀錄
+
+使用 10,240 envs；包含先前分支更新。此權重尚未通過完整動作驗收，影片為原生 PhysX 診斷，保留失敗、不重設、不代表已學會閃身步。
+
+[觀看 GoFile 影片](https://gofile.io/d/74QTLdVi) · [PPO 權重與驗測紀錄](checkpoints/isaac/upper_body_v6_20000/)
