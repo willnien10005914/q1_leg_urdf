@@ -18,7 +18,7 @@
 [分支設計與證據](docs/V6_R1_STABILITY.md) · [訓練架構](docs/UPPER_BODY_V6_TRAINING.md) · [訓練期間歷史](docs/V6_TRAINING_HISTORY.md)
 <!-- V7_BALANCE_RETRAINING -->
 
-**2026-10-25 V7 平衡重訓準備：** V6 終點在兩種連續四步測試均為 0／8 存活，接觸診斷指向腳踝非腳底連桿。已新增實測全身質心／支撐成本、非腳底接觸成本、四步與方向控制混合課程；五項成本測試通過。大規模訓練服務目前等待 wheel 專案釋放共用 GPU 佇列，尚無新 PPO 成果。[詳細基準、架構與進度指令](docs/V7_BALANCE_RETRAINING.md)。
+**2026-10-25 V7 平衡重訓準備：** V6 終點在兩種連續四步測試均為 0／8 存活，接觸診斷指向腳踝非腳底連桿。已新增實測全身質心／支撐成本、非腳底接觸成本、四步與方向控制混合課程；五項成本測試通過。新訓練使用 **6,144 envs**，服務等待 wheel 專案釋放共用 GPU 佇列，尚無新 PPO 成果。[詳細基準、架構與進度指令](docs/V7_BALANCE_RETRAINING.md)。
 
 <!-- V6_STATUS_END -->
 

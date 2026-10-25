@@ -3,7 +3,7 @@
 import argparse,json,hashlib
 from pathlib import Path
 from isaaclab.app import AppLauncher
-p=argparse.ArgumentParser();p.add_argument('--checkpoint',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--iterations',type=int,default=100);p.add_argument('--completed',type=int,default=0);p.add_argument('--envs',type=int,default=10240);p.add_argument('--seed',type=int,default=42);p.add_argument('--evaluate',action='store_true');p.add_argument('--initialize',action='store_true');p.add_argument('--full-gates',action='store_true');AppLauncher.add_app_launcher_args(p);args=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--checkpoint',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--iterations',type=int,default=100);p.add_argument('--completed',type=int,default=0);p.add_argument('--envs',type=int,default=6144);p.add_argument('--seed',type=int,default=42);p.add_argument('--evaluate',action='store_true');p.add_argument('--initialize',action='store_true');p.add_argument('--full-gates',action='store_true');AppLauncher.add_app_launcher_args(p);args=p.parse_args()
 app=AppLauncher(args).app
 import torch
 from isaaclab_rl.rsl_rl import RslRlVecEnvWrapper

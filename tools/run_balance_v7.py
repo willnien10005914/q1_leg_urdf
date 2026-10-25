@@ -24,7 +24,7 @@ def wait_gpu(s):
 def worker(s,checkpoint,out,*,evaluate=False,initialize=False,steps=100,seed=42,full=False):
  wait_gpu(s)
  if sources()!=s['source_sha256']:raise RuntimeError('Frozen balance source changed')
- args=['--checkpoint',str(checkpoint),'--output',str(out),'--completed',str(s['completed_iterations']),'--envs',str(64 if evaluate else 10240),'--seed',str(seed),'--iterations',str(steps),'--headless']
+ args=['--checkpoint',str(checkpoint),'--output',str(out),'--completed',str(s['completed_iterations']),'--envs',str(64 if evaluate else 6144),'--seed',str(seed),'--iterations',str(steps),'--headless']
  if evaluate:args+=['--evaluate']
  if initialize:args+=['--initialize']
  if full:args+=['--full-gates']
@@ -56,7 +56,7 @@ def worker(s,checkpoint,out,*,evaluate=False,initialize=False,steps=100,seed=42,
 def main():
  RUN.mkdir(parents=True,exist_ok=True)
  if STATE.exists():raise RuntimeError('Existing balance run requires explicit review, no silent reset')
- s={'experiment':'balance_v7','completed_iterations':0,'max_new_iterations':20000,'prior_v6_updates':20000,'num_envs':10240,'accepted':False,'run':str(RUN),'source_sha256':sources(),'evaluations':[]}
+ s={'experiment':'balance_v7','completed_iterations':0,'max_new_iterations':20000,'prior_v6_updates':20000,'num_envs':6144,'accepted':False,'run':str(RUN),'source_sha256':sources(),'evaluations':[]}
  write(RUN/'source_manifest.json',s['source_sha256'])
  # Preserve all source bytes required to reproduce this new experiment.
  for relative in s['source_sha256']:
@@ -72,7 +72,7 @@ def main():
  s['initial_actor']=selected[2];s['initial_checkpoint_sha256']=sha(selected[3]);checkpoint=selected[3]
  s['initialization']='Complete actor transfer only; fresh critic/Adam/std; prior V6 budget retained separately'
  write(STATE,s)
- # First chunk is only ten updates to validate the full 10240-env training path.
+ # First chunk is only ten updates to validate the full 6144-env training path.
  while s['completed_iterations']<s['max_new_iterations']:
   steps=10 if s['completed_iterations']==0 else min(100 if s['completed_iterations']<510 else 500,s['max_new_iterations']-s['completed_iterations'])
   out=RUN/f"chunk_{s['completed_iterations']+steps:07d}"
@@ -93,7 +93,7 @@ def main():
  s.update(state='budget_exhausted',accepted=False);write(STATE,s)
 if __name__=='__main__':
  with (ROOT/'outputs/upper_body_training.lock').open('a') as lock:
-  write(ROOT/'outputs/balance_v7_queue.json',{'state':'waiting_for_shared_gpu_queue','prior_v6_updates':20000,'new_updates':0,'num_envs':10240,'max_new_iterations':20000,'accepted':False})
+  write(ROOT/'outputs/balance_v7_queue.json',{'state':'waiting_for_shared_gpu_queue','prior_v6_updates':20000,'new_updates':0,'num_envs':6144,'max_new_iterations':20000,'accepted':False})
   fcntl.flock(lock,fcntl.LOCK_EX)
   write(ROOT/'outputs/balance_v7_queue.json',{'state':'shared_queue_acquired','accepted':False})
   try:main()
