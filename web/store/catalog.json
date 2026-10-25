@@ -1,0 +1,72 @@
+[
+  {
+    "id": "spark-balance-v1",
+    "title": "雙足閃身 · 平衡強化",
+    "version": "Spark v1",
+    "category": "spark",
+    "label": "Spark 訓練中",
+    "description": "COM 與實際接觸平衡成本，左右起步、連續四步與回站。本輪尚未錄製結果影片。",
+    "iterations": 15000,
+    "poster": null,
+    "video": null,
+    "origin": "本輪 Spark · 即時進度",
+    "backend": "PhysX",
+    "accepted": false
+  },
+  {
+    "id": "v6",
+    "title": "腰臂穩定 · V6 終點診斷",
+    "version": "V6 · 20,000",
+    "category": "history",
+    "label": "未通過驗收",
+    "description": "20,000 次更新的歷史診斷；左閃期間提前終止。保留失敗，供新訓練比較。",
+    "iterations": 20000,
+    "poster": "/docs/images/v6-20000-diagnostic.gif",
+    "video": "/docs/results/q1_leg_v6_20000_diagnostic.mp4",
+    "origin": "歷史 x86 影片 · 非本輪 Spark",
+    "backend": "PhysX",
+    "accepted": false
+  },
+  {
+    "id": "v5-pair",
+    "title": "左右閃身 · V5 候選",
+    "version": "V5 · 13,115",
+    "category": "history",
+    "label": "實驗候選",
+    "description": "原生 PhysX 左右閃身與回站記錄，完整鍵盤操作未通過驗收。",
+    "iterations": 13115,
+    "poster": "/docs/images/v5-pair-13115-diagnostic.gif",
+    "video": "/docs/results/q1_leg_v5_pair_13115_diagnostic.mp4",
+    "origin": "歷史 x86 影片 · 非本輪 Spark",
+    "backend": "PhysX",
+    "accepted": false
+  },
+  {
+    "id": "upper",
+    "title": "腰臂回位 · 控制修正實驗",
+    "version": "V5 · control R2",
+    "category": "history",
+    "label": "控制實驗",
+    "description": "同份 PPO 配合腰臂殘差限制，觀察回位與胸口晃動；不是新訓練成果。",
+    "iterations": 13115,
+    "poster": "/docs/images/v5-upper-body-experimental.gif",
+    "video": "/docs/results/q1_leg_upper_body_13115_experimental.mp4",
+    "origin": "歷史 x86 影片 · 非本輪 Spark",
+    "backend": "PhysX",
+    "accepted": false
+  },
+  {
+    "id": "inplace",
+    "title": "原地交替抬腳",
+    "version": "V5 · 405",
+    "category": "history",
+    "label": "階段診斷",
+    "description": "原地抬腳課程早期候選，與閃身候選不同，不代表完整策略合格。",
+    "iterations": 405,
+    "poster": "/docs/images/v5-inplace-405-diagnostic.gif",
+    "video": "/docs/results/q1_leg_v5_inplace_405_diagnostic.mp4",
+    "origin": "歷史 x86 影片 · 非本輪 Spark",
+    "backend": "PhysX",
+    "accepted": false
+  }
+]

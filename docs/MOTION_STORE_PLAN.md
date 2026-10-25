@@ -1,7 +1,8 @@
 # Q1 Motion Store：影片到 PPO 的產品與架構規劃
 
-> 狀態：設計文件，尚未實作 Store、影片上傳 API、通用影片模仿環境或網站部署。
-> 本文件不表示現有網頁已能接收影片並自動訓練。Spark 平衡訓練與此規劃分開執行。
+> 狀態：唯讀 Store 首版已實作，提供動作目錄、歷史影片、Spark 即時進度與評估曲線。
+> YouTube／影片上傳 API、通用影片模仿環境及自動新增 PPO 尚未實作；以下後續階段仍為設計。
+> 本機網址：`http://127.0.0.1:8876/web/store/`（在 Spark 瀏覽器開啟），目前只綁定 loopback。
 
 ## 參考來源與本專案範圍
 
@@ -150,3 +151,11 @@ CPU pose／IK workers 與 GPU PPO workers 分離。新 PPO jobs 必須使用與�
 YouTube 僅接受辨識後的 `youtube.com`／`youtu.be` video ID，建立 canonical URL，透過 `yt-dlp` 的 argv 執行；拒絕任意 URL、本機檔案 URL、私人網段跳轉和 shell。上傳採 server-generated ID 與受限目錄，實際解碼驗證格式；解碼及下載 worker 設 timeout，錯誤保留可讀原因。原片不直接納入既有靜態路由的公開範圍。
 
 MediaPipe 單人單鏡頭是近似動作先驗：遮擋、快速轉身、景深、視角、左右辨識和人體／Q1 比例差異會造成誤差。無標定的 root 位移／深度不能當作真實尺度；站姿校正及水平足底假設也不適合所有舞蹈或跳躍。品質報告需包含 coverage、最大斷點、關節限位／速度、IK 誤差、足底幾何與前後姿態連續性。可視化預覽、物理可行性與真機可靠性各自保留證據。
+
+## 唯讀首版操作
+
+現有服務：`systemctl --user status q1-leg-motion-store --no-pager`。
+前景啟動可用 `bash start_store.sh`，預設僅本機 `127.0.0.1:8876`。
+Store adapter 為 `web/store_server.py`，目錄資料在 `web/store/catalog.json`；
+`/api/store` 僅投影經選取的進度欄位，不提供 checkpoint、raw status 或任意 log 路徑。
+網站與 PPO 服務分開，讀取每五秒更新的狀態，不修改凍結的訓練來源。

@@ -1,5 +1,7 @@
 # Q1 Leg URDF · 雙足閃身步
 
+**Motion Store 唯讀首版已可看：** 在 Spark 開啟 http://127.0.0.1:8876/web/store/ ，提供即時訓練進度、評估曲線與版本影片。YouTube／上傳與新影片自動 PPO 尚未開放。[Store 設計與操作](docs/MOTION_STORE_PLAN.md)。
+
 以 BU10 原生雙足 CAD 建立的機器人動作專案，沿用 `q1_wheel_urdf` 的資產目錄與啟動方式。包含 URDF、MediaPipe 前七秒動作映射、Isaac Lab **DirectRLEnv + RSL-RL PPO**、MuJoCo 驗證，以及 Three.js 網頁。
 
 **Spark 獨立實驗：** 6,144 envs／15,000 次新 PPO 更新，加入 COM／接觸平衡成本及左右起步課程；使用已驗證的 PhysX，Isaac Lab 3／Newton 與 OVPhysX 已另做隔離短程驗證，Q1 控制遷移仍待完成。[訓練與升級驗證](docs/SPARK_ISAACLAB3_BALANCE_PLAN.md) · [參考 Unitree UniStore 的影片→動作→PPO Store 設計](docs/MOTION_STORE_PLAN.md)。此為獨立 `spark/isaaclab3-balance-6144-15000` 分支，不替換下方 x86 成果或正式權重。
