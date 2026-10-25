@@ -168,6 +168,8 @@ V3 閃身步通過的是原有存活、姿態與側移門檻。後續 32 回合�
 
 ## 安裝
 
+DGX Spark（ARM64／GB10）的安裝與 6,144 環境 PPO 實測見 [Spark 執行驗證](docs/SPARK_VALIDATION.md)。Spark 相容性紀錄使用獨立 `spark/arm64-compat-20261025` 分支，與 x86 訓練來源分開管理。
+
 網頁、MediaPipe 和 CPU 工具使用 Python 3.10 虛擬環境；GPU 訓練另使用 Isaac Sim 自帶的 Python。已驗證環境為 Ubuntu 22.04、Isaac Sim 5.1.0、Isaac Lab 2.3.2、RSL-RL 5.0.1、RTX 4090 Laptop 16 GB。
 
 ```bash
