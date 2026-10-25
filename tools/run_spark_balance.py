@@ -64,8 +64,8 @@ def event(run,kind,**details):
     with (run/"events.jsonl").open("a") as stream:
         stream.write(json.dumps({"time":time.time(),"kind":kind,**details},allow_nan=False)+"\n")
 
-def publish(run,state,**updates):
-    state.update(updated_at=time.time(),**updates);write(run/"status.json",state);write(STATE,state)
+def publish(run,record,**updates):
+    record.update(updated_at=time.time(),**updates);write(run/"status.json",record);write(STATE,record)
 
 def other_compute():
     result=subprocess.run(["nvidia-smi","--query-compute-apps=pid","--format=csv,noheader"],

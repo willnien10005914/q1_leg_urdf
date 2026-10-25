@@ -41,3 +41,10 @@ def test_read_only_evaluation_retries_preserve_failed_attempts(tmp_path):
     assert attempt.name=='audit_attempt_002'
     attempt.mkdir()
     assert supervisor.evaluation_attempt(base).name=='audit_attempt_003'
+
+def test_publish_persists_state_transition_without_argument_collision(tmp_path,monkeypatch):
+    monkeypatch.setattr(supervisor,'STATE',tmp_path/'public_status.json')
+    record={'completed_iterations':0}
+    supervisor.publish(tmp_path/'run',record,state='prepared',accepted=False)
+    assert supervisor.read(tmp_path/'run/status.json')['state']=='prepared'
+    assert supervisor.read(supervisor.STATE)==record
