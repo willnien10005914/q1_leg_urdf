@@ -1,0 +1,253 @@
+{
+  "diagnostic": true,
+  "accepted": false,
+  "episodes": 32,
+  "duration_s": 20,
+  "seed": 42,
+  "survival_rate": 0.46875,
+  "case_survival": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.875,
+    "3": 1.0
+  },
+  "case_names": [
+    "LRLR",
+    "RLRL",
+    "forward_walk_stop",
+    "stand"
+  ],
+  "four_step_survival": 0.0,
+  "first_failure_events": [
+    {
+      "env": 0,
+      "case": 0,
+      "time_s": 2.74,
+      "root_height_m": 0.8316420912742615,
+      "upright_cosine": 0.9488329887390137,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 143.5095977783203
+        }
+      ]
+    },
+    {
+      "env": 16,
+      "case": 0,
+      "time_s": 2.74,
+      "root_height_m": 0.8319301605224609,
+      "upright_cosine": 0.9506203532218933,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 176.69415283203125
+        }
+      ]
+    },
+    {
+      "env": 4,
+      "case": 0,
+      "time_s": 2.7600000000000002,
+      "root_height_m": 0.8303031921386719,
+      "upright_cosine": 0.9526676535606384,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 181.62518310546875
+        }
+      ]
+    },
+    {
+      "env": 8,
+      "case": 0,
+      "time_s": 2.7600000000000002,
+      "root_height_m": 0.8319129943847656,
+      "upright_cosine": 0.9556595087051392,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 230.6547393798828
+        }
+      ]
+    },
+    {
+      "env": 12,
+      "case": 0,
+      "time_s": 2.7600000000000002,
+      "root_height_m": 0.8301784992218018,
+      "upright_cosine": 0.9510599970817566,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 127.5196762084961
+        }
+      ]
+    },
+    {
+      "env": 20,
+      "case": 0,
+      "time_s": 2.7600000000000002,
+      "root_height_m": 0.8301976919174194,
+      "upright_cosine": 0.9513660073280334,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 147.83139038085938
+        }
+      ]
+    },
+    {
+      "env": 28,
+      "case": 0,
+      "time_s": 2.7600000000000002,
+      "root_height_m": 0.8307492136955261,
+      "upright_cosine": 0.9532865881919861,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 143.45440673828125
+        }
+      ]
+    },
+    {
+      "env": 24,
+      "case": 0,
+      "time_s": 2.8000000000000003,
+      "root_height_m": 0.832611083984375,
+      "upright_cosine": 0.9659894704818726,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 135.51412963867188
+        }
+      ]
+    },
+    {
+      "env": 1,
+      "case": 1,
+      "time_s": 4.16,
+      "root_height_m": 0.8383937478065491,
+      "upright_cosine": 0.9319663643836975,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 25.572580337524414
+        }
+      ]
+    },
+    {
+      "env": 13,
+      "case": 1,
+      "time_s": 4.16,
+      "root_height_m": 0.8342747688293457,
+      "upright_cosine": 0.9251247644424438,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 177.8504638671875
+        }
+      ]
+    },
+    {
+      "env": 25,
+      "case": 1,
+      "time_s": 4.16,
+      "root_height_m": 0.8363240361213684,
+      "upright_cosine": 0.9298387765884399,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 42.525604248046875
+        }
+      ]
+    },
+    {
+      "env": 29,
+      "case": 1,
+      "time_s": 4.16,
+      "root_height_m": 0.8378452062606812,
+      "upright_cosine": 0.9323158264160156,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 54.17903137207031
+        }
+      ]
+    },
+    {
+      "env": 5,
+      "case": 1,
+      "time_s": 4.18,
+      "root_height_m": 0.8374249935150146,
+      "upright_cosine": 0.9263002276420593,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 95.54741668701172
+        }
+      ]
+    },
+    {
+      "env": 9,
+      "case": 1,
+      "time_s": 4.18,
+      "root_height_m": 0.8366926312446594,
+      "upright_cosine": 0.9273741841316223,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 59.06835174560547
+        }
+      ]
+    },
+    {
+      "env": 17,
+      "case": 1,
+      "time_s": 4.18,
+      "root_height_m": 0.8393393158912659,
+      "upright_cosine": 0.9333902597427368,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 66.80632019042969
+        }
+      ]
+    },
+    {
+      "env": 21,
+      "case": 1,
+      "time_s": 4.18,
+      "root_height_m": 0.8383432030677795,
+      "upright_cosine": 0.928191065788269,
+      "nonfoot_contacts": [
+        {
+          "body": "left_ankle_pitch_link",
+          "force_n": 42.374603271484375
+        }
+      ]
+    },
+    {
+      "env": 14,
+      "case": 2,
+      "time_s": 7.68,
+      "root_height_m": 0.6683367490768433,
+      "upright_cosine": 0.6218481063842773,
+      "nonfoot_contacts": []
+    }
+  ],
+  "modes_seen": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "peak_unloaded_sole_m_mean_per_foot": [
+    0.037831224501132965,
+    0.0610237680375576
+  ],
+  "chest_peak_deg_max": 49.02454376220703,
+  "capture_excess_m_max": 0.6190969944000244,
+  "no_post_reset_measurements": true,
+  "checkpoint_sha256": "a87f196047bb58cfbb662cca2a0b27cac0d0317b8fdf9da77285e8f657ba5d8f"
+}
