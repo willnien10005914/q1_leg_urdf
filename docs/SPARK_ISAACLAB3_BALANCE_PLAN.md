@@ -66,6 +66,13 @@ systemctl --user stop q1-leg-spark-balance-15000
 # 僅在狀態允許、來源與預算核對完成後顯式 --resume；不會默認重新計數。
 ```
 
+## 啟動快照
+
+已啟動 `q1-leg-spark-balance-15000.service`，正式 **6,144 envs 首段 10 次 PPO 更新已完成並原子保存**，
+服務接著執行評估，之後自動續訓到 15,000 次上限。來源 V6 基準 64 回合中，
+LRLR／RLRL 各 0/16 存活、前進後停止 12/16、站立 16/16；這是訓練前基準，尚非新策略成果。
+[啟動證據快照](results/spark_balance_launch.json) 僅記錄提交當時狀態；即時進度請查上述 status 或服務。
+
 ## 本次程式驗證
 
 全套 CPU 回歸：**340 passed、1 skipped（選用 tensordict），27.00 秒**。
