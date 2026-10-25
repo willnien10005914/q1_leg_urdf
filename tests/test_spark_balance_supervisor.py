@@ -48,3 +48,27 @@ def test_publish_persists_state_transition_without_argument_collision(tmp_path,m
     supervisor.publish(tmp_path/'run',record,state='prepared',accepted=False)
     assert supervisor.read(tmp_path/'run/status.json')['state']=='prepared'
     assert supervisor.read(supervisor.STATE)==record
+
+def test_full_supervisor_schedule_saves_exact_15000_and_never_accepts_without_gates(tmp_path,monkeypatch):
+    run=tmp_path/'run';calls=[]
+    monkeypatch.setattr(supervisor,'STATE',tmp_path/'status.json')
+    monkeypatch.setattr(supervisor,'snapshot',lambda folder,config:(folder/'source_snapshot',{}))
+    def fake_worker(folder,record,config,checkpoint,output,**options):
+        calls.append((record['completed_iterations'],dict(options)))
+        if options.get('full'):
+            return {'passed':False}
+        if options.get('evaluate'):
+            return {'survival_rate':0.,'four_step_survival':0.,'completed_four_step_rate':0.,'accepted':False}
+        return {'completed_iterations':record['completed_iterations']+options['steps'],
+                'num_envs':6144,'checkpoint_sha256':'fake-checkpoint'}
+    monkeypatch.setattr(supervisor,'worker',fake_worker)
+    config={'experiment':'test','bootstrap':'bootstrap.pt','chunk_iterations':250,
+            'validation_every_iterations':500,'num_envs':6144}
+    supervisor.execute(run,config,resume=False)
+    training=[options for _,options in calls if not options.get('evaluate')]
+    assert len(training)==61 and sum(item['steps'] for item in training)==15000
+    assert sum(item.get('initialize',False) for item in training)==1
+    result=supervisor.read(run/'status.json')
+    assert result['completed_iterations']==result['saved_iterations']==15000
+    assert result['state']=='budget_exhausted' and result['accepted'] is False
+    assert result['validation_status']=='failed_gate'
