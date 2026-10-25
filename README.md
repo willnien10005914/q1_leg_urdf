@@ -1,6 +1,6 @@
 # Q1 Leg URDF · 雙足閃身步
 
-**Motion Store 唯讀首版已可看：** 在 Spark 開啟 http://127.0.0.1:8876/web/store/ ，提供即時訓練進度、評估曲線與版本影片。YouTube／上傳與新影片自動 PPO 尚未開放。[Store 設計與操作](docs/MOTION_STORE_PLAN.md)。
+**Motion Store 產品版已可看：** 同區網開啟 http://192.168.1.147:8876/web/store/ ，提供動作系列、原生 URDF 互動展示、場景切換、可追溯規格比較、影片與即時訓練進度。電量／續航與未驗證範圍保留為待量測。YouTube／上傳與新影片自動 PPO 尚未開放。[Store 設計與操作](docs/MOTION_STORE_PLAN.md) · [規格來源](docs/product_spec_sources.md)。
 
 以 BU10 原生雙足 CAD 建立的機器人動作專案，沿用 `q1_wheel_urdf` 的資產目錄與啟動方式。包含 URDF、MediaPipe 前七秒動作映射、Isaac Lab **DirectRLEnv + RSL-RL PPO**、MuJoCo 驗證，以及 Three.js 網頁。
 

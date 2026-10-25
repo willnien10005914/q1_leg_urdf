@@ -11,7 +11,102 @@
     "video": null,
     "origin": "本輪 Spark · 即時進度",
     "backend": "PhysX",
-    "accepted": false
+    "accepted": false,
+    "product_name": "Q1 Sidestep",
+    "tagline": "讓每一步，站得更穩。",
+    "family": "sidestep",
+    "family_name": "閃身系列",
+    "motion": "sidestep",
+    "highlights": [
+      "雙向起步課程",
+      "連續四步平衡目標",
+      "Spark 持續訓練"
+    ],
+    "scenes": [
+      {
+        "id": "studio",
+        "name": "產品棚",
+        "description": "原生 URDF 的外觀與關節展示；不是即時物理模擬。"
+      },
+      {
+        "id": "workspace",
+        "name": "室內工作區",
+        "description": "以示意場景理解動作與空間比例；未經該場景碰撞或安全範圍驗證。"
+      },
+      {
+        "id": "gallery",
+        "name": "動作展示區",
+        "description": "觀看版本與動作差異；展示場景不代表新增實測成果。"
+      }
+    ],
+    "evidence": "/docs/results/spark_balance_launch.json",
+    "specs": [
+      {
+        "id": "speed",
+        "label": "速度指令",
+        "value": 0.22,
+        "unit": "m/s",
+        "status": "command",
+        "source": "/config/v5_gaits_lift6.json",
+        "note": "前進方向的指令設定上限；不是實測最高速度，也不是閃身平均速度。"
+      },
+      {
+        "id": "workspace",
+        "label": "工作範圍",
+        "value": "待驗證",
+        "unit": "",
+        "status": "unverified",
+        "source": null,
+        "note": "尚未建立可保證的安全操作包絡；需量測全身掃掠、碰撞、地面與停止距離。"
+      },
+      {
+        "id": "battery",
+        "label": "續航時間",
+        "value": "待量測",
+        "unit": "",
+        "status": "unmeasured",
+        "source": null,
+        "note": "目前模型與紀錄沒有電池容量及實機續航量測；不能由 PPO updates 換算。"
+      },
+      {
+        "id": "energy",
+        "label": "動作耗電",
+        "value": "待量測",
+        "unit": "",
+        "status": "unmeasured",
+        "source": null,
+        "note": "尚無電流、電壓、馬達效率與回生量測；關節力矩不等同電池耗電。"
+      },
+      {
+        "id": "control",
+        "label": "控制關節",
+        "value": 23,
+        "unit": "軸",
+        "status": "source",
+        "source": "/config/robot_contract.json",
+        "note": "此 PPO 的 action joints；原生 URDF 另含 6 個鎖定關節。"
+      },
+      {
+        "id": "duration",
+        "label": "驗測回合",
+        "value": 20,
+        "unit": "s",
+        "status": "source",
+        "source": "/docs/SPARK_ISAACLAB3_BALANCE_PLAN.md",
+        "note": "固定的診斷觀察窗口；不能視為實測續航或保證存活時長。"
+      },
+      {
+        "id": "footprint",
+        "label": "錄影軌跡包絡",
+        "value": "待量測",
+        "unit": "",
+        "status": "unmeasured",
+        "source": null,
+        "note": "本輪結果影片尚未錄製；不以歷史 x86 影片代替。"
+      }
+    ],
+    "spec_scope": "原生模型、明示指令與特定歷史模擬片段；真機性能尚未驗證。",
+    "product_poster": "/web/store/assets/stand.jpg"
   },
   {
     "id": "v6",
@@ -25,7 +120,111 @@
     "video": "/docs/results/q1_leg_v6_20000_diagnostic.mp4",
     "origin": "歷史 x86 影片 · 非本輪 Spark",
     "backend": "PhysX",
-    "accepted": false
+    "accepted": false,
+    "product_name": "Q1 Balance",
+    "tagline": "從動作中，找回平衡。",
+    "family": "stability",
+    "family_name": "穩定系列",
+    "motion": "stand",
+    "highlights": [
+      "腰臂回位訓練",
+      "原生接觸診斷",
+      "保留失敗證據"
+    ],
+    "scenes": [
+      {
+        "id": "studio",
+        "name": "產品棚",
+        "description": "原生 URDF 的外觀與關節展示；不是即時物理模擬。"
+      },
+      {
+        "id": "workspace",
+        "name": "室內工作區",
+        "description": "以示意場景理解動作與空間比例；未經該場景碰撞或安全範圍驗證。"
+      },
+      {
+        "id": "gallery",
+        "name": "動作展示區",
+        "description": "觀看版本與動作差異；展示場景不代表新增實測成果。"
+      }
+    ],
+    "evidence": "/docs/results/q1_leg_v6_20000_diagnostic.json",
+    "specs": [
+      {
+        "id": "speed",
+        "label": "速度指令",
+        "value": 0.22,
+        "unit": "m/s",
+        "status": "command",
+        "source": "/config/v5_gaits_lift6.json",
+        "note": "前進方向的指令設定上限；不是實測最高速度，也不是閃身平均速度。"
+      },
+      {
+        "id": "workspace",
+        "label": "工作範圍",
+        "value": "待驗證",
+        "unit": "",
+        "status": "unverified",
+        "source": null,
+        "note": "尚未建立可保證的安全操作包絡；需量測全身掃掠、碰撞、地面與停止距離。"
+      },
+      {
+        "id": "battery",
+        "label": "續航時間",
+        "value": "待量測",
+        "unit": "",
+        "status": "unmeasured",
+        "source": null,
+        "note": "目前模型與紀錄沒有電池容量及實機續航量測；不能由 PPO updates 換算。"
+      },
+      {
+        "id": "energy",
+        "label": "動作耗電",
+        "value": "待量測",
+        "unit": "",
+        "status": "unmeasured",
+        "source": null,
+        "note": "尚無電流、電壓、馬達效率與回生量測；關節力矩不等同電池耗電。"
+      },
+      {
+        "id": "control",
+        "label": "控制關節",
+        "value": 23,
+        "unit": "軸",
+        "status": "source",
+        "source": "/config/robot_contract.json",
+        "note": "此 PPO 的 action joints；原生 URDF 另含 6 個鎖定關節。"
+      },
+      {
+        "id": "duration",
+        "label": "診斷片段長度",
+        "value": 2.74,
+        "unit": "s",
+        "status": "measured",
+        "source": "/docs/results/q1_leg_v6_20000_diagnostic.json",
+        "note": "單次歷史原生物理記錄，不代表可持續工作時長。 此片段提前終止。"
+      },
+      {
+        "id": "footprint",
+        "label": "錄影軌跡包絡",
+        "value": "0.17 × 0.365",
+        "unit": "m",
+        "status": "measured",
+        "source": "/docs/results/q1_leg_v6_20000_diagnostic.json",
+        "note": "root 參考點在該單一片段的 X × Y 最大跨度；不包含全身尺寸，也不是安全工作範圍。"
+      },
+      {
+        "id": "clearance",
+        "label": "卸載抬腳峰值",
+        "value": "4.1 / 11.08",
+        "unit": "cm",
+        "status": "measured",
+        "source": "/docs/results/q1_leg_v6_20000_diagnostic.json",
+        "note": "左／右腳在該片段的最低原生腳底面最高離地值；整段峰值不保證每一步均達標。"
+      }
+    ],
+    "spec_scope": "原生模型、明示指令與特定歷史模擬片段；真機性能尚未驗證。",
+    "product_poster": "/web/store/assets/stand.jpg"
   },
   {
     "id": "v5-pair",
@@ -39,7 +238,111 @@
     "video": "/docs/results/q1_leg_v5_pair_13115_diagnostic.mp4",
     "origin": "歷史 x86 影片 · 非本輪 Spark",
     "backend": "PhysX",
-    "accepted": false
+    "accepted": false,
+    "product_name": "Q1 Sidestep Duo",
+    "tagline": "左右之間，探索新的節奏。",
+    "family": "sidestep",
+    "family_name": "閃身系列",
+    "motion": "sidestep",
+    "highlights": [
+      "左右有限閃身",
+      "原生 PhysX 影片",
+      "獨立版本保留"
+    ],
+    "scenes": [
+      {
+        "id": "studio",
+        "name": "產品棚",
+        "description": "原生 URDF 的外觀與關節展示；不是即時物理模擬。"
+      },
+      {
+        "id": "workspace",
+        "name": "室內工作區",
+        "description": "以示意場景理解動作與空間比例；未經該場景碰撞或安全範圍驗證。"
+      },
+      {
+        "id": "gallery",
+        "name": "動作展示區",
+        "description": "觀看版本與動作差異；展示場景不代表新增實測成果。"
+      }
+    ],
+    "evidence": "/docs/results/q1_leg_v5_pair_13115_diagnostic.json",
+    "specs": [
+      {
+        "id": "speed",
+        "label": "速度指令",
+        "value": 0.22,
+        "unit": "m/s",
+        "status": "command",
+        "source": "/config/v5_gaits_lift6.json",
+        "note": "前進方向的指令設定上限；不是實測最高速度，也不是閃身平均速度。"
+      },
+      {
+        "id": "workspace",
+        "label": "工作範圍",
+        "value": "待驗證",
+        "unit": "",
+        "status": "unverified",
+        "source": null,
+        "note": "尚未建立可保證的安全操作包絡；需量測全身掃掠、碰撞、地面與停止距離。"
+      },
+      {
+        "id": "battery",
+        "label": "續航時間",
+        "value": "待量測",
+        "unit": "",
+        "status": "unmeasured",
+        "source": null,
+        "note": "目前模型與紀錄沒有電池容量及實機續航量測；不能由 PPO updates 換算。"
+      },
+      {
+        "id": "energy",
+        "label": "動作耗電",
+        "value": "待量測",
+        "unit": "",
+        "status": "unmeasured",
+        "source": null,
+        "note": "尚無電流、電壓、馬達效率與回生量測；關節力矩不等同電池耗電。"
+      },
+      {
+        "id": "control",
+        "label": "控制關節",
+        "value": 23,
+        "unit": "軸",
+        "status": "source",
+        "source": "/config/robot_contract.json",
+        "note": "此 PPO 的 action joints；原生 URDF 另含 6 個鎖定關節。"
+      },
+      {
+        "id": "duration",
+        "label": "診斷片段長度",
+        "value": 7.2,
+        "unit": "s",
+        "status": "measured",
+        "source": "/docs/results/q1_leg_v5_pair_13115_diagnostic.json",
+        "note": "單次歷史原生物理記錄，不代表可持續工作時長。"
+      },
+      {
+        "id": "footprint",
+        "label": "錄影軌跡包絡",
+        "value": "0.117 × 0.256",
+        "unit": "m",
+        "status": "measured",
+        "source": "/docs/results/q1_leg_v5_pair_13115_diagnostic.json",
+        "note": "root 參考點在該單一片段的 X × Y 最大跨度；不包含全身尺寸，也不是安全工作範圍。"
+      },
+      {
+        "id": "clearance",
+        "label": "卸載抬腳峰值",
+        "value": "7.35 / 8.51",
+        "unit": "cm",
+        "status": "measured",
+        "source": "/docs/results/q1_leg_v5_pair_13115_diagnostic.json",
+        "note": "左／右腳在該片段的最低原生腳底面最高離地值；整段峰值不保證每一步均達標。"
+      }
+    ],
+    "spec_scope": "原生模型、明示指令與特定歷史模擬片段；真機性能尚未驗證。",
+    "product_poster": "/web/store/assets/sidestep.jpg"
   },
   {
     "id": "upper",
@@ -53,7 +356,111 @@
     "video": "/docs/results/q1_leg_upper_body_13115_experimental.mp4",
     "origin": "歷史 x86 影片 · 非本輪 Spark",
     "backend": "PhysX",
-    "accepted": false
+    "accepted": false,
+    "product_name": "Q1 Flow",
+    "tagline": "把動作，收得更從容。",
+    "family": "stability",
+    "family_name": "穩定系列",
+    "motion": "upper",
+    "highlights": [
+      "腰臂控制幅度限制",
+      "同份 PPO 對照",
+      "回站姿態實驗"
+    ],
+    "scenes": [
+      {
+        "id": "studio",
+        "name": "產品棚",
+        "description": "原生 URDF 的外觀與關節展示；不是即時物理模擬。"
+      },
+      {
+        "id": "workspace",
+        "name": "室內工作區",
+        "description": "以示意場景理解動作與空間比例；未經該場景碰撞或安全範圍驗證。"
+      },
+      {
+        "id": "gallery",
+        "name": "動作展示區",
+        "description": "觀看版本與動作差異；展示場景不代表新增實測成果。"
+      }
+    ],
+    "evidence": "/docs/results/upper_body_13115_experimental_replay.json",
+    "specs": [
+      {
+        "id": "speed",
+        "label": "速度指令",
+        "value": 0.22,
+        "unit": "m/s",
+        "status": "command",
+        "source": "/config/v5_gaits_lift6.json",
+        "note": "前進方向的指令設定上限；不是實測最高速度，也不是閃身平均速度。"
+      },
+      {
+        "id": "workspace",
+        "label": "工作範圍",
+        "value": "待驗證",
+        "unit": "",
+        "status": "unverified",
+        "source": null,
+        "note": "尚未建立可保證的安全操作包絡；需量測全身掃掠、碰撞、地面與停止距離。"
+      },
+      {
+        "id": "battery",
+        "label": "續航時間",
+        "value": "待量測",
+        "unit": "",
+        "status": "unmeasured",
+        "source": null,
+        "note": "目前模型與紀錄沒有電池容量及實機續航量測；不能由 PPO updates 換算。"
+      },
+      {
+        "id": "energy",
+        "label": "動作耗電",
+        "value": "待量測",
+        "unit": "",
+        "status": "unmeasured",
+        "source": null,
+        "note": "尚無電流、電壓、馬達效率與回生量測；關節力矩不等同電池耗電。"
+      },
+      {
+        "id": "control",
+        "label": "控制關節",
+        "value": 23,
+        "unit": "軸",
+        "status": "source",
+        "source": "/config/robot_contract.json",
+        "note": "此 PPO 的 action joints；原生 URDF 另含 6 個鎖定關節。"
+      },
+      {
+        "id": "duration",
+        "label": "診斷片段長度",
+        "value": 7.2,
+        "unit": "s",
+        "status": "measured",
+        "source": "/docs/results/upper_body_13115_experimental_replay.json",
+        "note": "單次歷史原生物理記錄，不代表可持續工作時長。"
+      },
+      {
+        "id": "footprint",
+        "label": "錄影軌跡包絡",
+        "value": "0.161 × 0.274",
+        "unit": "m",
+        "status": "measured",
+        "source": "/docs/results/upper_body_13115_experimental_replay.json",
+        "note": "root 參考點在該單一片段的 X × Y 最大跨度；不包含全身尺寸，也不是安全工作範圍。"
+      },
+      {
+        "id": "chest_tilt",
+        "label": "胸口傾斜峰值",
+        "value": 22.4,
+        "unit": "°",
+        "status": "measured",
+        "source": "/docs/results/upper_body_13115_experimental_replay.json",
+        "note": "單一原生物理記錄的胸口姿態；不是完整穩定性驗收結果。"
+      }
+    ],
+    "spec_scope": "原生模型、明示指令與特定歷史模擬片段；真機性能尚未驗證。",
+    "product_poster": "/web/store/assets/upper.jpg"
   },
   {
     "id": "inplace",
@@ -67,6 +474,110 @@
     "video": "/docs/results/q1_leg_v5_inplace_405_diagnostic.mp4",
     "origin": "歷史 x86 影片 · 非本輪 Spark",
     "backend": "PhysX",
-    "accepted": false
+    "accepted": false,
+    "product_name": "Q1 Step",
+    "tagline": "向前之前，先練好每一步。",
+    "family": "inplace",
+    "family_name": "踏步系列",
+    "motion": "inplace",
+    "highlights": [
+      "原地交替抬腳",
+      "足底卸載量測",
+      "恢復站姿課程"
+    ],
+    "scenes": [
+      {
+        "id": "studio",
+        "name": "產品棚",
+        "description": "原生 URDF 的外觀與關節展示；不是即時物理模擬。"
+      },
+      {
+        "id": "workspace",
+        "name": "室內工作區",
+        "description": "以示意場景理解動作與空間比例；未經該場景碰撞或安全範圍驗證。"
+      },
+      {
+        "id": "gallery",
+        "name": "動作展示區",
+        "description": "觀看版本與動作差異；展示場景不代表新增實測成果。"
+      }
+    ],
+    "evidence": "/docs/results/q1_leg_v5_inplace_405_diagnostic.json",
+    "specs": [
+      {
+        "id": "speed",
+        "label": "速度指令",
+        "value": 0,
+        "unit": "m/s",
+        "status": "command",
+        "source": "/config/v5_gaits_lift6.json",
+        "note": "原地踏步為零平移指令。"
+      },
+      {
+        "id": "workspace",
+        "label": "工作範圍",
+        "value": "待驗證",
+        "unit": "",
+        "status": "unverified",
+        "source": null,
+        "note": "尚未建立可保證的安全操作包絡；需量測全身掃掠、碰撞、地面與停止距離。"
+      },
+      {
+        "id": "battery",
+        "label": "續航時間",
+        "value": "待量測",
+        "unit": "",
+        "status": "unmeasured",
+        "source": null,
+        "note": "目前模型與紀錄沒有電池容量及實機續航量測；不能由 PPO updates 換算。"
+      },
+      {
+        "id": "energy",
+        "label": "動作耗電",
+        "value": "待量測",
+        "unit": "",
+        "status": "unmeasured",
+        "source": null,
+        "note": "尚無電流、電壓、馬達效率與回生量測；關節力矩不等同電池耗電。"
+      },
+      {
+        "id": "control",
+        "label": "控制關節",
+        "value": 23,
+        "unit": "軸",
+        "status": "source",
+        "source": "/config/robot_contract.json",
+        "note": "此 PPO 的 action joints；原生 URDF 另含 6 個鎖定關節。"
+      },
+      {
+        "id": "duration",
+        "label": "診斷片段長度",
+        "value": 8.0,
+        "unit": "s",
+        "status": "measured",
+        "source": "/docs/results/q1_leg_v5_inplace_405_diagnostic.json",
+        "note": "單次歷史原生物理記錄，不代表可持續工作時長。"
+      },
+      {
+        "id": "footprint",
+        "label": "錄影軌跡包絡",
+        "value": "0.148 × 0.231",
+        "unit": "m",
+        "status": "measured",
+        "source": "/docs/results/q1_leg_v5_inplace_405_diagnostic.json",
+        "note": "root 參考點在該單一片段的 X × Y 最大跨度；不包含全身尺寸，也不是安全工作範圍。"
+      },
+      {
+        "id": "clearance",
+        "label": "卸載抬腳峰值",
+        "value": "7.01 / 6.73",
+        "unit": "cm",
+        "status": "measured",
+        "source": "/docs/results/q1_leg_v5_inplace_405_diagnostic.json",
+        "note": "左／右腳在該片段的最低原生腳底面最高離地值；整段峰值不保證每一步均達標。"
+      }
+    ],
+    "spec_scope": "原生模型、明示指令與特定歷史模擬片段；真機性能尚未驗證。",
+    "product_poster": "/web/store/assets/inplace.jpg"
   }
 ]

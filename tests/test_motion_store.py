@@ -42,3 +42,35 @@ def test_partial_status_json_does_not_crash_store(root):
  (root/'outputs/spark_balance_status.json').write_text('{')
  result=store.store_payload(root,now=200)['training']
  assert result['state']=='updating' and result['stale']
+
+def test_product_specs_do_not_invent_electrical_or_safe_operating_limits():
+ catalog=json.loads((store.ROOT/'web/store/catalog.json').read_text())
+ assert {item['family'] for item in catalog}=={'sidestep','stability','inplace'}
+ for item in catalog:
+  specs={spec['id']:spec for spec in item['specs']}
+  assert specs['battery']['value']=='待量測' and specs['battery']['status']=='unmeasured'
+  assert specs['energy']['value']=='待量測' and specs['energy']['status']=='unmeasured'
+  assert specs['workspace']['value']=='待驗證' and specs['workspace']['status']=='unverified'
+  assert specs['speed']['status']=='command'
+  assert item['accepted'] is False
+  assert item['product_name'] and item['tagline'] and len(item['scenes'])==3
+  for spec in specs.values():
+   if spec['status'] in ('measured','source','command'):
+    assert spec['source'] and (store.ROOT/spec['source'].lstrip('/')).is_file()
+
+def test_robot_specs_are_derived_from_local_model_not_hardcoded(root):
+ model=root/'urdf/q1_inertia/quanta_robot_legged.urdf';model.parent.mkdir(parents=True)
+ model.write_text('<robot name="fixture"><link name="body"><inertial><mass value="3.25"/></inertial></link>'
+  '<link name="leg"><inertial><mass value="1.5"/></inertial></link>'
+  '<joint name="hip" type="revolute"/><joint name="finger" type="revolute"/></robot>')
+ config=root/'config/robot_contract.json';config.parent.mkdir()
+ config.write_text(json.dumps({'joint_names':['hip'],'locked_joints':['finger']}))
+ result=store.robot_specs(root)
+ assert result['available'] and result['model_only']
+ assert result['mass_kg']==4.75 and result['active_joints']==1 and result['source_movable_joints']==2
+ assert result['battery_capacity_wh'] is None and result['maximum_measured_speed_m_s'] is None
+ assert len(result['urdf_sha256'])==64
+
+def test_missing_robot_model_is_unavailable_not_fabricated(root):
+ result=store.store_payload(root,now=200)['robot']
+ assert result['available'] is False and result['model_only'] is True
