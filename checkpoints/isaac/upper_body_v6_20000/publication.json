@@ -6,6 +6,19 @@
   "checkpoint_sha256": "a87f196047bb58cfbb662cca2a0b27cac0d0317b8fdf9da77285e8f657ba5d8f",
   "video_sha256": "5c0659bc3c22175da946a0b46deaf8b17dfeac7a329450c1a6fa18e5a4667a82",
   "gofile": "https://gofile.io/d/74QTLdVi",
-  "latest_validation": null,
-  "failure_in_video": true
+  "latest_validation": {
+    "report": "checkpoints/isaac/upper_body_v6_20000/evaluation.json",
+    "stage": 0,
+    "episodes": 32,
+    "passed": false,
+    "survival_rate": 1.0,
+    "failed_gates": [
+      "upper_body.stand.tail.hand_0",
+      "upper_body.inplace.tail.hand_0",
+      "upper_body.inplace.tail.hand_1"
+    ]
+  },
+  "failure_in_video": true,
+  "video_duration_s": 2.74,
+  "video_completed_plan": false
 }

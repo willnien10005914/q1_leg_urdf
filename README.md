@@ -3,29 +3,19 @@
 以 BU10 原生雙足 CAD 建立的機器人動作專案，沿用 `q1_wheel_urdf` 的資產目錄與啟動方式。包含 URDF、MediaPipe 前七秒動作映射、Isaac Lab **DirectRLEnv + RSL-RL PPO**、MuJoCo 驗證，以及 Three.js 網頁。
 
 <!-- V6_STATUS_START -->
-## V6 上半身穩定重訓：10,240 envs × 20,000 次上限
+## 2026-10-25：V6 累計 20,000 次訓練完成，動作尚未合格
 
-**2026-10-24：已建立 V6r1 穩定與接觸修正分支。** 原分支已花的 **12,800 次更新照算**，總上限仍為 **20,000**。原地訓練長期未改善胸口角速度，且遺忘右閃；新分支恢復已知會左右閃身的 13115 actor，採原生對照選出的腰部阻尼8（剛性70、手臂阻尼4不變），加入角速度能量、抬腳過高與滑動成本，並保留30%閃身演練。48／48原生短測存活20秒，但尚未完成新訓練或完整驗收。[分支證據與架構](docs/V6_R1_STABILITY.md)。
+使用 **10,240 envs、累計 20,000 PPO iterations**，包含先前分支 12,800 次。已達預算上限停止；**完成訓練預算不等於學會閃身步**，尚未通過 Stage 0，未發布為網頁正式即時策略。
 
-**[持續監看與最新保存進度](docs/UPPER_BODY_V6_PROGRESS.md)** 由背景服務更新；每1,000次保存、階段變動或異常會經SSH同步。完整驗收通過後，另一管線才錄製原生影片、核對逐腳與上半身量測、上傳GoFile及更新README／GIF；尚未合格不會上傳為完成影片。
+![20,000 次 PPO 原生診斷：左閃時於 2.74 秒終止，未完成左右動作](docs/images/v6-20000-diagnostic.gif)
 
+**影片是失敗診斷紀錄**：使用終點 PPO 在原生 Isaac Sim／PhysX 執行「站立 → 左閃 → 右閃 → 回站立」測試；在左閃階段 **2.74 秒觸發 episode 終止**，未完成右閃及回站立。無隱藏重設、剪接補動作或姿態平滑。此片不能當作成功示範。
 
-**2026-10-23 台北 04:47 已啟動新的 V6 PPO 訓練**，使用 **10,240 envs、最多 20,000 次新更新**。以 13115 完整 actor 初始化，critic／Adam／探索與更新計數重新建立；舊 15000 run 保留。新增胸口姿態、roll／pitch 晃動、腰臂追蹤與受控回手目標，保留原生 PD、抬腳、接觸、滑動及完整 WASD／QE 驗收。
+[GoFile 原始影片](https://gofile.io/d/74QTLdVi) · [GitHub MP4](docs/results/q1_leg_v6_20000_diagnostic.mp4) · [PPO 權重](checkpoints/isaac/upper_body_v6_20000/latest.pt) · [完整驗測](checkpoints/isaac/upper_body_v6_20000/evaluation.json) · [結果與重現方式](docs/V6_20000_RESULT.md)
 
-原地抬腳與恢復 → 有限左右閃身與回手 → 方向控制整合；各階段訓練回合皆 20 秒，最後須連續三次完整驗證及獨立 128 回合確認。啟動前原生 actor 短測 **32／32 第一回合存活 20 秒**；這是初始化檢查，**訓練尚未完成，也尚未發布 V6 即時策略**。下方影片仍是上一版 13115 控制修正實驗。
+終點 Stage 0 共 **32／32 回合存活**，下肢門檻通過，但站立左手回位 **1.94 cm**、原地踏步後左右手回位 **2.05／2.35 cm**，超過 **1.5 cm**。原地踏步胸口峰值 **11.21°**、動態 XY 角速度 RMS **0.655 rad/s** 通過目前階段門檻；這些結果不代表有限閃身或完整 WASD 已驗收。
 
-[首輪 100 次新更新的獨立驗證](docs/results/upper_body_v6_100_stage0.json)：32／32 回合存活，原有下肢門檻全部通過；原地抬腳左右峰值平均 5.21／5.16 cm。尚有站立／抬腳停止後的手臂速度與動態胸口角速度三項上半身門檻未通過，保持 Stage 0 繼續學習，未放寬門檻。
-
-**2026-10-24 進度：已保存 7,800／20,000 次新更新。** 最新驗證 32／32 存活，下肢與手臂回穩門檻均通過，只剩原地抬腳胸口動態 XY 角速度 RMS 1.031 rad/s（要求 ≤0.700）未達標，仍在 Stage 0，尚未進入閃身步課程。昨晚 23:01 下一段原生初始化崩潰後，已於今日恢復並確認 PPO 持續更新；新增只允許重試「尚未開始學習」的啟動防護，保留來源、計數與所有門檻。
-
-[架構、reward、回手驗收與接續指令](docs/UPPER_BODY_V6_TRAINING.md) · [訓練設定](config/upper_body_v6.json)
-
-```bash
-systemctl --user status q1-leg-upper-training --no-pager
-.venv/bin/python tools/run_upper_body_training.py --status
-tail -n 40 outputs/upper_body_training.log
-```
-
+[分支設計與證據](docs/V6_R1_STABILITY.md) · [訓練架構](docs/UPPER_BODY_V6_TRAINING.md) · [訓練期間歷史](docs/V6_TRAINING_HISTORY.md)
 <!-- V6_STATUS_END -->
 
 ## 2026-10-23：腰臂回位與胸口晃動修正實驗

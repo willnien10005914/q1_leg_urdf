@@ -14,10 +14,8 @@ def main() -> None:
     path = Path(sys.argv[1])
     if not path.is_file():
         raise SystemExit(f"missing {path}")
-    # Get a server
-    with urllib.request.urlopen("https://api.gofile.io/servers", timeout=60) as r:
-        servers = json.load(r)
-    server = servers["data"]["servers"][0]["name"]
+    # GoFile's global upload endpoint selects a storage node; an empty
+    # discovery response must not prevent a basic guest upload.
     boundary = "----cursorunbox"
     data = path.read_bytes()
     body = (
@@ -26,7 +24,7 @@ def main() -> None:
         f"Content-Type: video/mp4\r\n\r\n"
     ).encode() + data + f"\r\n--{boundary}--\r\n".encode()
     req = urllib.request.Request(
-        f"https://{server}.gofile.io/uploadFile",
+        "https://upload.gofile.io/uploadfile",
         data=body,
         headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
         method="POST",
