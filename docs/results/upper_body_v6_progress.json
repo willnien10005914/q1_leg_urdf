@@ -2,11 +2,11 @@
   "schema": 1,
   "robot": "q1_leg_upper_body_v6",
   "run_id": "v6r1_stable_contact_20261024",
-  "as_of": "2026-10-25T00:20:29.597253+00:00",
+  "as_of": "2026-10-25T00:33:06.909907+00:00",
   "state": "validating",
-  "saved_updates": 19805,
+  "saved_updates": 20000,
   "max_new_updates": 20000,
-  "saved_progress_percent": 99.03,
+  "saved_progress_percent": 100.0,
   "num_envs": 10240,
   "curriculum_stage": 0,
   "stage_name": "inplace_upper_recovery",
@@ -17,9 +17,9 @@
   "startup_watchdog_active": true,
   "source_verified": true,
   "checkpoint_verified": true,
-  "checkpoint_sha256": "09fbf9ca0336b4473ba8de6ee739151594605262f57d0de37e7c1c6644474ee4",
+  "checkpoint_sha256": "a87f196047bb58cfbb662cca2a0b27cac0d0317b8fdf9da77285e8f657ba5d8f",
   "latest_validation": {
-    "saved_updates": 19705,
+    "saved_updates": 19905,
     "stage": 0,
     "episodes": 32,
     "passed": false,
@@ -34,23 +34,23 @@
     "lower_body_passed": true,
     "upper_body_cases": {
       "stand": {
-        "chest_peak_deg": 2.0718955993652344,
-        "chest_rms_deg": 0.6619283402415141,
+        "chest_peak_deg": 1.8672446012496948,
+        "chest_rms_deg": 1.0484360444945036,
         "dynamic_chest_angular_xy_rms_rad_s": null,
-        "tail_arm_speed_rms_rad_s": 0.011951045449196585,
+        "tail_arm_speed_rms_rad_s": 0.0039234542983442216,
         "tail_hand_distance_rms_m_per_hand": [
-          0.019418929129879185,
-          0.006687117363958497
+          0.019697983886340295,
+          0.008875446608302055
         ]
       },
       "inplace": {
-        "chest_peak_deg": 10.96442699432373,
-        "chest_rms_deg": 4.091998391778165,
-        "dynamic_chest_angular_xy_rms_rad_s": 0.6350917054439631,
-        "tail_arm_speed_rms_rad_s": 0.020084204049338555,
+        "chest_peak_deg": 10.994797706604004,
+        "chest_rms_deg": 3.77651646240333,
+        "dynamic_chest_angular_xy_rms_rad_s": 0.6512149498696781,
+        "tail_arm_speed_rms_rad_s": 0.01640208465785883,
         "tail_hand_distance_rms_m_per_hand": [
-          0.020819445861004628,
-          0.022765636930994797
+          0.020781238241470337,
+          0.023944979051095272
         ]
       }
     }
