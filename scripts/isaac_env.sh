@@ -71,8 +71,7 @@ fi
 
 # Isaac Sim's Linux ARM bootstrap requires OpenMP preloaded even for headless
 # runs. A systemd user service does not inherit the interactive shell's preload.
-# Discover the same system/PyTorch libraries as the installed Isaac Sim checker;
-# keep this process-local and leave x86 RTX environments untouched.
+# Discover the same system/PyTorch libraries as the installed Isaac Sim checker.
 case "$(uname -sm)" in
   "Linux aarch64"|"Linux arm64")
     _q1_torch_omp="$("$ISAAC_PYTHON" -c 'import glob, importlib.util; s=importlib.util.find_spec("torch"); print("\n".join(p for root in (s.submodule_search_locations if s else []) for p in glob.glob(root + ".libs/libgomp*")))')"
@@ -87,6 +86,53 @@ case "$(uname -sm)" in
     unset _q1_torch_omp _q1_omp _q1_preloads
     ;;
 esac
+
+# Binary Isaac Sim / Isaac Lab torch wheels (esp. cu128 on x86 RTX) need the
+# bundled nvidia-* shared libs on LD_LIBRARY_PATH. Without them, AppLauncher
+# fails with ImportError: libcusparseLt.so.0 / libcufile.so.0 / libcupti.so.12.
+_q1_prepend_lib_dirs() {
+  local dir
+  for dir in "$@"; do
+    [[ -n "$dir" && -d "$dir" ]] || continue
+    case ":${LD_LIBRARY_PATH:-}:" in
+      *":${dir}:"*) ;;
+      *) export LD_LIBRARY_PATH="${dir}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" ;;
+    esac
+  done
+}
+_q1_collect_nvidia_lib_dirs() {
+  local root site prebundle
+  # Pip Isaac Sim venv layout.
+  if [[ -n "${ISAAC_VENV:-}" ]]; then
+    for site in "${ISAAC_VENV}/lib"/python*/site-packages; do
+      [[ -d "$site" ]] || continue
+      for root in "$site/nvidia"/*/lib "$site/nvidia"/cu*/lib "$site/cusparselt/lib"; do
+        [[ -d "$root" ]] && printf '%s\n' "$root"
+      done
+    done
+  fi
+  # Binary Isaac Sim / Isaac Lab `_isaac_sim` layout.
+  if [[ -n "${ISAAC_SIM_PATH:-}" ]]; then
+    for site in "${ISAAC_SIM_PATH}/kit/python/lib"/python*/site-packages; do
+      [[ -d "$site" ]] || continue
+      for root in "$site/nvidia"/*/lib "$site/nvidia"/cu*/lib; do
+        [[ -d "$root" ]] && printf '%s\n' "$root"
+      done
+    done
+    prebundle="${ISAAC_SIM_PATH}/exts/omni.isaac.ml_archive/pip_prebundle"
+    if [[ -d "$prebundle" ]]; then
+      while IFS= read -r root; do
+        printf '%s\n' "$root"
+      done < <(find "$prebundle" -type d -name lib 2>/dev/null)
+    fi
+  fi
+}
+mapfile -t _q1_nvidia_libs < <(_q1_collect_nvidia_lib_dirs | awk 'NF && !seen[$0]++')
+if ((${#_q1_nvidia_libs[@]})); then
+  _q1_prepend_lib_dirs "${_q1_nvidia_libs[@]}"
+fi
+unset -f _q1_collect_nvidia_lib_dirs _q1_prepend_lib_dirs
+unset _q1_nvidia_libs
 
 _Q1_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 _ISAAC_SRC_PATH=""
