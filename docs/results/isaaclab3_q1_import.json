@@ -1,0 +1,16 @@
+{
+  "import_passed": true,
+  "backend": "Newton ModelBuilder URDF importer",
+  "urdf_sha256": "2a9a5fce0cd4cf116ba22fcc5c2dfc90747e16c7c1c1ccd0914beec61ce7b3ac",
+  "source_links": 30,
+  "source_movable_joints": 29,
+  "newton_bodies": 30,
+  "newton_joint_count_including_fixed_and_free_root": 30,
+  "joint_dof_count": 35,
+  "joint_coord_count": 36,
+  "source_mass_kg": 42.205915473,
+  "import_mass_kg": 42.205915473,
+  "mass_matches": true,
+  "duration_s": 6.421864544041455,
+  "scope": "Importer only, no dynamic simulation, no Q1 policy or contact validation, no performance conclusion."
+}

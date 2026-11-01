@@ -1,0 +1,117 @@
+{
+  "source": {
+    "repository": "https://github.com/isaac-sim/IsaacLab",
+    "tag": "v3.0.0",
+    "commit": "e3f7d9ff1f5d7f8280de3ece9000b7117f66bcf4"
+  },
+  "isolation": {
+    "checkout": "/home/spark/will/q1_leg_urdf/outputs/isaaclab3_validation/IsaacLab",
+    "venv": "/home/spark/will/q1_leg_urdf/outputs/isaaclab3_validation/env",
+    "shared_runtime_modified": false,
+    "isaacsim_installed": false
+  },
+  "platform": {
+    "architecture": "aarch64",
+    "gpu": "NVIDIA GB10",
+    "driver": "580.173.02",
+    "python": "3.12.13"
+  },
+  "versions": {
+    "isaaclab_package_metadata": "28.0.0",
+    "newton": "1.6.1",
+    "warp-lang": "1.17.0",
+    "torch": "2.11.0+cu130",
+    "rsl-rl-lib": "5.5.1",
+    "ovphysx": "0.6.4.72118723",
+    "ovstage": "0.2.1.385922"
+  },
+  "install": {
+    "command": "UV_PROJECT_ENVIRONMENT=/home/spark/will/q1_leg_urdf/outputs/isaaclab3_validation/env uv sync --frozen",
+    "passed": true,
+    "log": "/home/spark/will/q1_leg_urdf/outputs/isaaclab3_validation/install.log"
+  },
+  "newton_stock_smoke": {
+    "passed": true,
+    "task": "Isaac-Cartpole-Direct",
+    "physics": "newton_mjwarp",
+    "num_envs": 32,
+    "max_iterations": 2,
+    "total_steps": 1024,
+    "training_time_s": 20.46,
+    "iteration_time_s": [
+      14.28,
+      0.12
+    ],
+    "steps_per_second": [
+      35,
+      4257
+    ],
+    "log": "/home/spark/will/q1_leg_urdf/outputs/isaaclab3_validation/newton_smoke.log",
+    "checkpoints": [
+      "logs/rsl_rl/spark_lab3_newton_smoke/2026-10-25_05-57-45/model_0.pt",
+      "logs/rsl_rl/spark_lab3_newton_smoke/2026-10-25_05-57-45/model_1.pt"
+    ],
+    "scope": "Stock Newton platform/runtime validation only; not Q1 native environment or gait acceptance."
+  },
+  "q1_unchanged": {
+    "module_import_passed": true,
+    "legacy_cli_passed": false,
+    "legacy_cli_error": "unrecognized arguments: --headless",
+    "legacy_without_headless_passed": false,
+    "legacy_without_headless_error": "AppLauncher requires Isaac Sim / Omniverse Kit; Isaac Sim not installed in Newton-only environment",
+    "launch_logs": [
+      "/home/spark/will/q1_leg_urdf/outputs/isaaclab3_validation/q1_launch_probe.log",
+      "/home/spark/will/q1_leg_urdf/outputs/isaaclab3_validation/q1_launch_without_headless.log"
+    ],
+    "ported": false
+  },
+  "migration_required": [
+    "Replace AppLauncher with launch_simulation and configure explicit Newton physics preset; --headless removed (headless is default).",
+    "Convert robot and contact sensor ProxyArray data accesses to .torch or native Warp.",
+    "Convert WXYZ quaternion assumptions and constants to XYZW.",
+    "Use *_index or *_mask articulation state and target write methods.",
+    "Revalidate normal and friction contact force semantics, stop criteria, material/friction settings, actuator and limit equivalence.",
+    "Native 23-joint asset/FK/COM/inertia/contact/torque regression plus reset-free first-step/four-step gates must pass before any production training backend switch."
+  ],
+  "recommendation": "Keep current validated PhysX production training isolated. Lab3 Newton is viable on this Spark as a separate migration and matched-physics benchmark candidate, but no Q1 throughput/realism superiority was measured.",
+  "official_references": [
+    "https://github.com/isaac-sim/IsaacLab/releases/tag/v3.0.0",
+    "https://isaac-sim.github.io/IsaacLab/main/source/isaaclab/installation.html",
+    "https://isaac-sim.github.io/IsaacLab/main/source/isaaclab/migrating.html"
+  ],
+  "ovphysx_stock_smoke": {
+    "passed": true,
+    "task": "Isaac-Cartpole-Direct",
+    "physics": "ovphysx",
+    "num_envs": 32,
+    "max_iterations": 2,
+    "total_steps": 1024,
+    "training_time_s": 1.16,
+    "iteration_time_s": [
+      0.76,
+      0.3
+    ],
+    "steps_per_second": [
+      677,
+      1696
+    ],
+    "log": "/home/spark/will/q1_leg_urdf/outputs/isaaclab3_validation/ovphysx_smoke.log",
+    "scope": "Same stock task platform validation, not Q1 6144-env throughput or convergence. Cold first-run Newton kernel compile makes these short timings unsuitable to select production backend."
+  },
+  "q1_newton_urdf_import": {
+    "import_passed": true,
+    "backend": "Newton ModelBuilder URDF importer",
+    "urdf_sha256": "2a9a5fce0cd4cf116ba22fcc5c2dfc90747e16c7c1c1ccd0914beec61ce7b3ac",
+    "source_links": 30,
+    "source_movable_joints": 29,
+    "newton_bodies": 30,
+    "newton_joint_count_including_fixed_and_free_root": 30,
+    "joint_dof_count": 35,
+    "joint_coord_count": 36,
+    "source_mass_kg": 42.205915473,
+    "import_mass_kg": 42.205915473,
+    "mass_matches": true,
+    "duration_s": 6.421864544041455,
+    "scope": "Importer only, no dynamic simulation, no Q1 policy or contact validation, no performance conclusion."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "cards": 5,
+  "category_search": true,
+  "spec_tabs": true,
+  "native_video": true,
+  "comparison": true,
+  "urdf_loaded": true,
+  "scene_switching": true,
+  "motion_provenance": true,
+  "spark_stand_only": true,
+  "model_dimensions": true,
+  "desktop_mobile": true,
+  "javascript_errors": [],
+  "failed_responses": [],
+  "unit_and_guard_tests_passed": 28,
+  "url": "http://192.168.1.147:8876/web/store/",
+  "scope": "Product UI, source URDF visualization, model-derived dimensions, truthful specification labels, and LAN access. Does not certify hardware performance or new PPO acceptance."
+}

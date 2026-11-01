@@ -1,6 +1,10 @@
 # Q1 Leg URDF · 雙足閃身步
 
+**Motion Store 產品版已可看：** 同區網開啟 http://192.168.1.147:8876/web/store/ ，提供動作系列、原生 URDF 互動展示、場景切換、可追溯規格比較、影片與即時訓練進度。電量／續航與未驗證範圍保留為待量測。YouTube／上傳與新影片自動 PPO 尚未開放。[Store 設計與操作](docs/MOTION_STORE_PLAN.md) · [規格來源](docs/product_spec_sources.md)。
+
 以 BU10 原生雙足 CAD 建立的機器人動作專案，沿用 `q1_wheel_urdf` 的資產目錄與啟動方式。包含 URDF、MediaPipe 前七秒動作映射、Isaac Lab **DirectRLEnv + RSL-RL PPO**、MuJoCo 驗證，以及 Three.js 網頁。
+
+**Spark 獨立實驗：** 6,144 envs／15,000 次新 PPO 更新，加入 COM／接觸平衡成本及左右起步課程；使用已驗證的 PhysX，Isaac Lab 3／Newton 與 OVPhysX 已另做隔離短程驗證，Q1 控制遷移仍待完成。[訓練與升級驗證](docs/SPARK_ISAACLAB3_BALANCE_PLAN.md) · [參考 Unitree UniStore 的影片→動作→PPO Store 設計](docs/MOTION_STORE_PLAN.md)。此為獨立 `spark/isaaclab3-balance-6144-15000` 分支，不替換下方 x86 成果或正式權重。
 
 <!-- V6_STATUS_START -->
 ## 2026-10-25：V6 累計 20,000 次訓練完成，動作尚未合格
@@ -167,6 +171,8 @@ V3 閃身步通過的是原有存活、姿態與側移門檻。後續 32 回合�
 影片為選定 PPO 權重在 seed 42 的完整 7.78 秒回合，1280×720／50 FPS，該回合未跌倒；單一成功影片不代表所有初始條件都成功。
 
 ## 安裝
+
+DGX Spark（ARM64／GB10）的安裝與 6,144 環境 PPO 實測見 [Spark 執行驗證](docs/SPARK_VALIDATION.md)。Spark 相容性紀錄使用獨立 `spark/arm64-compat-20261025` 分支，與 x86 訓練來源分開管理。
 
 網頁、MediaPipe 和 CPU 工具使用 Python 3.10 虛擬環境；GPU 訓練另使用 Isaac Sim 自帶的 Python。已驗證環境為 Ubuntu 22.04、Isaac Sim 5.1.0、Isaac Lab 2.3.2、RSL-RL 5.0.1、RTX 4090 Laptop 16 GB。
 

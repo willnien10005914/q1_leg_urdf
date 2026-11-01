@@ -1,0 +1,33 @@
+{
+  "recorded_at_utc": "2026-10-25T06:08:13.310273+00:00",
+  "service": "q1-leg-spark-balance-15000.service",
+  "branch": "spark/isaaclab3-balance-6144-15000",
+  "training_source_commit": "ec2d74da6ed3a37bf1b52b70b537df72c1ecad0d",
+  "num_envs": 6144,
+  "max_new_iterations": 15000,
+  "completed_saved_iterations_at_snapshot": 10,
+  "checkpoint_sha256": "4a0a4f3914bcdf1e80f064bb38b725cab67ed2f4841415df4247e259d9c2b0db",
+  "backend": "physx",
+  "accepted": false,
+  "baseline": {
+    "episodes": 64,
+    "survival_rate": 0.4375,
+    "case_survival": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.75,
+      "3": 1.0
+    },
+    "case_names": [
+      "LRLR",
+      "RLRL",
+      "forward_walk_stop",
+      "stand"
+    ],
+    "four_step_survival": 0.0,
+    "completed_four_step_rate": 0.0
+  },
+  "source_files": 255,
+  "runtime_source_files": 983,
+  "scope": "Launch snapshot only. Live progress remains in outputs/spark_balance_status.json; background service continues to the authorized 15000 update cap."
+}

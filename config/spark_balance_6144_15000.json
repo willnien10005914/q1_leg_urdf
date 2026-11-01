@@ -1,0 +1,19 @@
+{
+  "experiment": "spark_balance_6144_15000_physx_v1",
+  "backend": "physx",
+  "num_envs": 6144,
+  "max_new_iterations": 15000,
+  "prior_v6_updates": 20000,
+  "seed": 42000,
+  "chunk_iterations": 250,
+  "validation_every_iterations": 500,
+  "validation_episodes": 64,
+  "worker_timeout_s": 5400,
+  "isaaclab_path": "/home/spark/IsaacLab",
+  "isaac_python": "/home/spark/isaac/env_isaaclab/bin/python",
+  "bootstrap": "checkpoints/isaac/upper_body_v6_20000/latest.pt",
+  "bootstrap_sha256": "a87f196047bb58cfbb662cca2a0b27cac0d0317b8fdf9da77285e8f657ba5d8f",
+  "run": "checkpoints/isaac/spark_balance/runs/20261025_6144_15000",
+  "budget_note": "15000 new Spark PPO updates; earlier V6 20000 and compatibility smoke are separate. No automatic plateau stop or policy publication.",
+  "physics_note": "Native CAD PhysX, unchanged PD and failure gates; LRLR and RLRL training. Lab3/Newton is separately validated and cannot silently replace this backend."
+}
