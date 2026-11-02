@@ -14,8 +14,13 @@ class Motion:
         if skill == "sidestep":
             path = reference or ROOT / "docs/reference/sidestep_motion.json"
             self.data = json.loads(path.read_text())
-            if self.data["joint_names"] != list(JOINTS) or self.data["source"] != "mediapipe":
-                raise ValueError("Wrong reference contract or non-MediaPipe motion")
+            if self.data["joint_names"] != list(JOINTS):
+                raise ValueError("Wrong reference contract: joint_names mismatch")
+            # mediapipe = Store geometric mimic (root XY often zero).
+            # hhtools / beyondmimic / roboparty = RoboParty-style retarget with root trajectory.
+            allowed = {"mediapipe", "hhtools", "beyondmimic", "roboparty"}
+            if self.data.get("source") not in allowed:
+                raise ValueError("Wrong reference contract or unsupported motion source")
             if self.data.get('robot_urdf_sha256')!=hashlib.sha256(URDF.read_bytes()).hexdigest():
                 raise ValueError('Reference belongs to another robot revision; rerun prepare_motion.sh')
             self.t = np.array(self.data["time"])
