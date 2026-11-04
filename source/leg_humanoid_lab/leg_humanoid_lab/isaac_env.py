@@ -127,14 +127,18 @@ class IsaacLegEnv(DirectRLEnv):
         self.previous_actions=self.actions.clone()
         self.actions=actions.clone().clamp(-1,1)
         ref,_,_=self._reference()
-        self.target=ref+.2*self.actions
-        gravity=self.robot.data.projected_gravity_b
-        angular=self.robot.data.root_ang_vel_b
-        roll=torch.atan2(-gravity[:,1],-gravity[:,2])
-        pitch=torch.atan2(gravity[:,0],-gravity[:,2])
-        for side,sign in (("left",1),("right",-1)):
-            self.target[:,JOINTS.index(f"{side}_ankle_Pitch_joint")]+=sign*(pitch+.15*angular[:,1]).clamp(-.15,.15)
-            self.target[:,JOINTS.index(f"{side}_ankle_Roll_joint")]+=(roll+.15*angular[:,0]).clamp(-.15,.15)
+        # BeyondMimic / HHTools clips already encode ankle pose; IMU overlay fights ballet feet.
+        source=(getattr(self.motion,"data",None) or {}).get("source")
+        scale=.2 if source in {"hhtools","beyondmimic","roboparty"} else .2
+        self.target=ref+scale*self.actions
+        if source not in {"hhtools","beyondmimic","roboparty"}:
+            gravity=self.robot.data.projected_gravity_b
+            angular=self.robot.data.root_ang_vel_b
+            roll=torch.atan2(-gravity[:,1],-gravity[:,2])
+            pitch=torch.atan2(gravity[:,0],-gravity[:,2])
+            for side,sign in (("left",1),("right",-1)):
+                self.target[:,JOINTS.index(f"{side}_ankle_Pitch_joint")]+=sign*(pitch+.15*angular[:,1]).clamp(-.15,.15)
+                self.target[:,JOINTS.index(f"{side}_ankle_Roll_joint")]+=(roll+.15*angular[:,0]).clamp(-.15,.15)
         self.target=self.target.clamp(self.lower,self.upper)
 
     def _apply_action(self):
@@ -168,16 +172,31 @@ class IsaacLegEnv(DirectRLEnv):
         loaded=forces[:,self.feet,2]>5.
         foot_ids,_=self.robot.find_bodies(["left_foot_link","right_foot_link"],preserve_order=True)
         slip=((self.robot.data.body_lin_vel_w[:,foot_ids,:2]**2).sum(-1)*loaded).sum(-1)
-        reward=(1+2*up.clamp(min=0)**4+2*torch.exp(-height**2/.012)+2*torch.exp(-pose/.10)+2*torch.exp(-velocity/.16)
-            -.04*((self.actions-self.previous_actions)**2).mean(-1)-.02*(self.actions**2).mean(-1)-.08*slip
-            -.00001*(self.robot.data.applied_torque[:,self.jids]**2).mean(-1)-10*self.reset_terminated.float())
-        reward+=2*torch.exp(-root/.09)-.3*velocity
-        if self.cfg.skill=='walk':
+        source=(getattr(self.motion,"data",None) or {}).get("source")
+        beyondmimic=source in {"hhtools","beyondmimic","roboparty"}
+        # Ballet / HHTools: prioritize upright + height + pose; de-emphasize cmd-velocity
+        # (sparse travel) and skip sidestep foot-target curriculum when absent.
+        if beyondmimic:
+            # Alive shaping first: survive the clip, then track pose/height.
+            alive=(~self.reset_terminated).float()
+            reward=(2.5*alive+4*up.clamp(min=0)**4+3*torch.exp(-height**2/.01)+3*torch.exp(-pose/.08)
+                +.5*torch.exp(-velocity/.36)+2*torch.exp(-root/.08)
+                -.04*((self.actions-self.previous_actions)**2).mean(-1)-.015*(self.actions**2).mean(-1)-.08*slip
+                -.00001*(self.robot.data.applied_torque[:,self.jids]**2).mean(-1)-8*self.reset_terminated.float())
+            # Prefer at least one foot loaded (single-leg OK) over skating both feet.
+            reward+=2.0*loaded.any(dim=-1).float()
+            reward+=1.0*(loaded.sum(dim=-1)==1).float()  # single-support bonus for ballet
+        else:
+            reward=(1+2*up.clamp(min=0)**4+2*torch.exp(-height**2/.012)+2*torch.exp(-pose/.10)+2*torch.exp(-velocity/.16)
+                -.04*((self.actions-self.previous_actions)**2).mean(-1)-.02*(self.actions**2).mean(-1)-.08*slip
+                -.00001*(self.robot.data.applied_torque[:,self.jids]**2).mean(-1)-10*self.reset_terminated.float())
+            reward+=2*torch.exp(-root/.09)-.3*velocity
+        if self.cfg.skill=='walk' and not beyondmimic:
             phase=self.episode_length_buf*self.step_dt/.9*2*torch.pi
             expected=torch.stack((torch.sin(phase)<=0,torch.sin(phase+torch.pi)<=0),dim=-1)
             reward+=1.5*(loaded==expected).float().mean(-1)
             reward+=.5*torch.exp(-self.robot.data.root_ang_vel_b[:,2]**2/.25)
-        if self.cfg.skill=='sidestep':
+        if self.cfg.skill=='sidestep' and not beyondmimic:
             reward+=4*torch.exp(-root/.04)
             reward+=4*torch.exp(-pose/.03)-2*torch.exp(-pose/.10)
             reward+=4*torch.exp(-velocity/.09)-2*torch.exp(-velocity/.16)
@@ -196,7 +215,14 @@ class IsaacLegEnv(DirectRLEnv):
     def _get_dones(self):
         d=self.robot.data
         bad_contact=(self.contacts.data.net_forces_w[:,self.other_bodies,:].norm(dim=-1)>20).any(dim=-1)
-        fail=(d.root_pos_w[:,2]-self.scene.env_origins[:,2]<.56)|(-d.projected_gravity_b[:,2]<.65)|bad_contact|~torch.isfinite(d.root_state_w).all(dim=-1)
+        source=(getattr(self.motion,"data",None) or {}).get("source")
+        # Ballet / HHTools clips tip more; avoid early kills that zero survival before learning balance.
+        if source in {"hhtools","beyondmimic","roboparty"}:
+            z_min,up_min,contact_f=0.48,0.50,35.
+            bad_contact=(self.contacts.data.net_forces_w[:,self.other_bodies,:].norm(dim=-1)>contact_f).any(dim=-1)
+            fail=(d.root_pos_w[:,2]-self.scene.env_origins[:,2]<z_min)|(-d.projected_gravity_b[:,2]<up_min)|bad_contact|~torch.isfinite(d.root_state_w).all(dim=-1)
+        else:
+            fail=(d.root_pos_w[:,2]-self.scene.env_origins[:,2]<.56)|(-d.projected_gravity_b[:,2]<.65)|bad_contact|~torch.isfinite(d.root_state_w).all(dim=-1)
         return fail,self.episode_length_buf>=self.max_episode_length-1
 
     def _reset_idx(self,env_ids):
